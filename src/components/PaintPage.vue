@@ -133,18 +133,17 @@ export default {
 		},
 		handleMouseMove(event) {
 			if (this.isPainting) {
-				let x;
-				let y;
+				let offsetX;
+				let offsetY;
 				if (event.offsetX) {
-					const { offsetX, offsetY } = event;
-					x = offsetX;
-					y = offsetY;
+					offsetX = event.offsetX;
+					offsetY = event.offsetY;
 				} else {
-					x = event.touches[0].pageX - event.touches[0].target.offsetLeft;
-					y = event.touches[0].pageY - event.touches[0].target.offsetTop;
+					offsetX = event.touches[0].pageX - event.touches[0].target.offsetLeft;
+					offsetY = event.touches[0].pageY - event.touches[0].target.offsetTop;
 				}
-				const currentPosition = { x, y };
-				this.paint(currentPosition);
+				const offSetData = { offsetX, offsetY };
+				this.paint(offSetData);
 			}
 		},
 		handleMouseUp() {
