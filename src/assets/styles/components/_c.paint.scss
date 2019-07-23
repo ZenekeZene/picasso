@@ -18,6 +18,7 @@
 
 	&__canvas {
 		@include absolute(top left);
+		touch-action: none
 	}
 }
 

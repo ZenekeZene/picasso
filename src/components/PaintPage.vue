@@ -135,6 +135,7 @@ export default {
 			this.history.push([]);
 		},
 		handleMouseMove(event) {
+			event.preventDefault();
 			if (this.isPainting && !this.isPlaying) {
 				let offsetX;
 				let offsetY;
