@@ -4,7 +4,7 @@
 	@include share(width, height, 100%);
 
 	&__tools {
-		@include absolute(top $gutter-3 left $gutter-3);
+		@include absolute(top 10vh left 4vw);
 		z-index: depth(1);
 		width: auto;
 		@include flex(inline, start, start);
@@ -37,10 +37,23 @@
 			text-decoration: none;
 		}
 
-		@include icon {
-			&:hover {
+		&:hover {
+			cursor: pointer;
+
+			@include icon {
 				color: $color-tertiary;
-				cursor: pointer;
+			}
+		}
+
+		&.--disabled {
+			opacity: 0.5;
+
+			&:hover {
+				cursor: normal;
+
+				@include icon {
+					color: inherit;
+				}
 			}
 		}
 	}
@@ -67,11 +80,16 @@
 		content: $icon-target;
 		font-family: $font-icons;
 		font-size: $font-size-xxs;
+		margin-top: 1px;
 	}
 }
 
 .--erase {
 	border: 1px solid $color-black;
+}
+
+.--playing {
+	color: $color-primary;
 }
 
 .range {

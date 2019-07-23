@@ -34,19 +34,23 @@
 	@if $direction == down {
 		border-left: $size solid transparent;
 		border-right: $size solid transparent;
-		border-top: $size solid $color;
+		border-top: $size solid;
+		border-top-color: $color;
 	} @else if $direction == up {
 		border-left: $size solid transparent;
 		border-right: $size solid transparent;
-		border-bottom: $size solid $color;
+		border-bottom: $size solid;
+		border-bottom-color: $color;
 	} @else if $direction == right {
 		border-top: $size solid transparent;
 		border-bottom: $size solid transparent;
-		border-left: $size solid $color;
+		border-left: $size solid;
+		border-left-color: $color
 	} @else if $direction == left {
 		border-top: $size solid transparent;
 		border-bottom: $size solid transparent;
-		border-right: $size solid $color;
+		border-right: $size solid;
+		border-right-color: $color;
 	}
 }
 

@@ -1,10 +1,10 @@
 <template>
 	<div class="paint">
 		<ol class="paint__tools tools"
-			@mouseover="toolsVisible = true"
+			v-on="!isPlaying ? { mouseover } : {}"
 			@mouseleave="toolsVisible = false"
 		>
-			<li class="tools__item">
+			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<span class="icon"
 					:style="{ backgroundColor: strokeStyle }"
 					v-show="!toolsVisible"
@@ -26,7 +26,7 @@
 					></li>
 				</ol>
 			</li>
-			<li class="tools__item">
+			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<span font-bold style="width: 2ch; text-align: left;">{{ strokeWidth }}</span>
 				<div class="range" v-show="toolsVisible">
 					<input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth">
@@ -39,17 +39,17 @@
 					></span>
 				</div>
 			</li>
-			<li class="tools__item">
+			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<span class="icon-trash" @click="clean()"></span>
 			</li>
-			<li class="tools__item">
+			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<span class="icon-reply" @click="undo()"></span>
 			</li>
-			<li class="tools__item">
+			<li class="tools__item" :class="{ '--playing': isPlaying }">
 				<span class="icon-play" @click="replay()"></span>
 			</li>
-			<li class="tools__item">
-				<a :href="dataURI" download><span class="icon-download"></span></a>
+			<li class="tools__item" :class="{ '--disabled': isPlaying }">
+				<a :href="dataURI" download v-show="!isPlaying"><span class="icon-download"></span></a>
 			</li>
 			<!--<li class="tools__item">
 				<button @click="save()">Save</button>
@@ -84,6 +84,7 @@ export default {
 			ctx: null,
 			prevPosition: { offsetX: 0, offsetY: 0 },
 			isPainting: false,
+			isPlaying: false,
 			colors: [
 				'rgb(255, 165, 0)',
 				'rgb(80, 91, 222)',
@@ -101,7 +102,6 @@ export default {
 			toolsVisible: false,
 			currentIndex: 0,
 			dataURI: '',
-			pictures: [],
 		};
 	},
 	mounted() {
@@ -125,6 +125,9 @@ export default {
 		});
 	},
 	methods: {
+		mouseover() {
+			this.toolsVisible = true;
+		},
 		handleMouseDown(event) {
 			const { offsetX, offsetY } = event;
 			this.isPainting = true;
@@ -132,7 +135,7 @@ export default {
 			this.history.push([]);
 		},
 		handleMouseMove(event) {
-			if (this.isPainting) {
+			if (this.isPainting && !this.isPlaying) {
 				let offsetX;
 				let offsetY;
 				if (event.offsetX) {
@@ -147,7 +150,7 @@ export default {
 			}
 		},
 		handleMouseUp() {
-			if (this.isPainting) {
+			if (this.isPainting && !this.isPlaying) {
 				this.isPainting = false;
 				this.currentIndex += 1;
 				this.saveToImage();
@@ -191,35 +194,43 @@ export default {
 		},
 		replay() {
 			if (this.history.length > 0) {
+				this.isPlaying = true;
 				this.clearCanvas();
 				const history = [].concat(...this.history);
 				this.loop(0, history.length, (i) => {
 					this.paintDot(history[i]);
-				}, 100);
+				}, () => {
+					this.isPlaying = false;
+				},100);
 			}
 		},
-		loop(index, howManyTimes, f, ms) {
+		loop(index, howManyTimes, f, callback, ms) {
+			console.log(callback);
 			let i = index;
 			f(i);
 			i += 1;
 			if (i < howManyTimes) {
 				setTimeout(() => {
-					this.loop(i, howManyTimes, f);
+					this.loop(i, howManyTimes, f, callback);
 				}, ms);
+			} else {
+				callback();
 			}
 		},
 		undo() {
-			if (this.currentIndex - 1 >= 0) {
+			if (this.currentIndex - 1 >= 0 && !this.isPlaying) {
 				this.history.pop();
 				this.currentIndex -= 1;
-				this.clean();
+				this.clearCanvas();
 				this.player();
 			}
 		},
 		clean() {
-			this.history = [];
-			this.currentIndex = 0;
-			this.clearCanvas();
+			if (!this.isPlaying) {
+				this.history = [];
+				this.currentIndex = 0;
+				this.clearCanvas();
+			}
 		},
 		clearCanvas() {
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
