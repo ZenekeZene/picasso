@@ -6,7 +6,7 @@
 	&__tools {
 		@include absolute(top 10vh left 4vw);
 		z-index: depth(1);
-		width: auto;
+		width: 5rem;
 		@include flex(inline, start, start);
 		flex-direction: column;
 
@@ -18,7 +18,7 @@
 
 	&__canvas {
 		@include absolute(top left);
-		touch-action: none
+		touch-action: none;
 	}
 }
 
@@ -96,6 +96,7 @@
 .range {
 	position: relative;
 	@include flex(flex, center, center);
+	width: 8rem;
 	margin-left: $gutter;
 	
 	&__label {

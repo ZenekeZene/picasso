@@ -3,6 +3,7 @@
 		<ol class="paint__tools tools"
 			v-on="!isPlaying ? { mouseover } : {}"
 			@mouseleave="toolsVisible = false"
+			
 		>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<span class="icon"
@@ -15,12 +16,12 @@
 						v-for="(color, index) in colors"
 						:key="`color-${index}`"
 						:style="{ backgroundColor: color }"
-						@click="strokeStyle = color; "
+						@click.prevent="strokeStyle = color; "
 						:class="{ '--selected': strokeStyle === color }"
 					></li>
 					<li
 						:style="{ backgroundColor: colorErase }"
-						@click="strokeStyle = colorErase; "
+						@click.prevent="strokeStyle = colorErase; "
 						:class="{ '--selected': strokeStyle === colorErase }"
 						class="--erase"
 					></li>
@@ -39,26 +40,14 @@
 					></span>
 				</div>
 			</li>
-			<li class="tools__item"
-				:class="{ '--disabled': isPlaying }"
-				@click="clean()"
-				v-touch:tap="clean()"
-			>
-				<span class="icon-trash"></span>
+			<li class="tools__item" :class="{ '--disabled': isPlaying }">
+				<span class="icon-trash" @click="clean" v-touch:end="clean"></span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<span
-					class="icon-reply"
-					v-touch:tap="undo()"
-					@click="undo()"
-				></span>
+				<span class="icon-reply" @click="undo" v-touch:end="undo"></span>
 			</li>
-			<li class="tools__item"
-				:class="{ '--playing': isPlaying }"
-				@click="replay()"
-				v-touch:tap="replay()"
-			>
-				<span class="icon-play"></span>
+			<li class="tools__item" :class="{ '--playing': isPlaying }">
+				<span class="icon-play" @click="replay" v-touch:end="replay"></span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<a :href="dataURI" download v-show="!isPlaying"><span class="icon-download"></span></a>
@@ -137,17 +126,18 @@ export default {
 		});
 	},
 	methods: {
-		mouseover() {
+		mouseover(event) {
+			event.preventDefault();
 			this.toolsVisible = true;
 		},
 		handleMouseDown(event) {
+			this.toolsVisible = false;
 			const { offsetX, offsetY } = event;
 			this.isPainting = true;
 			this.prevPosition = { offsetX, offsetY };
 			this.history.push([]);
 		},
 		handleMouseMove(event) {
-			event.preventDefault();
 			if (this.isPainting && !this.isPlaying) {
 				let offsetX;
 				let offsetY;
@@ -163,6 +153,7 @@ export default {
 			}
 		},
 		handleMouseUp() {
+			event.preventDefault();
 			if (this.isPainting && !this.isPlaying) {
 				this.isPainting = false;
 				this.currentIndex += 1;
@@ -205,7 +196,8 @@ export default {
 				}
 			}
 		},
-		replay() {
+		replay(event) {
+			event.preventDefault();
 			if (this.history.length > 0) {
 				this.isPlaying = true;
 				this.clearCanvas();
@@ -218,7 +210,6 @@ export default {
 			}
 		},
 		loop(index, howManyTimes, f, callback, ms) {
-			console.log(callback);
 			let i = index;
 			f(i);
 			i += 1;
@@ -230,7 +221,8 @@ export default {
 				callback();
 			}
 		},
-		undo() {
+		undo(event) {
+			event.preventDefault();
 			if (this.currentIndex - 1 >= 0 && !this.isPlaying) {
 				this.history.pop();
 				this.currentIndex -= 1;
@@ -238,7 +230,8 @@ export default {
 				this.player();
 			}
 		},
-		clean() {
+		clean(event) {
+			event.preventDefault();
 			if (!this.isPlaying) {
 				this.history = [];
 				this.currentIndex = 0;
