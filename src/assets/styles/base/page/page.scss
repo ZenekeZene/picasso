@@ -41,14 +41,14 @@ body {
 }
 
 .app {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-	@include flex(flex, center, center);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	@include flex(flex, start, start);
 	flex-direction: column;
 	height: 100%;
 	padding: $gutter;
-    text-align: center;
-    color: $color-primary;
+	text-align: center;
+	color: $color-primary;
 
 	&__logo {
 		max-width: 300px;

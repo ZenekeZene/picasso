@@ -30,7 +30,7 @@
 
 		.icon {
 			display: inline-block;
-			@include share(width, height, 1rem);
+			@include share(width, height, 0.9rem);
 			background-color: red;
 			border-radius: 50%;
 		}
@@ -56,7 +56,6 @@
 
 	.--selected:before {
 		content: 'x';
-	
 	}
 }
 

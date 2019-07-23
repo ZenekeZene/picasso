@@ -9,9 +9,9 @@ ul,
 ol {
 	list-style: none;
 	display: inline-flex;
-    flex-direction: column;
+	flex-direction: column;
 	margin: 0;
-    padding: $gutter-1-2;
+	padding: $gutter-1-2;
 }
 
 a:visited,
