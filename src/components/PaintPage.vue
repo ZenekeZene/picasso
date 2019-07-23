@@ -39,14 +39,26 @@
 					></span>
 				</div>
 			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<span class="icon-trash" @click="clean()"></span>
+			<li class="tools__item"
+				:class="{ '--disabled': isPlaying }"
+				@click="clean()"
+				v-touch:tap="clean()"
+			>
+				<span class="icon-trash"></span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<span class="icon-reply" @click="undo()"></span>
+				<span
+					class="icon-reply"
+					v-touch:tap="undo()"
+					@click="undo()"
+				></span>
 			</li>
-			<li class="tools__item" :class="{ '--playing': isPlaying }">
-				<span class="icon-play" @click="replay()"></span>
+			<li class="tools__item"
+				:class="{ '--playing': isPlaying }"
+				@click="replay()"
+				v-touch:tap="replay()"
+			>
+				<span class="icon-play"></span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<a :href="dataURI" download v-show="!isPlaying"><span class="icon-download"></span></a>
