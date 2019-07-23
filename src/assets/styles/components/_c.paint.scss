@@ -1,29 +1,27 @@
 
 .paint {
 	position: relative;
-	border: 1px solid red;
+	@include share(width, height, 100%);
 
 	&__tools {
-		@include absolute(top left);
+		@include absolute(top $gutter-3 left $gutter-3);
 		z-index: depth(1);
-		width: 22rem;
+		width: auto;
 		@include flex(inline, start, start);
 		flex-direction: column;
-		border: 1px solid blue;
 
 		& > li {
-			padding: $gutter;
+			padding: 0.5rem 1rem;
+			min-height: 2rem;
 		}
 	}
 
 	&__canvas {
 		@include absolute(top left);
-		border: 1px solid blue;
 	}
 }
 
 .tools {
-	position: relative;
 
 	&__item {
 		@include flex(flex, start, center);
@@ -31,8 +29,19 @@
 		.icon {
 			display: inline-block;
 			@include share(width, height, 0.9rem);
-			background-color: red;
 			border-radius: 50%;
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		@include icon {
+			&:hover {
+				color: $color-tertiary;
+				cursor: pointer;
+			}
 		}
 	}
 }
@@ -40,27 +49,29 @@
 .colors {
 	display: flex;
 	flex-direction: row;
-	margin-left: $gutter-1-2;
 	padding: 0;
 	
 	li {
+		@include flex(flex, center, center);
 		@include share(width, height, 1rem);
-		margin: 0 $gutter-1-2;
-		border-radius: 50%;
+		margin-right: $gutter-1-2;
 		padding: 2px 0;
+		border-radius: 50%;
 
 		&:hover {
 			cursor: pointer;
 		}
 	}
 
-	.--erase {
-		border: 1px solid $color-black;
-	}
-
 	.--selected:before {
-		content: 'x';
+		content: $icon-target;
+		font-family: $font-icons;
+		font-size: $font-size-xxs;
 	}
+}
+
+.--erase {
+	border: 1px solid $color-black;
 }
 
 .range {

@@ -1,0 +1,10 @@
+$icomoon-font-path: "../fonts/paint" !default;
+@import '../fonts/paint/style';
+$font-icons: 'paint';
+
+@mixin icon {
+	[class^="icon-"],
+	[class*=" icon-"] {
+		@content;
+	}
+}

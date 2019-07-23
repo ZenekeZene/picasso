@@ -4,22 +4,36 @@ $font-regular: $coke-font-regular !default;
 $font-bold: $coke-font-bold !default;
 $font-black: $coke-font-black !default;
 
-$font-open-sans: 'Open Sans' !default;
+$font-heading: 'Fredoka One' !default;
+$font-primary: 'Open Sans' !default;
 $font-fallback: sans-serif !default;
 
-[font-open-sans],
-.font-open-sans {
-	font-family: $font-open-sans, $font-fallback;
+[font-primary],
+.font-primary {
+	font-family: $font-primary, $font-fallback;
 }
 
-@mixin open-sans {
-	font-family: $font-open-sans, $font-fallback;
+@mixin font-primary {
+	font-family: $font-primary, $font-fallback;
 }
 
-@function open-sans() {
-	@return $font-open-sans, $font-fallback;
+@function font-primary() {
+	@return $font-primary, $font-fallback;
+}
+
+@mixin font-heading {
+	font-family: $font-heading, $font-fallback;
+}
+
+@function font-heading() {
+	@return $font-heading, $font-fallback;
 }
 
 @font-face {
-	font-family: $font-open-sans, $font-fallback;
+	font-family: $font-primary, $font-fallback;
 }
+
+@font-face {
+	font-family: $font-heading, $font-fallback;
+}
+

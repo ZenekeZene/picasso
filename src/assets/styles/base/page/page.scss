@@ -7,7 +7,7 @@ html {
 html,
 body {
 	height: 100%;
-	@include open-sans;
+	@include font-primary;
 }
 
 body {
@@ -46,7 +46,6 @@ body {
 	@include flex(flex, start, start);
 	flex-direction: column;
 	height: 100%;
-	padding: $gutter;
 	text-align: center;
 	color: $color-primary;
 
@@ -54,4 +53,11 @@ body {
 		max-width: 300px;
 		margin-bottom: $gutter;
 	}
+}
+
+.heading {
+	display: block;
+	width: 100%;
+	margin-bottom: 0;
+	border-bottom: 2px solid black;
 }

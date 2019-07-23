@@ -5,7 +5,11 @@
 			@mouseleave="toolsVisible = false"
 		>
 			<li class="tools__item">
-				<span class="icon" :style="{ backgroundColor: strokeStyle }"></span>
+				<span class="icon"
+					:style="{ backgroundColor: strokeStyle }"
+					v-show="!toolsVisible"
+					:class="{ '--erase': strokeStyle === colorErase }"
+				></span>
 				<ol class="colors" v-show="toolsVisible">
 					<li
 						v-for="(color, index) in colors"
@@ -23,43 +27,48 @@
 				</ol>
 			</li>
 			<li class="tools__item">
-				<span font-bold style="width: 2rem;">{{ strokeWidth }}</span>
+				<span font-bold style="width: 2ch; text-align: left;">{{ strokeWidth }}</span>
 				<div class="range" v-show="toolsVisible">
 					<input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth">
 					<span class="range__label" :style="{
 						minWidth: `${strokeWidth}px`,
 						minHeight: `${strokeWidth}px`,
 						backgroundColor: strokeStyle,
-					}"></span>
+					}"
+					:class="{ '--erase': strokeStyle === colorErase }"
+					></span>
 				</div>
 			</li>
 			<li class="tools__item">
-				<button @click="clean()">Borrar</button>
+				<span class="icon-trash" @click="clean()"></span>
 			</li>
 			<li class="tools__item">
-				<button @click="undo()">Undo</button>
+				<span class="icon-reply" @click="undo()"></span>
 			</li>
 			<li class="tools__item">
-				<button @click="replay()">Replay</button>
+				<span class="icon-play" @click="replay()"></span>
 			</li>
 			<li class="tools__item">
-				<a :href="dataURI" download>Download</a>
+				<a :href="dataURI" download><span class="icon-download"></span></a>
 			</li>
-			<li class="tools__item">
+			<!--<li class="tools__item">
 				<button @click="save()">Save</button>
 			</li>
 			<li class="tools__item">
 				<button @click="load()">Load</button>
-			</li>
+			</li>-->
 		</ol>
 		<canvas
 			ref="canvas"
-			width="1000"
-			height="1000"
+			width="1698"
+			height="1028"
 			class="paint__canvas"
 			@mousedown="handleMouseDown"
 			@mousemove="handleMouseMove"
 			@mouseup="handleMouseUp"
+			v-touch:start="handleMouseDown"
+			v-touch:moving="handleMouseMove"
+			v-touch:end="handleMouseUp"
 		></canvas>
 	</div>
 </template>
@@ -97,12 +106,23 @@ export default {
 	},
 	mounted() {
 		this.canvas = this.$refs.canvas;
+		this.canvas.width = window.screen.width;
+		this.canvas.height = window.screen.height;
 		this.ctx = this.canvas.getContext('2d');
 		this.setBackgroundCanvas();
 		this.ctx.lineJoin = 'round';
 		this.ctx.lineCap = 'round';
 		[this.strokeStyle] = this.colors;
 		this.ctx.lineWidth = this.strokeWidth;
+
+		let resizeTimer;
+		window.addEventListener('resize', () => {
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(() => {
+				this.canvas.width = window.screen.width;
+				this.canvas.height = window.screen.height;
+			}, 250);
+		});
 	},
 	methods: {
 		handleMouseDown(event) {
@@ -113,9 +133,18 @@ export default {
 		},
 		handleMouseMove(event) {
 			if (this.isPainting) {
-				const { offsetX, offsetY } = event;
-				const offSetData = { offsetX, offsetY };
-				this.paint(offSetData);
+				let x;
+				let y;
+				if (event.offsetX) {
+					const { offsetX, offsetY } = event;
+					x = offsetX;
+					y = offsetY;
+				} else {
+					x = event.touches[0].pageX - event.touches[0].target.offsetLeft;
+					y = event.touches[0].pageY - event.touches[0].target.offsetTop;
+				}
+				const currentPosition = { x, y };
+				this.paint(currentPosition);
 			}
 		},
 		handleMouseUp() {
