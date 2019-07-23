@@ -96,7 +96,7 @@ export default {
 			],
 			colorErase: 'rgb(246,246,247)',
 			backgroundColor: 'rgb(246,246,247)',
-			strokeWidth: 1,
+			strokeWidth: 10,
 			strokeStyle: 'red',
 			history: [],
 			toolsVisible: false,
