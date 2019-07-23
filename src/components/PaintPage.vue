@@ -12,17 +12,23 @@
 						:key="`color-${index}`"
 						:style="{ backgroundColor: color }"
 						@click="strokeStyle = color; "
-						:class="{ '--selected': strokeStyle === color } "
+						:class="{ '--selected': strokeStyle === color }"
+					></li>
+					<li
+						:style="{ backgroundColor: colorErase }"
+						@click="strokeStyle = colorErase; "
+						:class="{ '--selected': strokeStyle === colorErase }"
+						class="--erase"
 					></li>
 				</ol>
 			</li>
 			<li class="tools__item">
-				<span font-bold style="width: 1rem;">{{ strokeWidth }}</span>
+				<span font-bold style="width: 2rem;">{{ strokeWidth }}</span>
 				<div class="range" v-show="toolsVisible">
-					<input class="range__input" type="range" min="1" max="30" value="1" v-model="strokeWidth">
+					<input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth">
 					<span class="range__label" :style="{
-						minWidth: `${strokeWidth * 2 }px`,
-						minHeight: `${strokeWidth * 2 }px`,
+						minWidth: `${strokeWidth}px`,
+						minHeight: `${strokeWidth}px`,
 						backgroundColor: strokeStyle,
 					}"></span>
 				</div>
@@ -38,6 +44,12 @@
 			</li>
 			<li class="tools__item">
 				<a :href="dataURI" download>Download</a>
+			</li>
+			<li class="tools__item">
+				<button @click="save()">Save</button>
+			</li>
+			<li class="tools__item">
+				<button @click="load()">Load</button>
 			</li>
 		</ol>
 		<canvas
@@ -64,16 +76,23 @@ export default {
 			prevPosition: { offsetX: 0, offsetY: 0 },
 			isPainting: false,
 			colors: [
-				'#f12f22',
-				'#aabb22',
-				'#ccffdd',
+				'rgb(255, 165, 0)',
+				'rgb(80, 91, 222)',
+				'rgb(252, 68, 72)',
+				'rgb(50, 182, 183)',
+				'rgb(134, 134, 134)',
+				'rgb(252, 222, 192)',
+				'rgb(27, 37, 52)',
 			],
+			colorErase: 'rgb(246,246,247)',
+			backgroundColor: 'rgb(246,246,247)',
 			strokeWidth: 1,
 			strokeStyle: 'red',
 			history: [],
 			toolsVisible: false,
 			currentIndex: 0,
 			dataURI: '',
+			pictures: [],
 		};
 	},
 	mounted() {
@@ -181,9 +200,27 @@ export default {
 		saveToImage() {
 			this.dataURI = this.canvas.toDataURL('png');
 		},
-		setBackgroundCanvas(backgroundColor = 'white') {
+		setBackgroundCanvas(backgroundColor = this.backgroundColor) {
 			this.ctx.fillStyle = backgroundColor;
 			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+		},
+		save() {
+			const history = [];
+			for (let i = 0; i < this.history.length; i += 1) {
+				const stroke = this.history[i];
+				history[i] = [];
+				for (let j = 0; j < stroke.length; j += 1) {
+					const dot = stroke[j];
+					history[i][j] = dot;
+				}
+				history[i] = JSON.stringify(history[i]);
+			}
+			localStorage.setItem('dibujo1', history);
+		},
+		load() {
+			const history = localStorage.getItem('dibujo1');
+			this.history = JSON.parse(`[${history}']`);
+			this.replay();
 		},
 	},
 };

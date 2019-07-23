@@ -54,6 +54,10 @@
 		}
 	}
 
+	.--erase {
+		border: 1px solid $color-black;
+	}
+
 	.--selected:before {
 		content: 'x';
 	}

@@ -1,12 +1,12 @@
-$track-color: #a6a6a6 !default;
-$thumb-color: #a6a6a6 !default;
+$track-color: #e6e6e6 !default;
+$thumb-color: #e6e6e6 !default;
 
 $thumb-radius: 12px !default;
 $thumb-height: 12px;
 $thumb-width: 12px;
-$thumb-shadow-size: 12px !default;
-$thumb-shadow-blur: 12px !default;
-$thumb-shadow-color: rgba(0, 0, 0, .2) !default;
+$thumb-shadow-size: 0 !default;
+$thumb-shadow-blur: 0 !default;
+$thumb-shadow-color: black !default;
 $thumb-border-width: 0 !default;
 $thumb-border-color: #eceff1 !default;
 
@@ -17,6 +17,6 @@ $track-shadow-blur: 0 !default;
 $track-border-width: 0 !default;
 
 $track-radius: 5px !default;
-$contrast: 5% !default;
+$contrast: 0% !default;
 
 @import 'node_modules/input-range-scss/_inputrange';
