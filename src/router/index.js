@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import AboutPage from '../components/AboutPage';
+import PaintPage from '../components/PaintPage';
 
 Vue.use(Router);
 
@@ -8,8 +8,8 @@ export default new Router({
 	routes: [
 		{
 			path: '/',
-			name: 'about',
-			component: AboutPage,
+			name: 'paint',
+			component: PaintPage,
 		},
 	],
 });

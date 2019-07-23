@@ -1,7 +1,7 @@
 {
-	"name": "vue-and-friends-boilerplate",
+	"name": "Paint",
 	"version": "1.0.0",
-	"description": "A Vue.js boilerplate",
+	"description": "Paint",
 	"author": "Héctor Villar Mozo <hectorvillarm@gmail.com>",
 	"private": true,
 	"scripts": {
@@ -33,6 +33,7 @@
 		]
 	},
 	"dependencies": {
+		"input-range-scss": "^1.5.1",
 		"vue": "^2.5.2",
 		"vue-router": "^3.0.1"
 	},

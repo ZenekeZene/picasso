@@ -1,0 +1,82 @@
+
+.paint {
+	position: relative;
+	border: 1px solid red;
+
+	&__tools {
+		@include absolute(top left);
+		z-index: depth(1);
+		width: 22rem;
+		@include flex(inline, start, start);
+		flex-direction: column;
+		border: 1px solid blue;
+
+		& > li {
+			padding: $gutter;
+		}
+	}
+
+	&__canvas {
+		@include absolute(top left);
+		border: 1px solid blue;
+	}
+}
+
+.tools {
+	position: relative;
+
+	&__item {
+		@include flex(flex, start, center);
+
+		.icon {
+			display: inline-block;
+			@include share(width, height, 1rem);
+			background-color: red;
+			border-radius: 50%;
+		}
+	}
+}
+
+.colors {
+	display: flex;
+	flex-direction: row;
+	margin-left: $gutter-1-2;
+	padding: 0;
+	
+	li {
+		@include share(width, height, 1rem);
+		margin: 0 $gutter-1-2;
+		border-radius: 50%;
+		padding: 2px 0;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	.--selected:before {
+		content: 'x';
+	
+	}
+}
+
+.range {
+	position: relative;
+	@include flex(flex, center, center);
+	margin-left: $gutter;
+	
+	&__label {
+		@include absolute(left 100%);
+		display: inline-block;
+		$size: 5px;
+		@include share(
+			min-width,
+			min-height,
+			width,
+			height,
+			$size
+		);
+		margin-left: $gutter;
+		border-radius: 50%;
+	}
+}
