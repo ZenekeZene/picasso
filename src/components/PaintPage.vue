@@ -36,6 +36,9 @@
 			<li class="tools__item">
 				<button @click="replay()">Replay</button>
 			</li>
+			<li class="tools__item">
+				<a :href="dataURI" download>Download</a>
+			</li>
 		</ol>
 		<canvas
 			ref="canvas"
@@ -70,11 +73,13 @@ export default {
 			history: [],
 			toolsVisible: false,
 			currentIndex: 0,
+			dataURI: '',
 		};
 	},
 	mounted() {
 		this.canvas = this.$refs.canvas;
 		this.ctx = this.canvas.getContext('2d');
+		this.setBackgroundCanvas();
 		this.ctx.lineJoin = 'round';
 		this.ctx.lineCap = 'round';
 		[this.strokeStyle] = this.colors;
@@ -98,6 +103,7 @@ export default {
 			if (this.isPainting) {
 				this.isPainting = false;
 				this.currentIndex += 1;
+				this.saveToImage();
 			}
 		},
 		paint(currentPosition) {
@@ -137,10 +143,13 @@ export default {
 			}
 		},
 		replay() {
-			const history = [].concat(...[], this.history);
-			this.loop(0, history.length, (i) => {
-				this.paintDot(history[i]);
-			}, 100);
+			if (this.history.length > 0) {
+				this.clearCanvas();
+				const history = [].concat(...this.history);
+				this.loop(0, history.length, (i) => {
+					this.paintDot(history[i]);
+				}, 100);
+			}
 		},
 		loop(index, howManyTimes, f, ms) {
 			let i = index;
@@ -161,7 +170,20 @@ export default {
 			}
 		},
 		clean() {
+			this.history = [];
+			this.currentIndex = 0;
+			this.clearCanvas();
+		},
+		clearCanvas() {
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+			this.setBackgroundCanvas();
+		},
+		saveToImage() {
+			this.dataURI = this.canvas.toDataURL('png');
+		},
+		setBackgroundCanvas(backgroundColor = 'white') {
+			this.ctx.fillStyle = backgroundColor;
+			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		},
 	},
 };
