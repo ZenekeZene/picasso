@@ -47,7 +47,7 @@
 				<span class="icon-reply" v-touch:end="undo"></span>
 			</li>
 			<li class="tools__item" :class="{ '--playing': isPlaying }">
-				<span class="icon-play" v-touch:end="replay"></span>
+				<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }" v-touch:end="replay"></span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<a :href="dataURI" download="my-awesome-drawing-of-painter" v-show="!isPlaying"><span class="icon-download"></span></a>
@@ -99,6 +99,7 @@ export default {
 			toolsVisible: false,
 			currentIndex: 0,
 			dataURI: '',
+			loopTimer: null,
 		};
 	},
 	mounted() {
@@ -199,16 +200,22 @@ export default {
 			}
 		},
 		replay(event) {
-			event.preventDefault();
-			if (this.history.length > 0) {
-				this.isPlaying = true;
-				this.clearCanvas();
-				const history = [].concat(...this.history);
-				this.loop(0, history.length, (i) => {
-					this.paintDot(history[i]);
-				}, () => {
-					this.isPlaying = false;
-				},100);
+			if (!this.isPlaying) {
+				event.preventDefault();
+				if (this.history.length > 0) {
+					this.isPlaying = true;
+					this.clearCanvas();
+					const history = [].concat(...this.history);
+					this.loop(0, history.length, (i) => {
+						this.paintDot(history[i]);
+					}, () => {
+						this.isPlaying = false;
+					},100);
+				}
+			} else {
+				clearTimeout(this.loopTimer);
+				this.isPlaying = false;
+				this.player();
 			}
 		},
 		loop(index, howManyTimes, f, callback, ms) {
@@ -216,7 +223,7 @@ export default {
 			f(i);
 			i += 1;
 			if (i < howManyTimes) {
-				setTimeout(() => {
+				this.loopTimer = setTimeout(() => {
 					this.loop(i, howManyTimes, f, callback);
 				}, ms);
 			} else {
