@@ -59,14 +59,14 @@ body {
 .heading {
 	@include absolute(top left);
 	z-index: depth(1);
-	display: block;
-	width: 100%;
 	text-align: left;
 	margin-bottom: 0;
 	padding-top: 5vh;
 	padding-left: calc(4vw + 0.5rem + 1rem);
 
 	@include media('<=phablet') {
+		display: block;
+		width: 100%;
 		padding-top: 0;
 		padding-left: 0;
 		text-align:	center;
