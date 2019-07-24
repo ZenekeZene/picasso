@@ -50,7 +50,7 @@
 				<span class="icon-play" @click="replay" v-touch:end="replay"></span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<a :href="dataURI" download v-show="!isPlaying"><span class="icon-download"></span></a>
+				<a :href="dataURI" download="my-awesome-drawing-of-painter" v-show="!isPlaying"><span class="icon-download"></span></a>
 			</li>
 			<!--<li class="tools__item">
 				<button @click="save()">Save</button>
@@ -222,6 +222,7 @@ export default {
 			}
 		},
 		undo(event) {
+			console.log('Undo');
 			event.preventDefault();
 			if (this.currentIndex - 1 >= 0 && !this.isPlaying) {
 				this.history.pop();
