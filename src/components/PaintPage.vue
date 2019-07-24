@@ -40,16 +40,16 @@
 					></span>
 				</div>
 			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<span class="icon-trash" v-touch:end="clean"></span>
+			<li class="tools__item" :class="{ '--disabled': isPlaying }" v-touch:end="clean">
+				<span class="icon-trash"></span>
 				<span class="label">Clear Canvas</span>
 			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<span class="icon-reply" v-touch:end="undo"></span>
+			<li class="tools__item" :class="{ '--disabled': isPlaying }" v-touch:end="undo">
+				<span class="icon-reply"></span>
 				<span class="label">Undo</span>
 			</li>
-			<li class="tools__item" :class="{ '--playing': isPlaying }">
-				<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }" v-touch:end="replay"></span>
+			<li class="tools__item" :class="{ '--playing': isPlaying }" v-touch:end="replay">
+				<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }"></span>
 				<span class="label">Replay</span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">

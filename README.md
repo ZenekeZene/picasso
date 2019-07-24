@@ -13,8 +13,8 @@ Among other things, it has the following...
 ## You can
 
 - Paint (really?)
-- Using colors
-- Undo a action
+- Use colors
+- Undo (Cmd+Z included)
 - Replay the painting
 - Download as png.
 - Clean the full canvas.
