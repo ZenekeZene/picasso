@@ -42,15 +42,19 @@
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<span class="icon-trash" v-touch:end="clean"></span>
+				<span class="label">Clear Canvas</span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<span class="icon-reply" v-touch:end="undo"></span>
+				<span class="label">Undo</span>
 			</li>
 			<li class="tools__item" :class="{ '--playing': isPlaying }">
 				<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }" v-touch:end="replay"></span>
+				<span class="label">Replay</span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<a :href="dataURI" download="my-awesome-drawing-of-painter" v-show="!isPlaying"><span class="icon-download"></span></a>
+				<span class="label">Download</span>
 			</li>
 			<!--<li class="tools__item">
 				<button @click="save()">Save</button>
