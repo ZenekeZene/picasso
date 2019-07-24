@@ -28,7 +28,7 @@
 				</ol>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<span font-bold style="width: 2ch; text-align: left;">{{ strokeWidth }}</span>
+				<span font-bold style="text-align: left;">{{ strokeWidth }}</span>
 				<div class="range" v-show="toolsVisible">
 					<input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth">
 					<span class="range__label" :style="{
