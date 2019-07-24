@@ -41,13 +41,13 @@
 				</div>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<span class="icon-trash" @click="clean" v-touch:end="clean"></span>
+				<span class="icon-trash" v-touch:end="clean"></span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<span class="icon-reply" @click="undo" v-touch:end="undo"></span>
+				<span class="icon-reply" v-touch:end="undo"></span>
 			</li>
 			<li class="tools__item" :class="{ '--playing': isPlaying }">
-				<span class="icon-play" @click="replay" v-touch:end="replay"></span>
+				<span class="icon-play" v-touch:end="replay"></span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<a :href="dataURI" download="my-awesome-drawing-of-painter" v-show="!isPlaying"><span class="icon-download"></span></a>
@@ -64,9 +64,6 @@
 			width="1698"
 			height="1028"
 			class="paint__canvas"
-			@mousedown="handleMouseDown"
-			@mousemove="handleMouseMove"
-			@mouseup="handleMouseUp"
 			v-touch:start="handleMouseDown"
 			v-touch:moving="handleMouseMove"
 			v-touch:end="handleMouseUp"
@@ -222,7 +219,6 @@ export default {
 			}
 		},
 		undo(event) {
-			console.log('Undo');
 			event.preventDefault();
 			if (this.currentIndex - 1 >= 0 && !this.isPlaying) {
 				this.history.pop();
