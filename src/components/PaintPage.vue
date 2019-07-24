@@ -219,16 +219,13 @@ export default {
 		var angle = 0;
 
 		interact('.paint').gesturable({
-			onmove: function(event) {
+			onmove: (event) => {
 				var arrow = this.$refs.square;
 
 				angle += event.da;
 
 				arrow.style.webkitTransform = arrow.style.transform =
 					'rotate(' + angle + 'deg)';
-
-				document.getElementById('angle-info').textContent =
-					angle.toFixed(2) + '\u00b0';
 			},
 		});
 	},
