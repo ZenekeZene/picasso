@@ -123,6 +123,10 @@ export default {
 				this.undo(event);
 			}
 		});
+
+		document.addEventListener('mouseout', (event) => {
+			this.handleMouseUp(event);
+		});
 	},
 	methods: {
 		mouseover(event) {
