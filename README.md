@@ -6,7 +6,7 @@ This is a repository to paint things, using a canvas.
 
 It has been inspired by the work of the magnificent [Magoz](https://magoz.studio/#selected-work) (*).
 
-It is designed to be implemented on my own portfolio, but you can fork it and use where you want.
+It is designed to be implemented on my own portfolio, but you can fork it and use wherever you want.
 
 Among other things, it has the following...
 
