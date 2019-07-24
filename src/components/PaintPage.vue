@@ -78,9 +78,9 @@
 	  v-touch:moving="handleMouseMove"
 	  v-touch:end="handleMouseUp"
 	></canvas>
-	<div class="draggable">Draggable Element</div>
+	<div class="draggable" v-touch:longtap="editText">Draggable Element</div>
 
-	<div data-x="0" data-y="0" class="resize-drag">
+	<div data-x="0" data-y="0" class="resize-drag" ref="square">
 	  <div class="resize-top resize-left"></div>
 
 	  <!-- bottom-right resize handle -->
@@ -218,9 +218,9 @@ export default {
 
 		var angle = 0;
 
-		interact('.resize-drag').gesturable({
+		interact('.paint').gesturable({
 			onmove: function(event) {
-				var arrow = event.target;
+				var arrow = this.$refs.square;
 
 				angle += event.da;
 
@@ -386,6 +386,10 @@ export default {
 			this.history = JSON.parse(`[${history}']`);
 			this.replay();
 		},
+		editText(event) {
+			event.target.contentEditable = true;
+			event.target.focus();
+		}
 	},
 };
 </script>

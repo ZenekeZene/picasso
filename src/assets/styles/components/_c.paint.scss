@@ -4,7 +4,7 @@
 
 	&__tools {
 		@include absolute(top 10vh left 4vw);
-		z-index: depth(1);
+		z-index: depth(3);
 		width: 5rem;
 		@include flex(inline, start, start);
 		flex-direction: column;
@@ -121,11 +121,12 @@
 	touch-action: none;
 	user-select: none;
 	position: absolute;
+	@include center-fully-absolute;
 	z-index: depth(2);
 }
 
 .resize-drag {
-	position: absolute;
+	@include center-fully-absolute;
 	z-index: depth(2);
 	width: 120px;
 	margin: 30px 20px;
