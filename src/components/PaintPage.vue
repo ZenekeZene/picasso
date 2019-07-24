@@ -72,7 +72,6 @@
 </template>
 
 <script>
-import { setTimeout } from 'timers';
 
 export default {
 	name: 'PaintPage',
@@ -120,6 +119,12 @@ export default {
 				this.canvas.width = window.screen.width;
 				this.canvas.height = window.screen.height;
 			}, 250);
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (event.keyCode == 90 && (event.ctrlKey || event.metaKey)) {
+				this.undo(event);
+			}
 		});
 	},
 	methods: {
