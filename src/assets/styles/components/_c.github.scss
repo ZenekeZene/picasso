@@ -18,4 +18,22 @@
 	&:hover img {
 		margin-bottom: $gutter-1-2;
 	}
+
+	.cta {
+		position: absolute;
+		top: 0;
+		left: 0;
+		font-weight: 900;
+		transform: rotate(-45deg);
+		opacity: 0;
+		font-size: 0.5rem;
+		transition: all 250ms ease-in;
+	}
+
+	&:hover .cta {
+		top: -1.2rem;
+		left: -2.5rem;
+		opacity: 1;
+		font-size: initial;
+	}
 }
