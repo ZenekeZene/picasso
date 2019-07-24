@@ -1,6 +1,6 @@
 <template>
   <main class="app">
-	<h1 class="heading">Painter</h1>
+	<h1 class="heading">Picass<span class="icon-heart"></span></h1>
     <router-view/>
 	<github-item href="https://github.com/ZenekeZene/paint.git"></github-item>
   </main>

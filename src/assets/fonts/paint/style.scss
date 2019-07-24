@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?rwzj2z');
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?rwzj2z#iefix') format('embedded-opentype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?rwzj2z') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?rwzj2z') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?rwzj2z##{$icomoon-font-family}') format('svg');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?w2g8hf');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?w2g8hf#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?w2g8hf') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?w2g8hf') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?w2g8hf##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -26,6 +26,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-heart {
+  &:before {
+    content: $icon-heart; 
+  }
+}
 .icon-stop {
   &:before {
     content: $icon-stop; 
@@ -201,9 +206,9 @@
     content: $icon-tag; 
   }
 }
-.icon-heart {
+.icon-heart1 {
   &:before {
-    content: $icon-heart; 
+    content: $icon-heart1; 
   }
 }
 .icon-video-camera {

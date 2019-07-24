@@ -62,5 +62,9 @@ body {
 	margin-bottom: 0;
 	border-bottom-width: 2px;
 	border-bottom-style: solid;
-	border-color: inherit
+	border-color: inherit;
+		
+	[class^="icon"] {
+		font-size: 1.9rem;
+	}
 }
