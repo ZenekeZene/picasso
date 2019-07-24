@@ -1,6 +1,6 @@
 <template>
   <main class="app">
-	<h1 class="heading">Picass<span class="icon-heart"></span></h1>
+	<h1 class="heading">Picass<span class="icon-heart animated" @mouseover="easterEgg = true" @mouseleave="easterEgg = false" :class="{'heartBeat': easterEgg}"></span></h1>
     <router-view/>
 	<github-item href="https://github.com/ZenekeZene/picasso#picasso"></github-item>
   </main>
@@ -13,6 +13,11 @@ export default {
 	name: 'App',
 	components: {
 		GithubItem,
+	},
+	data() {
+		return {
+			easterEgg: false,
+		};
 	},
 };
 </script>
