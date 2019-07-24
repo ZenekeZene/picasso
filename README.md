@@ -1,37 +1,30 @@
-# Vue and friends Boilerplate
+# Picasso
 
-<img src="./static/logo.png" width="350" height="380" />
+<img src="./static/logo.jpg"/>
 
-This is a repository in the form of a boilerplate / template based on a Vue base project through vue-cli plus a few add-ons.
+This is a repository to paint things, using a canvas.
 
-It is designed to start any short or medium project, as well as to perform experiments or test things.
+It has been inspired by the work of the magnificent [Magoz](https://magoz.studio/#selected-work) (*).
+
+It is designed to be implemented on my own portfolio, but you can fork it and use where you want.
 
 Among other things, it has the following...
 
-## Utilities / tools:
+## You can
 
-- Vue
-- Webpack (
-fully configured 🤪)
-- Babel
-- Coke 🥤(my own SASS framework).
-  - Include media library.
-  - ITCSS-like.
-  - Flexbox Utilities.
-  - Utility classes.
-  - Debug.
-  - Animation, gradients, etc.
-  - Sugar Syntax!
-- PostCSS (support and Autoprefixer)
-- Husky (pre-commit git hooks).
-- ESLint
-- StyleLint
-- Prettier
-- SASS
-- Pug 🐶
-- Jest
+- Paint (really?)
+- Using colors
+- Undo a action
+- Replay the painting
+- Download as png.
+- Clean the full canvas.
 
-Just use what interests you. 
+## TO DO
+- [ ] Redo action.
+- [ ] Cypress coverage E2E.
+- [ ] Time machine with range slider.
+- [ ] Cloud drawings (Firebase).
+- [ ] Collaboration (?).
 
 ## To install
 ```
@@ -53,3 +46,5 @@ npm run dev
 
 Any contribution is welcome 😊
 
+*: All the code and resources have been created from scratch by me. This has only been an attempt to prove myself with my technical skills. 
+If you have any problem with this, you can contact me by [hectorvillarm@gmail.com](mailto://hectorvillarm@gmail.com). Thanks!

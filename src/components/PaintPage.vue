@@ -113,15 +113,6 @@ export default {
 		[this.strokeStyle] = this.colors;
 		this.ctx.lineWidth = this.strokeWidth;
 
-		let resizeTimer;
-		window.addEventListener('resize', () => {
-			clearTimeout(resizeTimer);
-			resizeTimer = setTimeout(() => {
-				this.canvas.width = window.screen.width;
-				this.canvas.height = window.screen.height;
-			}, 250);
-		});
-
 		document.addEventListener('keydown', (event) => {
 			if (event.keyCode == 90 && (event.ctrlKey || event.metaKey)) {
 				this.undo(event);
