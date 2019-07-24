@@ -1,82 +1,96 @@
 <template>
-	<div class="paint">
-		<ol class="paint__tools tools"
-			v-on="!isPlaying ? { mouseover } : {}"
-			@mouseleave="toolsVisible = false"
-			
-		>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<span class="icon"
-					:style="{ backgroundColor: strokeStyle }"
-					v-show="!toolsVisible"
-					:class="{ '--erase': strokeStyle === colorErase }"
-				></span>
-				<ol class="colors" v-show="toolsVisible">
-					<li
-						v-for="(color, index) in colors"
-						:key="`color-${index}`"
-						:style="{ backgroundColor: color }"
-						@click.prevent="strokeStyle = color; "
-						:class="{ '--selected': strokeStyle === color }"
-					></li>
-					<li
-						:style="{ backgroundColor: colorErase }"
-						@click.prevent="strokeStyle = colorErase; "
-						:class="{ '--selected': strokeStyle === colorErase }"
-						class="--erase"
-					></li>
-				</ol>
-			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<span font-bold style="text-align: left;">{{ strokeWidth }}</span>
-				<div class="range" v-show="toolsVisible">
-					<input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth">
-					<span class="range__label" :style="{
+  <div class="paint">
+	<ol
+	  class="paint__tools tools"
+	  v-on="!isPlaying ? { mouseover } : {}"
+	  @mouseleave="toolsVisible = false"
+	>
+	  <li class="tools__item" :class="{ '--disabled': isPlaying }">
+		<span
+		  class="icon"
+		  :style="{ backgroundColor: strokeStyle }"
+		  v-show="!toolsVisible"
+		  :class="{ '--erase': strokeStyle === colorErase }"
+		></span>
+		<ol class="colors" v-show="toolsVisible">
+		  <li
+			v-for="(color, index) in colors"
+			:key="`color-${index}`"
+			:style="{ backgroundColor: color }"
+			@click.prevent="strokeStyle = color; "
+			:class="{ '--selected': strokeStyle === color }"
+		  ></li>
+		  <li
+			:style="{ backgroundColor: colorErase }"
+			@click.prevent="strokeStyle = colorErase; "
+			:class="{ '--selected': strokeStyle === colorErase }"
+			class="--erase"
+		  ></li>
+		</ol>
+	  </li>
+	  <li class="tools__item" :class="{ '--disabled': isPlaying }">
+		<span font-bold style="text-align: left;">{{ strokeWidth }}</span>
+		<div class="range" v-show="toolsVisible">
+		  <input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth" />
+		  <span
+			class="range__label"
+			:style="{
 						minWidth: `${strokeWidth}px`,
 						minHeight: `${strokeWidth}px`,
 						backgroundColor: strokeStyle,
 					}"
-					:class="{ '--erase': strokeStyle === colorErase }"
-					></span>
-				</div>
-			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }" v-touch:end="clean">
-				<span class="icon-trash"></span>
-				<span class="label">Clear Canvas</span>
-			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }" v-touch:end="undo">
-				<span class="icon-reply"></span>
-				<span class="label">Undo</span>
-			</li>
-			<li class="tools__item" :class="{ '--playing': isPlaying }" v-touch:end="replay">
-				<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }"></span>
-				<span class="label" v-if="!isPlaying">Replay</span>
-				<span class="label" v-else>Stop</span>
-			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<a :href="dataURI" download="my-awesome-drawing-of-painter" v-show="!isPlaying"><span class="icon-download"></span></a>
-				<span class="label">Download</span>
-			</li>
-			<!--<li class="tools__item">
+			:class="{ '--erase': strokeStyle === colorErase }"
+		  ></span>
+		</div>
+	  </li>
+	  <li class="tools__item" :class="{ '--disabled': isPlaying }" v-touch:end="clean">
+		<span class="icon-trash"></span>
+		<span class="label">Clear Canvas</span>
+	  </li>
+	  <li class="tools__item" :class="{ '--disabled': isPlaying }" v-touch:end="undo">
+		<span class="icon-reply"></span>
+		<span class="label">Undo</span>
+	  </li>
+	  <li class="tools__item" :class="{ '--playing': isPlaying }" v-touch:end="replay">
+		<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }"></span>
+		<span class="label" v-if="!isPlaying">Replay</span>
+		<span class="label" v-else>Stop</span>
+	  </li>
+	  <li class="tools__item" :class="{ '--disabled': isPlaying }">
+		<a :href="dataURI" download="my-awesome-drawing-of-painter" v-show="!isPlaying">
+		  <span class="icon-download"></span>
+		</a>
+		<span class="label">Download</span>
+	  </li>
+	  <!--<li class="tools__item">
 				<button @click="save()">Save</button>
 			</li>
 			<li class="tools__item">
 				<button @click="load()">Load</button>
-			</li>-->
-		</ol>
-		<canvas
-			ref="canvas"
-			width="1698"
-			height="1028"
-			class="paint__canvas"
-			v-touch:start="handleMouseDown"
-			v-touch:moving="handleMouseMove"
-			v-touch:end="handleMouseUp"
-		></canvas>
+	  </li>-->
+	</ol>
+	<canvas
+	  ref="canvas"
+	  width="1698"
+	  height="1028"
+	  class="paint__canvas"
+	  v-touch:start="handleMouseDown"
+	  v-touch:moving="handleMouseMove"
+	  v-touch:end="handleMouseUp"
+	></canvas>
+	<div class="draggable">Draggable Element</div>
+
+	<div data-x="0" data-y="0" class="resize-drag">
+	  <div class="resize-top resize-left"></div>
+
+	  <!-- bottom-right resize handle -->
+	  <div class="resize-bottom resize-right"></div>
 	</div>
+  </div>
 </template>
 
 <script>
+import interact from 'interactjs';
 
 export default {
 	name: 'PaintPage',
@@ -126,6 +140,96 @@ export default {
 
 		document.addEventListener('mouseout', (event) => {
 			this.handleMouseUp(event);
+		});
+
+		const position = { x: 0, y: 0 };
+
+		interact('.draggable').draggable({
+			listeners: {
+				start(event) {
+					console.log(event.type, event.target);
+				},
+				move(event) {
+					position.x += event.dx;
+					position.y += event.dy;
+
+					event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+				},
+			},
+		});
+
+		window.dragMoveListener = (event) => {
+			var target = event.target;
+			// keep the dragged position in the data-x/data-y attributes
+			var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+			var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+			// translate the element
+			target.style.webkitTransform = target.style.transform =
+				'translate(' + x + 'px, ' + y + 'px)';
+
+			// update the posiion attributes
+			target.setAttribute('data-x', x);
+			target.setAttribute('data-y', y);
+		};
+
+		interact('.resize-drag')
+			.draggable({
+				onmove: window.dragMoveListener,
+				modifiers: [
+					interact.modifiers.restrictRect({
+						restriction: 'parent',
+					}),
+				],
+			})
+			.resizable({
+				// resize from all edges and corners
+				edges: { left: true, right: true, bottom: true, top: true },
+
+				modifiers: [
+					// keep the edges inside the parent
+					interact.modifiers.restrictEdges({
+						outer: 'parent',
+						endOnly: true,
+					}),
+				],
+
+				inertia: true,
+			})
+			.on('resizemove', function(event) {
+				var target = event.target;
+				var x = parseFloat(target.getAttribute('data-x')) || 0;
+				var y = parseFloat(target.getAttribute('data-y')) || 0;
+
+				// update the element's style
+				target.style.width = event.rect.width + 'px';
+				target.style.height = event.rect.height + 'px';
+
+				// translate when resizing from top or left edges
+				x += event.deltaRect.left;
+				y += event.deltaRect.top;
+
+				target.style.webkitTransform = target.style.transform =
+					'translate(' + x + 'px,' + y + 'px)';
+
+				target.setAttribute('data-x', x);
+				target.setAttribute('data-y', y);
+			});
+
+		var angle = 0;
+
+		interact('.resize-drag').gesturable({
+			onmove: function(event) {
+				var arrow = event.target;
+
+				angle += event.da;
+
+				arrow.style.webkitTransform = arrow.style.transform =
+					'rotate(' + angle + 'deg)';
+
+				document.getElementById('angle-info').textContent =
+					angle.toFixed(2) + '\u00b0';
+			},
 		});
 	},
 	methods: {
@@ -206,11 +310,17 @@ export default {
 					this.isPlaying = true;
 					this.clearCanvas();
 					const history = [].concat(...this.history);
-					this.loop(0, history.length, (i) => {
-						this.paintDot(history[i]);
-					}, () => {
-						this.isPlaying = false;
-					},100);
+					this.loop(
+						0,
+						history.length,
+						(i) => {
+							this.paintDot(history[i]);
+						},
+						() => {
+							this.isPlaying = false;
+						},
+						100
+					);
 				}
 			} else {
 				clearTimeout(this.loopTimer);
