@@ -50,7 +50,8 @@
 			</li>
 			<li class="tools__item" :class="{ '--playing': isPlaying }" v-touch:end="replay">
 				<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }"></span>
-				<span class="label">Replay</span>
+				<span class="label" v-if="!isPlaying">Replay</span>
+				<span class="label" v-else>Stop</span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<a :href="dataURI" download="my-awesome-drawing-of-painter" v-show="!isPlaying"><span class="icon-download"></span></a>
