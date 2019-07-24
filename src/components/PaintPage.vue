@@ -148,9 +148,6 @@ export default {
 					offsetX = event.offsetX;
 					offsetY = event.offsetY;
 				} else {
-					console.log(event.touches[0]);
-					//offsetX = event.touches[0].pageX - event.touches[0].target.offsetLeft;
-					//offsetY = event.touches[0].pageY - event.touches[0].target.offsetTop;
 					offsetX = event.touches[0].clientX;
 					offsetY = event.touches[0].clientY;
 				}
