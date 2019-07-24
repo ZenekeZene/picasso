@@ -57,12 +57,11 @@ body {
 }
 
 .heading {
+	@include absolute(top left);
+	z-index: depth(1);
 	display: block;
 	width: 100%;
 	margin-bottom: 0;
-	border-bottom-width: 2px;
-	border-bottom-style: solid;
-	border-color: inherit;
 		
 	[class^="icon"] {
 		font-size: 0.6em;
