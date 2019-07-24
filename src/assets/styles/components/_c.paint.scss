@@ -52,10 +52,6 @@
 		&:hover {
 			cursor: pointer;
 
-			@include icon {
-				color: $color-tertiary;
-			}
-
 			.label {
 				display: block;
 			}
