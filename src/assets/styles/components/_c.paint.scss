@@ -14,6 +14,7 @@
 			position: relative;
 			padding: 0.5rem 1rem;
 			min-height: 2rem;
+			cursor: pointer;
 		}
 	}
 
@@ -50,7 +51,6 @@
 		}
 
 		&:hover {
-			cursor: pointer;
 
 			.label {
 				display: block;
