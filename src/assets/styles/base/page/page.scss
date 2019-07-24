@@ -48,6 +48,7 @@ body {
 	height: 100%;
 	text-align: center;
 	color: $color-primary;
+	cursor: url('../../../static/pencil.svg') 0 28, auto;
 
 	&__logo {
 		max-width: 300px;
