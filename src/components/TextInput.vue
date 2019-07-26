@@ -68,7 +68,7 @@ export default {
 			.gesturable({
 				inertia: true,
 				onstart: () => {
-					rotateScale.scale -= event.angle;
+					this.rotateScale.scale -= event.angle;
 				},
 				onmove: (event) => {
 					this.rotate = event.angle + this.rotateScale.angle;
