@@ -11,8 +11,10 @@
 
 		& > li {
 			position: relative;
-			padding: 0.5rem 1rem;
+			width: 56px;
 			min-height: 2rem;
+			padding: 0.5rem 1rem;
+			text-align: center;
 			cursor: pointer;
 		}
 	}
@@ -21,15 +23,28 @@
 		@include absolute(top left);
 		touch-action: none;
 	}
+
+	&__trash {
+		@include absolute(bottom $gutter);
+		@include center-horizontally;
+		z-index: depth(2);
+		padding: 0.8em;
+		font-size: 1.5rem;
+		border-radius: 50%;
+		border: 1px solid #cbc8c8;
+	}
 }
 
 .tools {
 	&__item {
 		@include flex(flex, start, center);
+		transition: all 250ms ease-in;
 
 		.icon {
 			display: inline-block;
 			@include share(width, height, 0.9rem);
+			margin-right: auto;
+			margin-left: auto;
 			border-radius: 50%;
 		}
 
@@ -55,7 +70,7 @@
 		}
 
 		&.--disabled {
-			opacity: 0.5;
+			opacity: 0.1;
 
 			&:hover {
 				cursor: normal;
@@ -123,9 +138,6 @@
 	position: absolute;
 	@include center-fully-absolute;
 	z-index: depth(2);
-	padding: 1rem;
-	border: 1px dotted grey;
-	border-radius: 2px;
 }
 
 .resize-drag {
@@ -144,4 +156,18 @@
 
 .text {
 	@include center-fully-absolute;
+	max-width: 100vw;
+	margin: 0;
+	padding: $gutter;
+	border-radius: 2px;
+	outline: none;
+
+	&:empty {
+		border: 1px dotted grey;
+	}
+}
+
+.--hot {
+	color: red;
+	border-color: red;
 }

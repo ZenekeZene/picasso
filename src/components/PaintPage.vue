@@ -1,11 +1,11 @@
 <template>
-  <div ref="paint" class="paint" tabindex=1 v-touch="handBlur">
+  <div ref="paint" class="paint" tabindex="1" v-touch="handBlur">
 	<ol
 	  class="paint__tools tools"
 	  v-on="!isPlaying ? { mouseover } : {}"
 	  @mouseleave="toolsVisible = false"
 	>
-	  <li class="tools__item" :class="{ '--disabled': isPlaying }">
+	  <li class="tools__item" :class="{ '--disabled': isPlaying || isAnyFocused || anyIsMoving }">
 		<span
 		  class="icon"
 		  :style="{ backgroundColor: strokeStyle }"
@@ -28,7 +28,7 @@
 		  ></li>
 		</ol>
 	  </li>
-	  <li class="tools__item" :class="{ '--disabled': isPlaying }">
+	  <li class="tools__item" :class="{ '--disabled': isPlaying || isAnyFocused || anyIsMoving }">
 		<span font-bold style="text-align: left;">{{ strokeWidth }}</span>
 		<div class="range" v-show="toolsVisible">
 		  <input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth" />
@@ -43,24 +43,40 @@
 		  ></span>
 		</div>
 	  </li>
-	  <li class="tools__item" v-touch:end="addText">
-		  <span class="icon-type"></span>
-		  <span class="label">Text</span>
+	  <li
+		class="tools__item"
+		v-touch:end="addText"
+		:class="{ '--disabled': isPlaying || isAnyFocused || anyIsMoving }"
+	  >
+		<span class="icon-type"></span>
+		<span class="label">Text</span>
 	  </li>
-	  <li class="tools__item" :class="{ '--disabled': isPlaying }" v-touch:end="clean">
+	  <li
+		class="tools__item"
+		:class="{ '--disabled': isPlaying || isAnyFocused || anyIsMoving }"
+		v-touch:end="clean"
+	  >
 		<span class="icon-trash"></span>
 		<span class="label">Clear Canvas</span>
 	  </li>
-	  <li class="tools__item" :class="{ '--disabled': isPlaying }" v-touch:end="undo">
+	  <li
+		class="tools__item"
+		:class="{ '--disabled': isPlaying || isAnyFocused || anyIsMoving }"
+		v-touch:end="undo"
+	  >
 		<span class="icon-reply"></span>
 		<span class="label">Undo</span>
 	  </li>
-	  <li class="tools__item" :class="{ '--playing': isPlaying }" v-touch:end="replay">
+	  <li
+		class="tools__item"
+		:class="{ '--playing': isPlaying, '--disabled': isAnyFocused || anyIsMoving }"
+		v-touch:end="replay"
+	  >
 		<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }"></span>
 		<span class="label" v-if="!isPlaying">Replay</span>
 		<span class="label" v-else>Stop</span>
 	  </li>
-	  <li class="tools__item" :class="{ '--disabled': isPlaying }">
+	  <li class="tools__item" :class="{ '--disabled': isPlaying || isAnyFocused || anyIsMoving }">
 		<a :href="dataURI" download="my-awesome-drawing-of-painter" v-show="!isPlaying">
 		  <span class="icon-download"></span>
 		</a>
@@ -82,15 +98,18 @@
 	  v-touch:moving="handleMouseMove"
 	  v-touch:end="handleMouseUp"
 	></canvas>
+	<aside ref="items"></aside>
+	<span ref="items-trash" v-show="anyIsMoving" class="paint__trash icon-trash"></span>
   </div>
 </template>
 
 <script>
 import interact from 'interactjs';
-import { setTimeout } from 'timers';
-import { log } from 'util';
-import TextInput from './TextInput.vue';
 import Vue from 'vue';
+import TextInput from './TextInput.vue';
+import { EventBus } from '../scripts/EventBus.js';
+import drag from '../scripts/drag';
+
 const TextInputClass = Vue.extend(TextInput);
 
 export default {
@@ -120,6 +139,9 @@ export default {
 			currentIndex: 0,
 			dataURI: '',
 			loopTimer: null,
+			isAnyFocused: false,
+			anyIsMoving: false,
+			items: [],
 		};
 	},
 	mounted() {
@@ -133,6 +155,14 @@ export default {
 		[this.strokeStyle] = this.colors;
 		this.ctx.lineWidth = this.strokeWidth;
 
+		EventBus.$on('anyFocused', (payload) => {
+			this.isAnyFocused = payload;
+		});
+
+		EventBus.$on('anyIsMoving', (payload) => {
+			this.anyIsMoving = payload;
+		});
+
 		document.addEventListener('keydown', (event) => {
 			if (event.keyCode == 90 && (event.ctrlKey || event.metaKey)) {
 				this.undo(event);
@@ -142,8 +172,6 @@ export default {
 		document.addEventListener('mouseout', (event) => {
 			this.handleMouseUp(event);
 		});
-
-		const position = { x: 0, y: 0 };
 
 		interact('.resize-drag')
 			.draggable({
@@ -187,6 +215,27 @@ export default {
 
 				target.setAttribute('data-x', x);
 				target.setAttribute('data-y', y);
+			});
+
+		interact('.paint__trash')
+			.dropzone({
+				accept: '.draggable',
+				ondrop: (event) => {
+					const indexToRemove = event.relatedTarget.getAttribute('data-index');
+					this.items[indexToRemove].$destroy();
+					this.$refs.items.removeChild(event.relatedTarget);
+					this.anyIsMoving = false;
+					event.target.classList.remove('--hot');
+				},
+				ondragenter: (event) => {
+					event.target.classList.add('--hot');
+				},
+				ondragleave: (event) => {
+					event.target.classList.remove('--hot');
+				}
+			})
+			.on('dropactivate', (event) => {
+				event.target.classList.add('drop-activated');
 			});
 	},
 	methods: {
@@ -351,10 +400,14 @@ export default {
 			event.target.focus();
 		},
 		addText() {
-
-			const instance = new TextInputClass({});
-			instance.$mount();
-			this.$refs.paint.appendChild(instance.$el);
+			const instance = new TextInputClass({
+				propsData: { color: this.strokeStyle, index: this.items.length },
+				parent: this,
+			});
+			const text = instance.$mount();
+			this.items.push(text);
+			drag.setPosition(instance.$el);
+			this.$refs.items.appendChild(instance.$el);
 			setTimeout(() => {
 				instance.$el.focus();
 			}, 100);
