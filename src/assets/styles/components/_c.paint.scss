@@ -123,21 +123,25 @@
 	position: absolute;
 	@include center-fully-absolute;
 	z-index: depth(2);
+	padding: 1rem;
+	border: 1px dotted grey;
+	border-radius: 2px;
 }
 
 .resize-drag {
 	@include center-fully-absolute;
 	z-index: depth(2);
-	width: 120px;
-	margin: 30px 20px;
-	padding: 20px;
+	padding: $gutter;
 	touch-action: none;
-	color: white;
-	background-color: #29e;
 	font-size: 20px;
 	font-family: sans-serif;
 	border-radius: 8px;
 
-	/* This makes things *much* easier */
-	box-sizing: border-box;
+	p {
+		margin: 0;
+	}
+}
+
+.text {
+	@include center-fully-absolute;
 }

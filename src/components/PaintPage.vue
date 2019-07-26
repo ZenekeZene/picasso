@@ -1,5 +1,5 @@
 <template>
-  <div class="paint">
+  <div ref="paint" class="paint">
 	<ol
 	  class="paint__tools tools"
 	  v-on="!isPlaying ? { mouseover } : {}"
@@ -43,6 +43,10 @@
 		  ></span>
 		</div>
 	  </li>
+	  <li class="tools__item" v-touch:end="addText">
+		  <span class="icon-type"></span>
+		  <span class="label">Text</span>
+	  </li>
 	  <li class="tools__item" :class="{ '--disabled': isPlaying }" v-touch:end="clean">
 		<span class="icon-trash"></span>
 		<span class="label">Clear Canvas</span>
@@ -78,19 +82,26 @@
 	  v-touch:moving="handleMouseMove"
 	  v-touch:end="handleMouseUp"
 	></canvas>
-	<div class="draggable" v-touch:longtap="editText">Draggable Element</div>
+	<!--<div class="draggable" v-touch:longtap="editText" contentEditable="true">Texto</div>-->
 
-	<div data-x="0" data-y="0" class="resize-drag" ref="square">
+	<!--<div
+	  data-x="0"
+	  data-y="0"
+	  class="resize-drag"
+	  ref="square"
+	  contenteditable="true"
+	  v-touch:end="handSelection"
+	>
 	  <div class="resize-top resize-left"></div>
-
-	  <!-- bottom-right resize handle -->
+	  <p>Texto</p>
 	  <div class="resize-bottom resize-right"></div>
-	</div>
+	</div>-->
   </div>
 </template>
 
 <script>
 import interact from 'interactjs';
+import { setTimeout } from 'timers';
 
 export default {
 	name: 'PaintPage',
@@ -196,14 +207,15 @@ export default {
 
 				inertia: true,
 			})
-			.on('resizemove', function(event) {
-				var target = event.target;
-				var x = parseFloat(target.getAttribute('data-x')) || 0;
-				var y = parseFloat(target.getAttribute('data-y')) || 0;
+			.on('resizemove', (event) => {
+				let target = event.target;
+				let x = parseFloat(target.getAttribute('data-x')) || 0;
+				let y = parseFloat(target.getAttribute('data-y')) || 0;
 
 				// update the element's style
 				target.style.width = event.rect.width + 'px';
 				target.style.height = event.rect.height + 'px';
+				target.style.fontSize = event.rect.width / 10 + 'px';
 
 				// translate when resizing from top or left edges
 				x += event.deltaRect.left;
@@ -216,7 +228,7 @@ export default {
 				target.setAttribute('data-y', y);
 			});
 
-		var angle = 0;
+		let angle = 0;
 
 		interact('.paint').gesturable({
 			onmove: (event) => {
@@ -230,6 +242,37 @@ export default {
 		});
 	},
 	methods: {
+		getSelectionText() {
+			let text = '';
+			let sel;
+			if (window.getSelection) {
+				sel = window.getSelection();
+				text = sel.toString();
+			} else if (
+				document.selection &&
+				document.selection.type != 'Control'
+			) {
+				text = document.selection.createRange().text;
+			}
+			return { sel, text };
+		},
+		handSelection(event) {
+			console.log(document.activeElement);
+			let { sel, text } = this.getSelectionText();
+			if (sel.rangeCount && sel.getRangeAt) {
+				text = sel.getRangeAt(0);
+			}
+			// Set design mode to on
+			document.designMode = 'on';
+			if (text) {
+				sel.removeAllRanges();
+				sel.addRange(text);
+			}
+			// Colorize text
+			document.execCommand('ForeColor', false, 'red');
+			// Set design mode to off
+			document.designMode = 'off';
+		},
 		mouseover(event) {
 			event.preventDefault();
 			this.toolsVisible = true;
@@ -386,6 +429,16 @@ export default {
 		editText(event) {
 			event.target.contentEditable = true;
 			event.target.focus();
+		},
+		addText() {
+			const textNode = document.createElement('p');
+			textNode.setAttribute('tabindex', 0);
+			textNode.classList.add('text', 'draggable');
+			textNode.innerHTML = 'Texto';
+			this.$refs.paint.appendChild(textNode);
+			setTimeout(() => {
+				textNode.focus();
+			}, 100);
 		}
 	},
 };
