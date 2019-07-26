@@ -56,13 +56,10 @@ export default {
 		let angle = 0;
 		interact(this.$el)
 		.gesturable({
-			onstart: function (event) {
-				angleScale.angle -= event.angle
-			},
 			onmove: (event) => {
 				angle += event.da;
 				this.rotate = `rotate(${angle}deg)`;
-				this.scale = event.scale * angleScale.scale;
+				this.scale = `scale(${event.scale}`;
 			},
 		})
 		.draggable({
