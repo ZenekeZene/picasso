@@ -236,7 +236,7 @@ export default {
 
 		interact('.text').gesturable({
 			onmove: (event) => {
-				var arrow = this.$refs.square;
+				var arrow = event.target;
 
 				angle += event.da;
 
