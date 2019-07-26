@@ -65,16 +65,28 @@ export default {
 			.gesturable({
 				inertia: true,
 				onstart: () => {
-					//if (!this.isFocused) {
+					if (!this.isFocused) {
 						EventBus.$emit('anyIsMoving', true);
-					//}
+					}
 				},
 				onmove: (event) => {
 					angle += event.da;
 					this.rotate = angle;
 					this.scale = event.scale * this.currentScale;
-
-					//if (!this.isFocused) {
+				},
+				onend: function(event) {
+					this.currentScale = this.currentScale * event.scale;
+				},
+			})
+			.draggable({
+				
+				onstart: () => {
+					if (!this.isFocused) {
+						EventBus.$emit('anyIsMoving', true);
+					}
+				},
+				onmove: (event) => {
+					if (!this.isFocused) {
 						let target = event.target;
 
 						let x =
@@ -91,10 +103,9 @@ export default {
 						// update the position attributes
 						target.setAttribute('data-x', x);
 						target.setAttribute('data-y', y);
-					//}
+					}
 				},
-				onend: function(event) {
-					this.currentScale = this.currentScale * event.scale;
+				onend: () => {
 					EventBus.$emit('anyIsMoving', false);
 				},
 			});
