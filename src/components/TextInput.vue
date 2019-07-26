@@ -62,7 +62,7 @@ export default {
 			onmove: (event) => {
 				angle += event.da;
 				this.rotate = angle;
-				this.scale = event.scale;
+				this.scale = event.scale * this.scale;
 			},
 		})
 		.draggable({
