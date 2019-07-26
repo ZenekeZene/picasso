@@ -63,16 +63,6 @@ export default {
 		let angle = 0;
 		interact(this.$el)
 			.gesturable({
-				onmove: (event) => {
-					angle += event.da;
-					this.rotate = angle;
-					this.scale = event.scale * this.currentScale;
-				},
-				onend: function(event) {
-					this.currentScale = this.currentScale * event.scale;
-				},
-			})
-			.draggable({
 				inertia: true,
 				onstart: () => {
 					if (!this.isFocused) {
@@ -80,6 +70,10 @@ export default {
 					}
 				},
 				onmove: (event) => {
+					angle += event.da;
+					this.rotate = angle;
+					this.scale = event.scale * this.currentScale;
+
 					if (!this.isFocused) {
 						let target = event.target;
 
@@ -99,7 +93,8 @@ export default {
 						target.setAttribute('data-y', y);
 					}
 				},
-				onend: () => {
+				onend: function(event) {
+					this.currentScale = this.currentScale * event.scale;
 					EventBus.$emit('anyIsMoving', false);
 				},
 			});
