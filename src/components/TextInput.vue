@@ -30,13 +30,18 @@ export default {
 		return {
 			isFocused: false,
 			translate: '',
+			translate: {
+				x: 0,
+				y: 0,
+			},
 			rotate: '',
 			scale: '',
+			resetTimeout:null,
 		};
 	},
 	computed: {
 		transformCalculated: function() {
-			return `${this.translate} ${this.rotate} ${this.scale}`;
+			return `translate(${this.translate.x}px, ${this.translate.y}px) rotate(${this.rotate}deg) scale(${this.scale})`;
 		},
 	},
 	methods: {
@@ -61,6 +66,11 @@ export default {
 				this.rotate = `rotate(${angle}deg)`;
 				this.scale = `scale(${event.scale}`;
 			},
+			onend: (event) => {
+				this.resetTimeout = setTimeout(() => {
+					this.scale = 1;
+				}, 1000);
+			},
 		})
 		.draggable({
 			onstart: () => {
@@ -76,7 +86,8 @@ export default {
 					let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
 					// translate the element
-					this.translate = `translate(${x}px, ${y}px) `;
+					this.translate.x = x;
+					this.translate.y = y;
 
 					// update the position attributes
 					target.setAttribute('data-x', x);
