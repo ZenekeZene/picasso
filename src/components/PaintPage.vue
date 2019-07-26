@@ -103,6 +103,9 @@
 import interact from 'interactjs';
 import { setTimeout } from 'timers';
 import { log } from 'util';
+import TextInput from './TextInput.vue';
+import Vue from 'vue';
+const TextInputClass = Vue.extend(TextInput);
 
 export default {
 	name: 'PaintPage',
@@ -440,6 +443,10 @@ export default {
 			setTimeout(() => {
 				textNode.focus();
 			}, 100);
+
+			const instance = new TextInputClass({});
+			instance.mount();
+			this.paint.appendChild(instance.$el);
 		},
 	},
 };
