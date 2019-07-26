@@ -82,20 +82,6 @@
 	  v-touch:moving="handleMouseMove"
 	  v-touch:end="handleMouseUp"
 	></canvas>
-	<!--<div class="draggable" v-touch:longtap="editText" contentEditable="true">Texto</div>-->
-
-	<!--<div
-	  data-x="0"
-	  data-y="0"
-	  class="resize-drag"
-	  ref="square"
-	  contenteditable="true"
-	  v-touch:end="handSelection"
-	>
-	  <div class="resize-top resize-left"></div>
-	  <p>Texto</p>
-	  <div class="resize-bottom resize-right"></div>
-	</div>-->
   </div>
 </template>
 
@@ -159,35 +145,6 @@ export default {
 
 		const position = { x: 0, y: 0 };
 
-		interact('.draggable').draggable({
-			listeners: {
-				start(event) {
-					console.log(event.type, event.target);
-				},
-				move(event) {
-					position.x += event.dx;
-					position.y += event.dy;
-
-					event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
-				},
-			},
-		});
-
-		window.dragMoveListener = (event) => {
-			var target = event.target;
-			// keep the dragged position in the data-x/data-y attributes
-			var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-			var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-			// translate the element
-			target.style.webkitTransform = target.style.transform =
-				'translate(' + x + 'px, ' + y + 'px)';
-
-			// update the posiion attributes
-			target.setAttribute('data-x', x);
-			target.setAttribute('data-y', y);
-		};
-
 		interact('.resize-drag')
 			.draggable({
 				onmove: window.dragMoveListener,
@@ -231,55 +188,10 @@ export default {
 				target.setAttribute('data-x', x);
 				target.setAttribute('data-y', y);
 			});
-
-		let angle = 0;
-
-		interact('.text').gesturable({
-			onmove: (event) => {
-				var arrow = event.target;
-
-				angle += event.da;
-
-				arrow.style.webkitTransform = arrow.style.transform =
-					'rotate(' + angle + 'deg)';
-			},
-		});
 	},
 	methods: {
 		handBlur() {
-			console.log('handBlur');
 			this.$el.focus();
-		},
-		getSelectionText() {
-			let text = '';
-			let sel;
-			if (window.getSelection) {
-				sel = window.getSelection();
-				text = sel.toString();
-			} else if (
-				document.selection &&
-				document.selection.type != 'Control'
-			) {
-				text = document.selection.createRange().text;
-			}
-			return { sel, text };
-		},
-		handSelection(event) {
-			console.log(document.activeElement);
-			let { sel, text } = this.getSelectionText();
-			if (sel.rangeCount && sel.getRangeAt) {
-				text = sel.getRangeAt(0);
-			}
-			// Set design mode to on
-			document.designMode = 'on';
-			if (text) {
-				sel.removeAllRanges();
-				sel.addRange(text);
-			}
-			// Colorize text
-			document.execCommand('ForeColor', false, 'red');
-			// Set design mode to off
-			document.designMode = 'off';
 		},
 		mouseover(event) {
 			event.preventDefault();
@@ -441,7 +353,6 @@ export default {
 		addText() {
 
 			const instance = new TextInputClass({});
-			console.log(instance);
 			instance.$mount();
 			this.$refs.paint.appendChild(instance.$el);
 			setTimeout(() => {
