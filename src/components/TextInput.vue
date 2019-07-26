@@ -38,7 +38,10 @@ export default {
 			},
 			rotate: 0,
 			scale: 1,
-			currentScale: 1,
+			rotateScale: {
+				angle: 0,
+				scale: 1,
+			},
 		};
 	},
 	computed: {
@@ -65,17 +68,15 @@ export default {
 			.gesturable({
 				inertia: true,
 				onstart: () => {
-					if (!this.isFocused) {
-						EventBus.$emit('anyIsMoving', true);
-					}
+					rotateScale.scale -= event.angle;
 				},
 				onmove: (event) => {
-					angle += event.da;
-					this.rotate = angle;
-					this.scale = event.scale * this.currentScale;
+					this.rotate = event.angle + this.rotateScale.angle;
+					this.scale = event.scale * this.rotateScale.scale;
 				},
 				onend: function(event) {
-					this.currentScale = this.currentScale * event.scale;
+					this.rotateScale.angle = this.rotateScale.angle + event.angle;
+					this.rotateScale.scale = this.rotateScale.scale * event.scale;
 				},
 			})
 			.draggable({
