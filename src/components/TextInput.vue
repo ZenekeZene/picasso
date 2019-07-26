@@ -29,13 +29,12 @@ export default {
 	data() {
 		return {
 			isFocused: false,
-			translate: '',
 			translate: {
 				x: 0,
 				y: 0,
 			},
-			rotate: '',
-			scale: '',
+			rotate: 0,
+			scale: 1,
 			resetTimeout:null,
 		};
 	},
