@@ -102,6 +102,7 @@
 <script>
 import interact from 'interactjs';
 import { setTimeout } from 'timers';
+import { log } from 'util';
 
 export default {
 	name: 'PaintPage',
@@ -432,14 +433,14 @@ export default {
 		},
 		addText() {
 			const textNode = document.createElement('p');
-			textNode.setAttribute('tabindex', 0);
+			textNode.setAttribute('contenteditable', true);
 			textNode.classList.add('text', 'draggable');
-			textNode.innerHTML = 'Texto';
+			textNode.innerHTML = '';
 			this.$refs.paint.appendChild(textNode);
 			setTimeout(() => {
 				textNode.focus();
 			}, 100);
-		}
+		},
 	},
 };
 </script>
