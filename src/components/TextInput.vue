@@ -63,10 +63,8 @@ export default {
 		},
 	},
 	mounted() {
-		let angle = 0;
 		interact(this.$el)
 			.gesturable({
-				inertia: true,
 				onstart: () => {
 					this.rotateScale.scale -= event.angle;
 				},
