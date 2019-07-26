@@ -63,8 +63,8 @@ export default {
 		.gesturable({
 			onmove: (event) => {
 				angle += event.da;
-				this.rotate = `rotate(${angle}deg)`;
-				this.scale = `scale(${event.scale}`;
+				this.rotate = angle;
+				this.scale = event.scale;
 			},
 			onend: (event) => {
 				this.resetTimeout = setTimeout(() => {
