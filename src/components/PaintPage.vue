@@ -234,7 +234,7 @@ export default {
 
 		let angle = 0;
 
-		interact('.paint').gesturable({
+		interact('.text').gesturable({
 			onmove: (event) => {
 				var arrow = this.$refs.square;
 
