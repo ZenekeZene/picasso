@@ -1,5 +1,5 @@
 <template>
-  <div ref="paint" class="paint">
+  <div ref="paint" class="paint" tabindex=1 v-touch="handBlur">
 	<ol
 	  class="paint__tools tools"
 	  v-on="!isPlaying ? { mouseover } : {}"
@@ -246,6 +246,10 @@ export default {
 		});
 	},
 	methods: {
+		handBlur() {
+			console.log('handBlur');
+			this.$el.focus();
+		},
 		getSelectionText() {
 			let text = '';
 			let sel;
@@ -435,18 +439,14 @@ export default {
 			event.target.focus();
 		},
 		addText() {
-			const textNode = document.createElement('p');
-			textNode.setAttribute('contenteditable', true);
-			textNode.classList.add('text', 'draggable');
-			textNode.innerHTML = '';
-			this.$refs.paint.appendChild(textNode);
-			setTimeout(() => {
-				textNode.focus();
-			}, 100);
 
 			const instance = new TextInputClass({});
-			instance.mount();
-			this.paint.appendChild(instance.$el);
+			console.log(instance);
+			instance.$mount();
+			this.$refs.paint.appendChild(instance.$el);
+			setTimeout(() => {
+				instance.$el.focus();
+			}, 100);
 		},
 	},
 };
