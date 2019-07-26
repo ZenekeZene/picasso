@@ -99,7 +99,10 @@
 	  v-touch:end="handleMouseUp"
 	></canvas>
 	<aside ref="items"></aside>
-	<span ref="items-trash" v-show="anyIsMoving" class="paint__trash icon-trash"></span>
+	<trash-item
+		:isVisible=anyIsMoving
+		@ondrop="onTrashDrop"
+	></trash-item>
   </div>
 </template>
 
@@ -107,6 +110,7 @@
 import interact from 'interactjs';
 import Vue from 'vue';
 import TextInput from './TextInput.vue';
+import TrashItem from './TrashItem';
 import { EventBus } from '../scripts/EventBus.js';
 import drag from '../scripts/drag';
 
@@ -114,6 +118,9 @@ const TextInputClass = Vue.extend(TextInput);
 
 export default {
 	name: 'PaintPage',
+	components: {
+		TrashItem,
+	},
 	data() {
 		return {
 			canvas: null,
@@ -172,78 +179,18 @@ export default {
 		document.addEventListener('mouseout', (event) => {
 			this.handleMouseUp(event);
 		});
-
-		interact('.resize-drag')
-			.draggable({
-				onmove: window.dragMoveListener,
-				modifiers: [
-					interact.modifiers.restrictRect({
-						restriction: 'parent',
-					}),
-				],
-			})
-			.resizable({
-				// resize from all edges and corners
-				edges: { left: true, right: true, bottom: true, top: true },
-
-				modifiers: [
-					// keep the edges inside the parent
-					interact.modifiers.restrictEdges({
-						outer: 'parent',
-						endOnly: true,
-					}),
-				],
-
-				inertia: true,
-			})
-			.on('resizemove', (event) => {
-				let target = event.target;
-				let x = parseFloat(target.getAttribute('data-x')) || 0;
-				let y = parseFloat(target.getAttribute('data-y')) || 0;
-
-				// update the element's style
-				target.style.width = event.rect.width + 'px';
-				target.style.height = event.rect.height + 'px';
-				target.style.fontSize = event.rect.width / 10 + 'px';
-
-				// translate when resizing from top or left edges
-				x += event.deltaRect.left;
-				y += event.deltaRect.top;
-
-				target.style.webkitTransform = target.style.transform =
-					'translate(' + x + 'px,' + y + 'px)';
-
-				target.setAttribute('data-x', x);
-				target.setAttribute('data-y', y);
-			});
-
-		interact('.paint__trash')
-			.dropzone({
-				accept: '.draggable',
-				ondrop: (event) => {
-					const indexToRemove = event.relatedTarget.getAttribute('data-index');
-					this.items[indexToRemove].$destroy();
-					this.$refs.items.removeChild(event.relatedTarget);
-					this.anyIsMoving = false;
-					event.target.classList.remove('--hot');
-				},
-				ondragenter: (event) => {
-					event.target.classList.add('--hot');
-				},
-				ondragleave: (event) => {
-					event.target.classList.remove('--hot');
-				}
-			})
-			.on('dropactivate', (event) => {
-				event.target.classList.add('drop-activated');
-			});
 	},
 	methods: {
+		onTrashDrop(relatedTarget) {
+			const indexToRemove = relatedTarget.getAttribute('data-index');
+			this.items[indexToRemove].$destroy();
+			this.$refs.items.removeChild(relatedTarget);
+			this.anyIsMoving = false;
+		},
 		handBlur() {
 			this.$el.focus();
 		},
-		mouseover(event) {
-			event.preventDefault();
+		mouseover() {
 			this.toolsVisible = true;
 		},
 		handleMouseDown(event) {
@@ -269,7 +216,6 @@ export default {
 			}
 		},
 		handleMouseUp() {
-			event.preventDefault();
 			if (this.isPainting && !this.isPlaying) {
 				this.isPainting = false;
 				this.currentIndex += 1;
@@ -322,12 +268,8 @@ export default {
 					this.loop(
 						0,
 						history.length,
-						(i) => {
-							this.paintDot(history[i]);
-						},
-						() => {
-							this.isPlaying = false;
-						},
+						(i) => { this.paintDot(history[i]); },
+						() => { this.isPlaying = false; },
 						100
 					);
 				}
@@ -349,8 +291,7 @@ export default {
 				callback();
 			}
 		},
-		undo(event) {
-			event.preventDefault();
+		undo() {
 			if (this.currentIndex - 1 >= 0 && !this.isPlaying) {
 				this.history.pop();
 				this.currentIndex -= 1;
@@ -358,8 +299,7 @@ export default {
 				this.player();
 			}
 		},
-		clean(event) {
-			event.preventDefault();
+		clean() {
 			if (!this.isPlaying) {
 				this.history = [];
 				this.currentIndex = 0;
@@ -395,17 +335,12 @@ export default {
 			this.history = JSON.parse(`[${history}']`);
 			this.replay();
 		},
-		editText(event) {
-			event.target.contentEditable = true;
-			event.target.focus();
-		},
 		addText() {
 			const instance = new TextInputClass({
 				propsData: { color: this.strokeStyle, index: this.items.length },
 				parent: this,
 			});
-			const text = instance.$mount();
-			this.items.push(text);
+			this.items.push(instance.$mount());
 			drag.setPosition(instance.$el);
 			this.$refs.items.appendChild(instance.$el);
 			setTimeout(() => {
