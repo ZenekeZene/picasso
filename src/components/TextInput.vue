@@ -31,11 +31,12 @@ export default {
 			isFocused: false,
 			translate: '',
 			rotate: '',
+			scale: '',
 		};
 	},
 	computed: {
 		transformCalculated: function() {
-			return `${this.translate} ${this.rotate}`;
+			return `${this.translate} ${this.rotate} ${this.scale}`;
 		},
 	},
 	methods: {
@@ -52,7 +53,19 @@ export default {
 		},
 	},
 	mounted() {
-		interact(this.$el).draggable({
+		let angle = 0;
+		interact(this.$el)
+		.gesturable({
+			onstart: function (event) {
+				angleScale.angle -= event.angle
+			},
+			onmove: (event) => {
+				angle += event.da;
+				this.rotate = `rotate(${angle}deg)`;
+				this.scale = event.scale * angleScale.scale;
+			},
+		})
+		.draggable({
 			onstart: () => {
 				if (!this.isFocused) {
 					EventBus.$emit('anyIsMoving', true);
@@ -75,14 +88,6 @@ export default {
 			},
 			onend: () => {
 				EventBus.$emit('anyIsMoving', false);
-			},
-		});
-
-		let angle = 0;
-		interact(this.$el).gesturable({
-			onmove: (event) => {
-				angle += event.da;
-				this.rotate = `rotate(${angle}deg)`;
 			},
 		});
 	},
