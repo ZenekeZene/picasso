@@ -1,5 +1,8 @@
 <template>
-	<p contenteditable="true" class="text draggable" :style="{ 'color': color }"
+	<p contenteditable="true" class="text draggable" :style="{
+		'color': color,
+		'transform': transformCalculated
+	}"
 	v-touch:longtap="longtap"
 	:data-index="index"
 	@focus="focus"
@@ -26,7 +29,14 @@ export default {
 	data() {
 		return {
 			isFocused: false,
+			translate: '',
+			rotate: '',
 		};
+	},
+	computed: {
+		transformCalculated: function() {
+			return `${this.translate} ${this.rotate}`;
+		},
 	},
 	methods: {
 		longtap() {
@@ -50,7 +60,17 @@ export default {
 			},
 			onmove: (event) => {
 				if (!this.isFocused) {
-					drag.dragMoveHandler(event);
+					let target = event.target;
+	
+					let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+					let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+					// translate the element
+					this.translate = `translate(${x}px, ${y}px) `;
+
+					// update the position attributes
+					target.setAttribute('data-x', x);
+					target.setAttribute('data-y', y);
 				}
 			},
 			onend: () => {
@@ -59,15 +79,10 @@ export default {
 		});
 
 		let angle = 0;
-
 		interact(this.$el).gesturable({
 			onmove: (event) => {
-				let arrow = event.target;
-
 				angle += event.da;
-
-				arrow.style.webkitTransform = arrow.style.transform =
-					'rotate(' + angle + 'deg)';
+				this.rotate += `rotate(${angle}deg)`;
 			},
 		});
 	},
