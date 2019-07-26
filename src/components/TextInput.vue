@@ -1,5 +1,8 @@
 <template>
-	<p contenteditable="true" class="text draggable" :style="{
+  <p
+	contenteditable="true"
+	class="text draggable"
+	:style="{
 		'color': color,
 		'transform': transformCalculated
 	}"
@@ -7,7 +10,7 @@
 	:data-index="index"
 	@focus="focus"
 	@blur="blur"
-	></p>
+  ></p>
 </template>
 <script>
 import interact from 'interactjs';
@@ -58,39 +61,46 @@ export default {
 	mounted() {
 		let angle = 0;
 		interact(this.$el)
-		.gesturable({
-			onmove: (event) => {
-				angle += event.da;
-				this.rotate = angle;
-				this.scale = event.scale * this.scale;
-			},
-		})
-		.draggable({
-			onstart: () => {
-				if (!this.isFocused) {
-					EventBus.$emit('anyIsMoving', true);
-				}
-			},
-			onmove: (event) => {
-				if (!this.isFocused) {
-					let target = event.target;
-	
-					let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-					let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+			.gesturable({
+				onmove: (event) => {
+					angle += event.da;
+					this.rotate = angle;
+					this.scale = event.scale * this.scale;
+				},
+				onend: function(event) {
+					this.scale = this.scale * event.scale;
+				},
+			})
+			.draggable({
+				onstart: () => {
+					if (!this.isFocused) {
+						EventBus.$emit('anyIsMoving', true);
+					}
+				},
+				onmove: (event) => {
+					if (!this.isFocused) {
+						let target = event.target;
 
-					// translate the element
-					this.translate.x = x;
-					this.translate.y = y;
+						let x =
+							(parseFloat(target.getAttribute('data-x')) || 0) +
+							event.dx;
+						let y =
+							(parseFloat(target.getAttribute('data-y')) || 0) +
+							event.dy;
 
-					// update the position attributes
-					target.setAttribute('data-x', x);
-					target.setAttribute('data-y', y);
-				}
-			},
-			onend: () => {
-				EventBus.$emit('anyIsMoving', false);
-			},
-		});
+						// translate the element
+						this.translate.x = x;
+						this.translate.y = y;
+
+						// update the position attributes
+						target.setAttribute('data-x', x);
+						target.setAttribute('data-y', y);
+					}
+				},
+				onend: () => {
+					EventBus.$emit('anyIsMoving', false);
+				},
+			});
 	},
 	getSelectionText() {
 		let text = '';
@@ -98,10 +108,7 @@ export default {
 		if (window.getSelection) {
 			sel = window.getSelection();
 			text = sel.toString();
-		} else if (
-			document.selection &&
-			document.selection.type != 'Control'
-		) {
+		} else if (document.selection && document.selection.type != 'Control') {
 			text = document.selection.createRange().text;
 		}
 		return { sel, text };
