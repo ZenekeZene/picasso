@@ -35,7 +35,6 @@ export default {
 			},
 			rotate: 0,
 			scale: 1,
-			resetTimeout:null,
 		};
 	},
 	computed: {
@@ -64,11 +63,6 @@ export default {
 				angle += event.da;
 				this.rotate = angle;
 				this.scale = event.scale;
-			},
-			onend: (event) => {
-				this.resetTimeout = setTimeout(() => {
-					this.scale = 1;
-				}, 1000);
 			},
 		})
 		.draggable({
