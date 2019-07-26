@@ -38,6 +38,7 @@ export default {
 			},
 			rotate: 0,
 			scale: 1,
+			currentScale: 1,
 		};
 	},
 	computed: {
@@ -65,13 +66,14 @@ export default {
 				onmove: (event) => {
 					angle += event.da;
 					this.rotate = angle;
-					this.scale = event.scale * this.scale;
+					this.scale = event.scale * this.currentScale;
 				},
 				onend: function(event) {
-					this.scale = this.scale * event.scale;
+					this.currentScale = this.currentScale * event.scale;
 				},
 			})
 			.draggable({
+				inertia: true,
 				onstart: () => {
 					if (!this.isFocused) {
 						EventBus.$emit('anyIsMoving', true);
