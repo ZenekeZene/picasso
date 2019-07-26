@@ -82,7 +82,7 @@ export default {
 		interact(this.$el).gesturable({
 			onmove: (event) => {
 				angle += event.da;
-				this.rotate += `rotate(${angle}deg)`;
+				this.rotate = `rotate(${angle}deg)`;
 			},
 		});
 	},
