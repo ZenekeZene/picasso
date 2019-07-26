@@ -1,15 +1,15 @@
 <template>
   <p
-	contenteditable="true"
-	class="text draggable"
-	:style="{
+    contenteditable="true"
+    class="text draggable"
+    :style="{
 		'color': color,
-		'transform': transformCalculated
+		'transform': transformCalculated,
 	}"
-	v-touch:longtap="longtap"
-	:data-index="index"
-	@focus="focus"
-	@blur="blur"
+    v-touch:longtap="longtap"
+    :data-index="index"
+    @focus="focus"
+    @blur="blur"
   ></p>
 </template>
 <script>
@@ -38,7 +38,7 @@ export default {
 			},
 			rotate: 0,
 			scale: 1,
-			rotateScale: {
+			angleScale: {
 				angle: 0,
 				scale: 1,
 			},
@@ -65,20 +65,36 @@ export default {
 	mounted() {
 		interact(this.$el)
 			.gesturable({
-				onstart: () => {
-					this.rotateScale.scale -= event.angle;
+				onstart: function (event) {
+					this.angleScale.angle -= event.angle
 				},
-				onmove: (event) => {
-					this.rotate = event.angle + this.rotateScale.angle;
-					this.scale = event.scale * this.rotateScale.scale;
+				onmove: function (event) {
+					// document.body.appendChild(new Text(event.scale))
+					this.rotate = event.angle + this.angleScale.angle
+					this.scale = event.scale * this.angleScale.scale
+
+
+					// uses the dragMoveListener from the draggable demo above
+					let target = event.target;
+
+					let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+					let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+					// translate the element
+					this.translate.x = x;
+					this.translate.y = y;
+
+					// update the position attributes
+					target.setAttribute('data-x', x);
+					target.setAttribute('data-y', y);
 				},
-				onend: function(event) {
-					this.rotateScale.angle = this.rotateScale.angle + event.angle;
-					this.rotateScale.scale = this.rotateScale.scale * event.scale;
-				},
+				onend: function (event) {
+					this.angleScale.angle = this.angleScale.angle + event.angle
+					this.angleScale.scale = this.angleScale.scale * event.scale
+				}
 			})
 			.draggable({
-				
+				inertia: true,
 				onstart: () => {
 					if (!this.isFocused) {
 						EventBus.$emit('anyIsMoving', true);
@@ -88,12 +104,8 @@ export default {
 					if (!this.isFocused) {
 						let target = event.target;
 
-						let x =
-							(parseFloat(target.getAttribute('data-x')) || 0) +
-							event.dx;
-						let y =
-							(parseFloat(target.getAttribute('data-y')) || 0) +
-							event.dy;
+						let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+						let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
 						// translate the element
 						this.translate.x = x;
