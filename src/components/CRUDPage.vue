@@ -5,13 +5,23 @@
 			<ol>
 				<li>
 					<button @click="getAllUsers">Get all users</button>
+				</li>
+				<li>
 					<button @click="saveUser" >Save user</button>
+				</li>
+				<li>
 					<button @click="deleteUser">Delete user</button>
+				</li>
+				<li>
 					<button @click="filterUSers">Filter users</button>
-					<button></button>
+				</li>
+				<li>
+					<button @click="orderBy">Order by name</button>
+				</li>
+				<li>
 				</li>
 			</ol>
-			<ol>
+			<ol class="users">
 				<li v-for="(user, index) in users" :key='`user-${index}`' :data-id="user.id" l-flex>
 					<span font-bold margin-right>{{ user.name }}</span>
 					<span>{{ user.email }}</span>
@@ -47,7 +57,25 @@ export default {
 		}
 	},
 	mounted() {
-		this.getAllUsers();
+		//this.getAllUsers();
+		db.collection('user').onSnapshot(snapshot => {
+			let changes = snapshot.docChanges();
+			console.log(changes);
+			changes.forEach(change => {
+				if (change.type === 'added') {
+					const user = change.doc;
+					this.users.push({
+						id: user.id,
+						name: user.data().name,
+						email: user.data().email,
+					});
+				} else if (change.type === 'removed') {
+					this.users = this.users.filter(user => {
+						return user.id !== change.doc.id;
+					});
+				}
+			});
+		});
 	},
 	methods: {
 		getAllUsers() {
@@ -57,7 +85,7 @@ export default {
 					this.users.push({
 						id: user.id,
 						name: user.data().name,
-						email: user.data().email
+						email: user.data().email,
 					});
 				});
 			});
@@ -68,19 +96,36 @@ export default {
 				email: this.mock.emails[this.getRandomNumber(this.mock.emails.length - 1)],
 			};
 			db.collection('user').add(newUser);
-			this.users.push(newUser);
-			this.getAllUsers();
+			//this.users.push(newUser); // (*)
+			//this.getAllUsers(); // (*)
 		},
 		deleteUser() {
 			const idUserToDelete = this.getRandomUser().id;
 			db.collection('user').doc(idUserToDelete).delete().then(() => {
-				this.getAllUsers();
+				//this.getAllUsers(); // (*)
 			});
 		},
 		filterUSers() {
+			this.users = [];
 			db.collection('user').where('name', '==', 'Hector').get().then((snapshot) => {
 				snapshot.docs.forEach(user => {
-					console.log(user);
+					this.users.push({
+						id: user.id,
+						name: user.data().name,
+						email: user.data().email,
+					});
+				});
+			});
+		},
+		orderBy() {
+			this.users = [];
+			db.collection('user').where('name', '==', 'Hector').orderBy('email').get().then((snapshot) => {
+				snapshot.docs.forEach(user => {
+					this.users.push({
+						id: user.id,
+						name: user.data().name,
+						email: user.data().email,
+					});
 				});
 			});
 		},
@@ -93,4 +138,5 @@ export default {
 		}
 	},
 };
+// *: These are now in onSnapshot listener.
 </script>

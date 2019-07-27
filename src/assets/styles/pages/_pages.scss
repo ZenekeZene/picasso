@@ -1,5 +1,23 @@
 .crud {
 	ol {
+		flex-grow: 1;
+		height: 100vh;
+		overflow-y: scroll;
 		font-size: $font-size-xs;
+
+		li button {
+			width: 100%;
+		}
+	}
+}
+
+.users {
+	li {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		padding: 0.5rem;
+		font-size: 0.8rem;
+		border: 1px solid grey;
 	}
 }
