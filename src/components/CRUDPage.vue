@@ -222,6 +222,10 @@ export default {
 		},
 		mockData() {
 			mock.launch();
+			this.userSelected = {
+				name: '',
+				email: '',
+			};
 		},
 	},
 };
