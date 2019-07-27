@@ -1,7 +1,7 @@
 <template>
 <modal name="modal-edit" :adaptive="true" :pivotY="0">
 	<div slot="top-right">
-		<button @click="$modal.hide('modal-edit')"><span class="icon-cross"></span></button>
+		<span @click="$modal.hide('modal-edit')" class="icon-cross"></span>
 	</div>
 	<h3 v-if="action === 'create'">Crear usuario</h3>
 	<h3 v-if="action === 'update'">Editar usuario</h3>
