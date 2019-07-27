@@ -1,7 +1,7 @@
 .crud {
 	ol {
 		width: 50%;
-		height: 100vh;
+		height: calc(100vh - 211px);
 		overflow-y: scroll;
 		font-size: $font-size-xs;
 
