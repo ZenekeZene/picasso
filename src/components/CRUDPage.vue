@@ -39,7 +39,7 @@ export default {
 	data() {
 		return {
 			users: [],
-			loading: true,
+			loading: false,
 			mock: {
 				names: [
 					'Hector',
