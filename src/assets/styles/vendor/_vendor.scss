@@ -3,7 +3,7 @@
 }
 
 .v--modal-top-right {
-	top: $gutter-4;
-	right: $gutter-4;
+	top: $gutter-4 !important;
+	right: $gutter-4 !important;
 	z-index: depth(1);
 }
