@@ -53,6 +53,7 @@
 }
 
 .button-mock {
-	@include absolute(bottom $gutter left $gutter);
-	padding: $gutter;
+	@include absolute(bottom $gutter);
+	left: calc(4vw + #{$gutter-1-2});
+	padding: $gutter 1.5rem;
 }

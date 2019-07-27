@@ -1,5 +1,5 @@
 <template>
-<modal name="modal-edit" :adaptive="true" :pivotY="0">
+<modal name="modal-edit" :adaptive="true" :pivotY="0" height="auto">
 	<div slot="top-right">
 		<span @click="$modal.hide('modal-edit')" class="icon-cross"></span>
 	</div>
