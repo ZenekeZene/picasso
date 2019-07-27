@@ -8,8 +8,8 @@
 	<template>
 		<input type="text" placeholder="Nombre" v-model="user.name">
 		<input type="text" placeholder="Email" v-model="user.email">
-		<button v-if="action === 'create'" class="btn" @click="$emit('saveUser', user)">Crear</button>
-		<button v-if="action === 'update'" class="btn" @click="$emit('updateUser', user)">Actualizar</button>
+		<button v-if="action === 'create'" margin-top class="btn" @click="$emit('saveUser', user)">Crear</button>
+		<button v-if="action === 'update'" margin-top class="btn" @click="$emit('updateUser', user)">Actualizar</button>
 	</template>
 </modal>
 </template>
