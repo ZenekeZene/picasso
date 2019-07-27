@@ -119,8 +119,8 @@ export default {
 						name: user.data().name,
 						email: user.data().email,
 					});
-					this.loading = false;
 				});
+				this.loading = false;
 			});
 		},
 		orderBy() {
@@ -133,8 +133,8 @@ export default {
 						name: user.data().name,
 						email: user.data().email,
 					});
-					this.loading = false;
 				});
+				this.loading = false;
 			});
 		},
 		getRandomUser() {
