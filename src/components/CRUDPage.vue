@@ -22,7 +22,8 @@
 				</li>
 			</ol>
 			<ol class="users">
-				<li v-for="(user, index) in users" :key='`user-${index}`' :data-id="user.id" l-flex>
+				<span v-if="loading" text-center>Loading</span>
+				<li v-else v-for="(user, index) in users" :key='`user-${index}`' :data-id="user.id" l-flex>
 					<span font-bold margin-right>{{ user.name }}</span>
 					<span>{{ user.email }}</span>
 				</li>
@@ -38,6 +39,7 @@ export default {
 	data() {
 		return {
 			users: [],
+			loading: false,
 			mock: {
 				names: [
 					'Hector',
@@ -80,6 +82,7 @@ export default {
 	methods: {
 		getAllUsers() {
 			this.users = [];
+			this.loading = true;
 			db.collection('user').get().then((snapshot) => {
 				snapshot.docs.forEach(user => {
 					this.users.push({
@@ -88,6 +91,7 @@ export default {
 						email: user.data().email,
 					});
 				});
+				this.loading = false;
 			});
 		},
 		saveUser() {
@@ -106,6 +110,7 @@ export default {
 			});
 		},
 		filterUSers() {
+			this.loading = true;
 			this.users = [];
 			db.collection('user').where('name', '==', 'Hector').get().then((snapshot) => {
 				snapshot.docs.forEach(user => {
@@ -114,10 +119,12 @@ export default {
 						name: user.data().name,
 						email: user.data().email,
 					});
+					this.loading = false;
 				});
 			});
 		},
 		orderBy() {
+			this.loading = true;
 			this.users = [];
 			db.collection('user').where('name', '==', 'Hector').orderBy('email').get().then((snapshot) => {
 				snapshot.docs.forEach(user => {
@@ -126,6 +133,7 @@ export default {
 						name: user.data().name,
 						email: user.data().email,
 					});
+					this.loading = false;
 				});
 			});
 		},
