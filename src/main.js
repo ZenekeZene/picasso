@@ -6,10 +6,9 @@ import VModal from 'vue-js-modal';
 import App from './App';
 import router from './router';
 
-Vue.use(VModal);
-
 import './assets/styles/main.scss';
 
+Vue.use(VModal);
 Vue.use(Vue2TouchEvents);
 
 Vue.config.productionTip = false;

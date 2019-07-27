@@ -2,6 +2,10 @@ $padding: $gutter;
 $padding-double: $padding * 2;
 
 // Paddings:
+[padding-zero] {
+	padding: 0 !important;
+}
+
 [padding-vertical] {
 	padding-top: $padding !important;
 	padding-bottom: $padding !important;
@@ -45,6 +49,10 @@ $padding-double: $padding * 2;
 // Margins:
 $margin: $gutter;
 $margin-double: $margin * 2;
+
+[margin-zero] {
+	margin: 0 !important;
+}
 
 [margin-vertical] {
 	margin-top: $margin !important;

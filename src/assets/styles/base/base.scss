@@ -27,6 +27,10 @@ h5,
 h6 {
 	@include font-heading;
 	font-weight: $font-light;
+
+	&.--hot {
+		color: $color-false;
+	}
 }
 
 .btn {
@@ -46,12 +50,17 @@ h6 {
 		position: relative;
 		top: 2px;
 	}
+
+	&.--hot {
+		background-color: $color-false;
+	}
 }
 
 section,
 aside {
 	display: block;
 	width: 100%;
+	height: 100%;
 }
 
 input[type='text'] {

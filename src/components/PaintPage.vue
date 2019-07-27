@@ -1,9 +1,8 @@
 <template>
-	<div class="paint">
+	<section class="paint">
 		<ol class="paint__tools tools"
 			v-on="!isPlaying ? { mouseover } : {}"
 			@mouseleave="toolsVisible = false"
-			
 		>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
 				<span class="icon"
@@ -54,7 +53,10 @@
 				<span class="label" v-else>Stop</span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying }">
-				<a :href="dataURI" download="my-awesome-drawing-of-painter" v-show="!isPlaying"><span class="icon-download"></span></a>
+				<a :href="dataURI"
+					download="my-awesome-drawing-of-painter"
+					v-show="!isPlaying"
+				><span class="icon-download"></span></a>
 				<span class="label">Download</span>
 			</li>
 			<!--<li class="tools__item">
@@ -73,7 +75,8 @@
 			v-touch:moving="handleMouseMove"
 			v-touch:end="handleMouseUp"
 		></canvas>
-	</div>
+		<span class="button-bottom icon-users" @click="$router.push('crud')"></span>
+	</section>
 </template>
 
 <script>
@@ -119,7 +122,7 @@ export default {
 		this.ctx.lineWidth = this.strokeWidth;
 
 		document.addEventListener('keydown', (event) => {
-			if (event.keyCode == 90 && (event.ctrlKey || event.metaKey)) {
+			if (event.keyCode === 90 && (event.ctrlKey || event.metaKey)) {
 				this.undo(event);
 			}
 		});
@@ -156,7 +159,6 @@ export default {
 			}
 		},
 		handleMouseUp() {
-			event.preventDefault();
 			if (this.isPainting && !this.isPlaying) {
 				this.isPainting = false;
 				this.currentIndex += 1;
@@ -210,7 +212,7 @@ export default {
 						this.paintDot(history[i]);
 					}, () => {
 						this.isPlaying = false;
-					},100);
+					}, 100);
 				}
 			} else {
 				clearTimeout(this.loopTimer);

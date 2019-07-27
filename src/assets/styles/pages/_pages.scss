@@ -1,4 +1,7 @@
 .crud {
+	position: relative;
+	z-index: depth(2);
+
 	ol {
 		max-height: calc(100vh - 211px);
 		overflow-y: scroll;
@@ -17,6 +20,7 @@
 		}
 	}
 }
+
 .loading {
 	@include absolute(right $gutter);
 	width: calc(100% - 80px - 4rem);
@@ -24,7 +28,7 @@
 
 .users {
 	@include absolute(right $gutter);
-	width: calc(100% - 80px - 4rem);
+	width: calc(100% - 80px - 2rem);
 
 	&__item {
 		position: relative;
@@ -52,8 +56,18 @@
 	}
 }
 
-.button-mock {
+.button-bottom {
 	@include absolute(bottom $gutter);
 	left: calc(4vw + #{$gutter-1-2});
 	padding: $gutter 1.5rem;
+}
+
+.heading {
+	position: absolute;
+	z-index: depth(1);
+}
+
+.crud,
+.paint {
+	padding-top: 80px !important;
 }
