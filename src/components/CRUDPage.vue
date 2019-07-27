@@ -36,12 +36,12 @@
 				<span class="icon-rain"></span>
 			</li>
 		</ul>
-		<p v-if="loading" class="loading" text-center>Loading</p>
+		<spinner-item v-if="loading"></spinner-item>
 		<transition-group name="fade" tag="ol"  class="users" v-else>
 			<li
 				class="users__item"
-				v-for="(user, index) in users"
-				:key='`user-${index}`'
+				v-for="(user) in users"
+				:key="user.id"
 				:data-id="user.id"
 				:class="{ '--selected': userSelected && userSelected.id == user.id }"
 				@click.stop="handSelectUser(user)"
@@ -67,13 +67,16 @@
 <script>
 import ModalDelete from './ModalDelete';
 import ModalEdit from './ModalEdit';
+import SpinnerItem from './SpinnerItem';
 import { mock } from '../mock.users.js';
+import Vue from 'vue';
 
 export default {
 	name: 'CRUDPage',
 	components: {
 		ModalEdit,
 		ModalDelete,
+		SpinnerItem,
 	},
 	data() {
 		return {
@@ -99,7 +102,10 @@ export default {
 						email: user.data().email,
 					});
 				} else if (change.type === 'removed') {
-					this.users = this.users.filter(user => user.id !== change.doc.id);
+					//this.users = this.users.filter(user => user.id !== change.doc.id);
+					let i = this.users.map(user => user.id).indexOf(change.doc.id) // find index of your object
+					//this.users.splice(i, 1);
+					Vue.delete(this.users, i);
 				}
 			});
 		});
@@ -155,6 +161,7 @@ export default {
 				// this.getAllUsers(); // (*)
 				this.userSelected = this.users[this.users.length - 1];
 			});
+			this.$modal.hide('modal-delete');
 		},
 		launchEditUser() {
 			this.action = 'update';

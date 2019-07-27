@@ -41,12 +41,15 @@
 		&:before {
 			content: '';
 			$size: 4px;
-			@include absolute(top left $size * -1);
+			@include absolute(top left);
+			z-index: -1;
 			width: $size;
 			height: 100%;
+			transition: all 250ms ease-in;
 		}
 
 		&.--selected:before {
+			left: -4px;
 			background-color: darken(rgb(246, 246, 246), 15%) !important;
 		}
 
