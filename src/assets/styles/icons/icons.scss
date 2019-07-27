@@ -2,9 +2,26 @@ $icomoon-font-path: "../fonts/paint" !default;
 @import '../fonts/paint/style';
 $font-icons: 'paint';
 
-@mixin icon {
-	[class^="icon-"],
-	[class*=" icon-"] {
+@mixin icon($name: '') {
+	[class^="icon-#{$name}"],
+	[class*=" icon-#{$name}"] {
 		@content;
+	}
+}
+
+@include icon('forward') {
+	&.--down {
+		display: inline-block;
+		transform: rotate(90deg);
+	}
+
+	&.--left {
+		display: inline-block;
+		transform: rotate(180deg);
+	}
+
+	&.--up {
+		display: inline-block;
+		transform: rotate(-90deg);
 	}
 }

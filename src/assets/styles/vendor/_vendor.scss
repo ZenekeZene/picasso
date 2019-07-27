@@ -1,0 +1,9 @@
+.v--modal-box {
+	padding: $gutter;
+}
+
+.v--modal-top-right {
+	top: $gutter;
+	right: $gutter;
+	z-index: depth(1);
+}

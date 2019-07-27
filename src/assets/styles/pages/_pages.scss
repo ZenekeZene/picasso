@@ -1,23 +1,58 @@
 .crud {
 	ol {
-		width: 50%;
-		height: calc(100vh - 211px);
+		max-height: calc(100vh - 211px);
 		overflow-y: scroll;
 		font-size: $font-size-xs;
+	}
 
-		li button {
-			width: 100%;
+	&-tools {
+		@include flex(flex, start, start);
+
+		&__item {
+			margin-right: $gutter;
+
+			&.--disabled {
+				opacity: 0.2;
+			}
+		}
+	}
+}
+.loading {
+	@include absolute(right $gutter);
+	width: calc(100% - 80px - 4rem);
+}
+
+.users {
+	@include absolute(right $gutter);
+	width: calc(100% - 80px - 4rem);
+
+	&__item {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		padding: 0.8rem;
+		font-size: $font-size-xxs;
+
+		&:before {
+			content: '';
+			$size: 4px;
+			@include absolute(top left $size * -1);
+			width: $size;
+			height: 100%;
+		}
+
+		&.--selected:before {
+			background-color: darken(rgb(246, 246, 246), 15%) !important;
+		}
+
+		@include icon {
+			@include absolute(top right);
 		}
 	}
 }
 
-.users {
-	li {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		padding: 0.5rem;
-		font-size: 0.8rem;
-		border: 1px solid grey;
-	}
+.button-mock {
+	@include absolute(bottom $gutter left $gutter);
+	padding: $gutter;
 }

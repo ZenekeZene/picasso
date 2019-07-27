@@ -36,7 +36,7 @@ resources/android/icon/
 resources/android/splash/
 resources/ios/icon/
 resources/ios/splash/
-vendor/
+src/vendor/
 www/
 $RECYCLE.BIN/
 sassdoc/

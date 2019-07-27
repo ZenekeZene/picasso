@@ -1,13 +1,12 @@
 <template>
 	<section padding class="crud">
-		<p>CRUD Testing</p>
-		<div l-flex>
-			<ol>
+		<div>
+			<ol style="display: none;">
 				<li>
 					<button @click="getAllUsers">Get all users</button>
 				</li>
 				<li>
-					<button @click="saveUser" >Save user</button>
+					<button @click="saveUser">Save user</button>
 				</li>
 				<li>
 					<button @click="deleteUser">Delete user</button>
@@ -21,25 +20,66 @@
 				<li>
 				</li>
 			</ol>
-			<ol class="users">
-				<span v-if="loading" text-center>Loading</span>
-				<li v-else v-for="(user, index) in users" :key='`user-${index}`' :data-id="user.id" l-flex>
-					<span font-bold margin-right>{{ user.name }}</span>
-					<span>{{ user.email }}</span>
-				</li>
-			</ol>
+			<div l-flex>
+				<ul class="paint__tools tools">
+					<li class="crud-tools__item" :class="{ '--disabled': userSelected.name.length > 0 }" @click="launchCreateUser">
+						<span class="icon-plus"></span>
+					</li>
+					<li class="crud-tools__item" :class="{ '--disabled': userSelected.name.length === 0 }" @click="launchEditUser">
+						<span class="icon-write"></span>
+					</li>
+					<li class="crud-tools__item" :class="{ '--disabled': userSelected.name.length === 0 }" @click="deleteUser">
+						<span class="icon-cross"></span>
+					</li>
+					<!--<li class="crud-tools__item" :class="{ '--disabled': userSelected.name.length > 0 || users.length < 3 }" @click="filterUSers">
+						<span class="icon-filter"></span>
+					</li>-->
+					<li class="crud-tools__item" :class="{ '--disabled': userSelected.name.length > 0 || users.length < 3 }" @click="orderBy">
+						<span class="icon-forward --down" :class="{ '--up': orderDirection === 'asc' }"></span>
+					</li>
+				</ul>
+				<p v-if="loading" class="loading" text-center>Loading</p>
+				<ol class="users" v-else>
+					<transition-group name="fade" tag="li">
+						<li
+							class="users__item"
+							v-for="(user, index) in users" 
+							:key='`user-${index}`' 
+							:data-id="user.id"
+							:class="{ '--selected': userSelected && userSelected.id == user.id }"
+							@click="handSelectUser(user)"
+						>
+							<span font-bold margin-right>{{ user.name }}</span>
+							<span>{{ user.email }}</span>
+						</li>
+					</transition-group>
+				</ol>
+				<span class="button-mock icon-users" @click="mockData"></span>
+			</div>
 		</div>
+		<modal-edit :user="userSelected" :action="action" @saveUser="saveUser" @updateUser="updateUser"></modal-edit>
 	</section>
 </template>
 
 <script>
+import ModalEdit from './ModalEdit';
+import { mock } from '../mock.users.js';
 
 export default {
 	name: 'CRUDPage',
+	components: {
+		ModalEdit,
+	},
 	data() {
 		return {
 			users: [],
 			loading: false,
+			userSelected: {
+				name: '',
+				email: '',
+			},
+			action: 'create',
+			orderDirection: 'desc',
 			mock: {
 				names: [
 					'Hector',
@@ -58,11 +98,15 @@ export default {
 			}
 		}
 	},
+	computed: {
+		isDisabled() {
+			return true;
+		},
+	},
 	mounted() {
 		//this.getAllUsers();
 		db.collection('user').onSnapshot(snapshot => {
 			let changes = snapshot.docChanges();
-			console.log(changes);
 			changes.forEach(change => {
 				if (change.type === 'added') {
 					const user = change.doc;
@@ -80,6 +124,16 @@ export default {
 		});
 	},
 	methods: {
+		handSelectUser(user) {
+			if (this.userSelected !== user) {
+				this.userSelected = user;
+			} else {
+				this.userSelected = {
+					name: '',
+					email: '',
+				};
+			}
+		},
 		getAllUsers() {
 			this.users = [];
 			this.loading = true;
@@ -94,19 +148,40 @@ export default {
 				this.loading = false;
 			});
 		},
-		saveUser() {
-			const newUser = {
-				name: this.mock.names[this.getRandomNumber(this.mock.names.length - 1)],
-				email: this.mock.emails[this.getRandomNumber(this.mock.emails.length - 1)],
-			};
+		launchCreateUser() {
+			this.action = 'create';
+			this.$modal.show('modal-edit');
+		},
+		saveUser(newUser) {
+			this.userSelected = newUser;
 			db.collection('user').add(newUser);
+			this.$modal.hide('modal-edit');
+			this.userSelected = {
+				name: '',
+				email: '',
+			};
 			//this.users.push(newUser); // (*)
 			//this.getAllUsers(); // (*)
 		},
 		deleteUser() {
-			const idUserToDelete = this.getRandomUser().id;
+			const idUserToDelete = this.userSelected.id;
 			db.collection('user').doc(idUserToDelete).delete().then(() => {
 				//this.getAllUsers(); // (*)
+				this.userSelected = {
+					name: '',
+					email: '',
+				};
+			});
+		},
+		launchEditUser() {
+			this.action = 'update';
+			this.$modal.show('modal-edit');
+		},
+		updateUser(user) {
+			this.$modal.hide('modal-edit');
+			db.collection('user').doc(this.userSelected.id).update({
+				name: user.name,
+				email: user.email,
 			});
 		},
 		filterUSers() {
@@ -126,7 +201,8 @@ export default {
 		orderBy() {
 			this.loading = true;
 			this.users = [];
-			db.collection('user').where('name', '==', 'Hector').orderBy('email').get().then((snapshot) => {
+			this.orderDirection = this.orderDirection === 'asc' ? 'desc' : 'asc';
+			db.collection('user').orderBy('name', this.orderDirection).get().then((snapshot) => {
 				snapshot.docs.forEach(user => {
 					this.users.push({
 						id: user.id,
@@ -143,7 +219,10 @@ export default {
 		},
 		getRandomNumber(max, min = 0) {
 			return Math.floor((Math.random() * max) + min);
-		}
+		},
+		mockData() {
+			mock.launch();
+		},
 	},
 };
 // *: These are now in onSnapshot listener.

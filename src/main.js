@@ -2,8 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import Vue2TouchEvents from 'vue2-touch-events';
+import VModal from 'vue-js-modal';
 import App from './App';
 import router from './router';
+
+Vue.use(VModal);
 
 import './assets/styles/main.scss';
 
