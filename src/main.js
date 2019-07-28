@@ -9,7 +9,7 @@ import router from './router';
 import './assets/styles/main.scss';
 
 Vue.directive('mobile-hover', {
-	inserted: function(el, binding) {
+	inserted: function(el, binding, vnode) {
 		el.addEventListener('touchstart', (event) => {
 			if (!el.parentNode.classList.contains('--disabled')) {
 				el.style.color = binding.arg;

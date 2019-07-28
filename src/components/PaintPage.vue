@@ -123,7 +123,7 @@ export default {
 		this.canvas.width = window.screen.width;
 		this.canvas.height = window.screen.height;
 		this.ctx = this.canvas.getContext('2d');
-		this.colorErase = this.backgroundColor = colors.background;
+		this.colorErase = this.backgroundColor = window.getComputedStyle(document.documentElement).getPropertyValue('--color-background')
 		this.setBackgroundCanvas();
 		this.ctx.lineJoin = 'round';
 		this.ctx.lineCap = 'round';
