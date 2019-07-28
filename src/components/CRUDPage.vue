@@ -1,52 +1,40 @@
 <template>
 	<section class="crud" @click="blur">
-		<ul class="tools --left">
-			<li class="tools__item"
-				:class="{ '--disabled': userSelected.name.length > 0 || users.length === 0 }"
-			>
-				<span class="icon-search" @click="showSearch = true" v-mobile-hover:#4992a9></span>
+		<ul class="tools">
+			<li class="tools__item" :class="{ '--disabled': haveUserSelected || users.length === 0 }">
+				<span class="icon-search" @click="goToSearch" v-mobile-hover:#4992a9></span>
 			</li>
-			<li class="tools__item"
-				:class="{ '--disabled': userSelected.name.length > 0 }"
-			>
+			<li class="tools__item" :class="{ '--disabled': haveUserSelected }">
 				<span class="icon-plus" @click="launchCreateUser" v-mobile-hover:#4992a9></span>
 			</li>
-			<li class="tools__item"
-				:class="{ '--disabled': userSelected.name.length === 0 }"
-			>
+			<li class="tools__item" :class="{ '--disabled': haveNotUserSelected }">
 				<span class="icon-write" @click="launchEditUser" v-mobile-hover:#4992a9></span>
 			</li>
-			<li class="tools__item"
-				:class="{ '--disabled': userSelected.name.length === 0 }"
-			>
+			<li class="tools__item" :class="{ '--disabled': haveNotUserSelected }">
 				<span class="icon-cross" @click="launchDeleteUser" v-mobile-hover:#4992a9></span>
 			</li>
-			<!--<li class="tools__item"
-				:class="{ '--disabled': userSelected.name.length > 0 || users.length < 3 }"
-				@click="filterUSers"
-			>
-				<span class="icon-filter"></span>
-			</li>-->
-			<li class="tools__item"
-				:class="{ '--disabled': userSelected.name.length > 0 || users.length < 3 }"
-			>
-				<span class="icon-forward --down"
-					:class="{ '--up': orderDirection === 'asc' }"
-					@click="orderBy"
-					v-mobile-hover:#4992a9
-				></span>
+			<li class="tools__item" :class="{ '--disabled': haveUserSelected || users.length === 0 }">
+				<span class="icon-forward --down" @click="orderBy" :class="{ '--up': orderDirection === 'asc' }" v-mobile-hover:#4992a9></span>
 			</li>
 			<li class="tools__item --disabled" @click="mockData" v-mobile-hover:#4992a9>
 				<span class="icon-rain"></span>
 			</li>
 		</ul>
-		<div v-if="users.length === 0 && !loading" class="empty"><p>Aún no tienes usuarios. Prueba a crear uno.</p></div>
+		<div v-if="users.length === 0 && !loading" class="empty">
+			<p>Aún no tienes usuarios. Prueba a crear uno.</p>
+		</div>
 		<spinner-item class="loading" v-if="loading"></spinner-item>
 		<div class="users-wrapper" v-if="users.length > 0">
-			<input type="text" class="search" :class="{ '--disabled': userSelected.name.length > 0 }" v-model="search" @focus="resetUserSelected" v-if="!loading" />
-			<transition-group ref="usersList" name="fade" tag="ol" class="users" v-if="!loading">
-				<li
-					class="users__item"
+			<input type="text"
+				class="search"
+				:class="{ '--disabled': userSelected.name.length > 0 }"
+				v-model="search"
+				@focus="resetUserSelected"
+				v-show="!loading"
+				ref="search"
+			/>
+			<transition-group ref="usersList" name="fade" tag="ol" class="users" v-if="!loading && users.length > 0">
+				<li class="users__item"
 					v-for="(user) in filteredUsers"
 					:key="user.id"
 					:data-id="user.id"
@@ -90,11 +78,11 @@ export default {
 	data() {
 		return {
 			users: [],
-			loading: false,
 			userSelected: {
 				name: '',
 				email: '',
 			},
+			loading: false,
 			action: 'create',
 			search: '',
 			orderDirection: 'desc',
@@ -106,6 +94,12 @@ export default {
 			return this.users.filter((user) => {
 				return user.name.toLowerCase().includes(this.search.toLowerCase());
 			});
+		},
+		haveNotUserSelected() {
+			return this.userSelected.name.length === 0;
+		},
+		haveUserSelected() {
+			return this.userSelected.name.length > 0;
 		},
 	},
 	mounted() {
@@ -125,11 +119,10 @@ export default {
 			});
 		});
 	},
-	updated() {
-        // whenever data changes and the component re-renders, this is called.
-        this.$nextTick(() => this.scrollToEnd());
-    },
 	methods: {
+		goToSearch() {
+			this.$refs.search.focus();
+		},
 		scrollToEnd() {
 			this.$refs.usersList.$el.scrollTop = this.$refs.usersList.$el.lastElementChild.offsetTop;
 		},
@@ -142,28 +135,14 @@ export default {
 			}
 		},
 		handSelectUser(user) {
-			if (this.userSelected.name.length === 0 || this.userSelected.id !== user.id) {
+			if (this.haveNotUserSelected || this.userSelected.id !== user.id) {
 				this.userSelected = user;
 			} else {
 				this.resetUserSelected();
 			}
 		},
-		getAllUsers() {
-			this.users = [];
-			this.loading = true;
-			window.db.collection('user').get().then((snapshot) => {
-				snapshot.docs.forEach((user) => {
-					this.users.push({
-						id: user.id,
-						name: user.data().name,
-						email: user.data().email,
-					});
-				});
-				this.loading = false;
-			});
-		},
 		launchCreateUser(event) {
-			if (this.userSelected.name.length === 0) {
+			if (this.haveNotUserSelected) {
 				this.action = 'create';
 				this.$modal.show('modal-edit');
 			}
@@ -178,30 +157,28 @@ export default {
 				this.$nextTick(() => this.scrollToEnd());
 			});
 			this.$modal.hide('modal-edit');
-			// this.users.push(newUser); // (*)
-			// this.getAllUsers(); // (*)
+			this.$nextTick(() => this.scrollToEnd());
 		},
 		launchDeleteUser(event) {
-			if (this.userSelected.name.length > 0) {
+			if (this.haveUserSelected) {
 				this.$modal.show('modal-delete');
 			}
 		},
 		deleteUser() {
 			const idUserToDelete = this.userSelected.id;
 			window.db.collection('user').doc(idUserToDelete).delete().then(() => {
-				// this.getAllUsers(); // (*)
 				this.userSelected = this.users[this.users.length - 1];
 			});
 			this.$modal.hide('modal-delete');
 		},
 		launchEditUser(event) {
-			if (this.userSelected.name.length > 0) {
+			if (this.haveUserSelected) {
 				this.action = 'update';
 				this.$modal.show('modal-edit');
 			}
 		},
 		updateUser(user) {
-			if (this.userSelected.name.length > 0) {
+			if (this.haveUserSelected) {
 				this.$modal.hide('modal-edit');
 				window.db.collection('user').doc(this.userSelected.id).update({
 					name: user.name,
@@ -209,22 +186,8 @@ export default {
 				});
 			}
 		},
-		filterUSers() {
-			this.loading = true;
-			this.users = [];
-			window.db.collection('user').where('name', '==', 'Hector').get().then((snapshot) => {
-				snapshot.docs.forEach((user) => {
-					this.users.push({
-						id: user.id,
-						name: user.data().name,
-						email: user.data().email,
-					});
-				});
-				this.loading = false;
-			});
-		},
 		orderBy(event) {
-			if (this.userSelected.name.length === 0 && this.users.length > 3) {
+			if (this.haveNotUserSelected && this.users.length > 0) {
 				this.loading = true;
 				this.users = [];
 				this.orderDirection = this.orderDirection === 'asc' ? 'desc' : 'asc';
@@ -240,13 +203,6 @@ export default {
 				});
 			}
 		},
-		getRandomUser() {
-			const indexRandom = this.getRandomNumber(this.users.length - 1);
-			return this.users[indexRandom];
-		},
-		getRandomNumber(max, min = 0) {
-			return Math.floor((Math.random() * max) + min);
-		},
 		mockData() {
 			mock.launch();
 			this.resetUserSelected();
@@ -259,5 +215,4 @@ export default {
 		},
 	},
 };
-// *: These are now in onSnapshot listener.
 </script>
