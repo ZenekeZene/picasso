@@ -1,0 +1,23 @@
+.btn {
+	display: block;
+	width: 100%;
+	max-width: 450px;
+	margin: 0 auto;
+	margin-bottom: $gutter;
+	padding: $gutter;
+	border: none;
+	color: $color-white;
+	background-color: $color-tertiary;
+	border-radius: 4px;
+	font-size: $font-size-m;
+	outline: none;
+
+	&:active {
+		position: relative;
+		top: 2px;
+	}
+
+	&.--hot {
+		background-color: $color-false;
+	}
+}

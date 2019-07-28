@@ -1,38 +1,38 @@
 <template>
-	<section padding class="crud" @click="blur">
-		<ul class="paint__tools tools">
-			<li class="crud-tools__item"
+	<section class="crud" @click="blur">
+		<ul class="tools --left">
+			<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length > 0 }"
 				@click="launchCreateUser"
 			>
 				<span class="icon-plus"></span>
 			</li>
-			<li class="crud-tools__item"
+			<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length === 0 }"
 				@click="launchEditUser"
 			>
 				<span class="icon-write"></span>
 			</li>
-			<li class="crud-tools__item"
+			<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length === 0 }"
 				@click="launchDeleteUser"
 			>
 				<span class="icon-cross"></span>
 			</li>
-			<!--<li class="crud-tools__item"
+			<!--<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length > 0 || users.length < 3 }"
 				@click="filterUSers"
 			>
 				<span class="icon-filter"></span>
 			</li>-->
-			<li class="crud-tools__item"
+			<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length > 0 || users.length < 3 }"
 				@click="orderBy"
 			>
 				<span class="icon-forward --down"
 					:class="{ '--up': orderDirection === 'asc' }"></span>
 			</li>
-			<li class="crud-tools__item --disabled" @click="mockData">
+			<li class="tools__item --disabled" @click="mockData">
 				<span class="icon-rain"></span>
 			</li>
 		</ul>
@@ -102,10 +102,7 @@ export default {
 						email: user.data().email,
 					});
 				} else if (change.type === 'removed') {
-					//this.users = this.users.filter(user => user.id !== change.doc.id);
-					let i = this.users.map(user => user.id).indexOf(change.doc.id) // find index of your object
-					//this.users.splice(i, 1);
-					Vue.delete(this.users, i);
+					this.users = this.users.filter(user => user.id !== change.doc.id);
 				}
 			});
 		});
@@ -175,7 +172,7 @@ export default {
 			}
 		},
 		updateUser(user) {
-			if (userSelected.name.length > 0) {
+			if (this.userSelected.name.length > 0) {
 				this.$modal.hide('modal-edit');
 				window.db.collection('user').doc(this.userSelected.id).update({
 					name: user.name,

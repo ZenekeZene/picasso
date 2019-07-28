@@ -1,15 +1,2 @@
-.v--modal-box {
-	padding: $gutter-2 !important;
-}
-
-.v--modal-top-right {
-	top: $gutter-2 !important;
-	right: $gutter-2 !important;
-	z-index: depth(1);
-}
-
-.v--modal button {
-	margin-bottom: 0;
-}
-
+@import 'v.modal';
 @import 'v.spinner';

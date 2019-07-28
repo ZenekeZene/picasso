@@ -8,10 +8,10 @@ $color-primary: #2c3e50 !default;
 $color-secondary: #fafafa !default;
 $color-tertiary: #4992a9;
 $color-neutral: #dcedf3;
-$color-background: rgb(246, 246, 247) !default;
 $color-input: #bde5f1;
 $color-outline: #8ea2ae;
 $color-react: #15b8e8;
+$color-background: rgb(246, 246, 246);
 
 // CORRECT & INCORRECT:
 $color-true: #1f8926;
@@ -25,4 +25,8 @@ $color-false: #cc3232;
 .color-false,
 [color-false] {
 	color: $color-false !important;
+}
+
+:root {
+	--color-background: rgb(246, 246, 246);
 }

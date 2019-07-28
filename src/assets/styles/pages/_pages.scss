@@ -1,77 +1,8 @@
-.crud {
-	position: relative;
-	z-index: depth(2);
-
-	ol {
-		max-height: calc(100vh - 211px);
-		overflow-y: scroll;
-		font-size: $font-size-xs;
-	}
-
-	&-tools {
-		@include flex(flex, start, start);
-
-		&__item {
-			margin-right: $gutter;
-			transition: opacity 250ms ease-in;
-
-			&.--disabled {
-				opacity: 0.2;
-			}
-		}
-	}
-}
-
-.loading {
-	@include absolute(right $gutter);
-	width: calc(100% - 80px - 4rem);
-}
-
-.users {
-	@include absolute(right $gutter);
-	width: calc(100% - 80px - 2rem);
-
-	&__item {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		padding: 0.8rem;
-		font-size: $font-size-xxs;
-
-		&:before {
-			content: '';
-			$size: 4px;
-			@include absolute(top left);
-			z-index: -1;
-			width: $size;
-			height: 100%;
-			transition: all 250ms ease-in;
-		}
-
-		&.--selected:before {
-			left: -4px;
-			background-color: darken(rgb(246, 246, 246), 15%) !important;
-		}
-
-		@include icon {
-			@include absolute(top right);
-		}
-	}
-}
+@import 'p.paint';
+@import 'p.crud';
 
 .button-bottom {
 	@include absolute(bottom $gutter);
-	left: calc(4vw + #{$gutter-1-2});
-	padding: $gutter 1.5rem;
-}
-
-.heading {
-	position: absolute;
-	z-index: depth(1);
-}
-
-.crud,
-.paint {
-	padding-top: 80px !important;
+	left: calc(#{$left-tools} + #{$gutter-1-2});
+	padding: $gutter $gutter-3-2;
 }

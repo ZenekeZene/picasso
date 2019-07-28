@@ -1,0 +1,28 @@
+.colors {
+	display: flex;
+	flex-direction: row;
+	padding: 0;
+	
+	li {
+		@include flex(flex, center, center);
+		@include share(width, height, 1rem);
+		margin-right: $gutter-1-2;
+		padding: 2px 0;
+		border-radius: 50%;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	.--selected:before {
+		content: $icon-target;
+		font-family: $font-icons;
+		font-size: $font-size-xxs;
+		margin-top: 1px;
+	}
+}
+
+.--erase {
+	border: 1px solid $color-black;
+}

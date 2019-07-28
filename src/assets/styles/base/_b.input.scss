@@ -1,0 +1,8 @@
+input[type='text'] {
+	width: 100%;
+	margin-bottom: $gutter;
+	padding: $gutter;
+	border: none;
+	border-bottom: 2px solid $color-neutral;
+	outline: none;
+}

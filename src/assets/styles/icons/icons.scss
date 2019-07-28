@@ -10,6 +10,8 @@ $font-icons: 'paint';
 }
 
 @include icon('forward') {
+	transition: transform $duration $ease;
+	
 	&.--down {
 		display: inline-block;
 		transform: rotate(90deg);

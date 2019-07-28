@@ -1,6 +1,6 @@
 <template>
 	<section class="paint">
-		<ol class="paint__tools tools"
+		<ol class="tools --left"
 			v-on="!isPlaying ? { mouseover } : {}"
 			@mouseleave="toolsVisible = false"
 			:class="{ '--disabled': isPainting }"
@@ -103,8 +103,8 @@ export default {
 				'rgb(252, 222, 192)',
 				'rgb(27, 37, 52)',
 			],
-			colorErase: 'rgb(246, 246, 247)',
-			backgroundColor: 'rgb(246, 246, 247)',
+			colorErase: '',
+			backgroundColor: '',
 			strokeWidth: 10,
 			strokeStyle: 'red',
 			history: [],
@@ -119,6 +119,7 @@ export default {
 		this.canvas.width = window.screen.width;
 		this.canvas.height = window.screen.height;
 		this.ctx = this.canvas.getContext('2d');
+		this.colorErase = this.backgroundColor = window.getComputedStyle(document.documentElement).getPropertyValue('--color-background');
 		this.setBackgroundCanvas();
 		this.ctx.lineJoin = 'round';
 		this.ctx.lineCap = 'round';
@@ -262,8 +263,8 @@ export default {
 		saveToImage() {
 			this.dataURI = this.canvas.toDataURL('png');
 		},
-		setBackgroundCanvas(backgroundColor = this.backgroundColor) {
-			this.ctx.fillStyle = backgroundColor;
+		setBackgroundCanvas() {
+			this.ctx.fillStyle = this.backgroundColor;
 			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		},
 		save() {
