@@ -1,6 +1,6 @@
 html {
 	display: block;
-	@include share(width, height, 100%);
+	@include size();
 	overflow: auto;
 }
 
@@ -61,6 +61,6 @@ aside {
 	}
 
 	& > section {
-		padding: $height-header $gutter $gutter $gutter;
+		padding: var(--height-header) $gutter $gutter $gutter;
 	}
 }

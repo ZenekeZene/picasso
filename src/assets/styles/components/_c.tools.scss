@@ -1,15 +1,15 @@
 .tools {
-	$size: 5rem;
-	width: $size;
+	width: var(--width-tools);
 	@include flex(inline, center, center);
 	flex-direction: column;
-	background-color: rgba(var(--color-background), 0.5);
 
 	&:before {
 		content: '';
 		@include absolute(top left);
-		@include share(width, height, 100%);
-		filter: blur(10px);
+		@include size();
+		background-color: var(--color-background);
+		opacity: 0.5;
+		border-radius: 4px;
 	}
 
 	&__item {
@@ -17,7 +17,6 @@
 		position: relative;
 		width: 100%;
 		min-height: 3rem;
-		padding: $gutter-1-2 $gutter;
 		cursor: pointer;
 		transition: opacity $duration $ease;
 		
@@ -27,12 +26,22 @@
 			border-radius: 50%;
 		}
 
+		@include icon {
+			width: 100%;
+			padding: $gutter-1-2 $gutter;
+
+			&:active,
+			&:focus,
+			&:hover {
+				color: red;
+			}
+		} 
+
 		.label {
-			position: absolute;
-			left: 3rem;
+			@include absolute(left 4rem);
 			display: none;
 			font-size: 0.8rem;
-			width: 5rem;
+			width: var(--width-tools);
 			font-weight: $font-black;
 			text-align: left;
 		}
@@ -42,17 +51,20 @@
 			text-decoration: none;
 		}
 
-		&:hover {
-
-			.label {
+		&:hover .label {
+			@include media('>phablet') {
 				display: block;
 			}
 		}
 	}
 
 	&.--left {
-		@include absolute(left $left-tools);
+		@include absolute(top var(--top-tools) left var(--left-tools));
 		z-index: depth(4);
+		
+		@include media('>phablet') {
+			$top-tools: calc(var(--height-header) + #{$gutter-2});
+		}
 	}
 }
 

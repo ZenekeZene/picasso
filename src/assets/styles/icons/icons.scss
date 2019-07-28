@@ -14,16 +14,25 @@ $font-icons: 'paint';
 	
 	&.--down {
 		display: inline-block;
-		transform: rotate(90deg);
+
+		&:before {
+			transform: rotate(90deg);
+		}
 	}
 
 	&.--left {
 		display: inline-block;
-		transform: rotate(180deg);
+
+		&:before {
+			transform: rotate(180deg);
+		}
 	}
 
 	&.--up {
 		display: inline-block;
-		transform: rotate(-90deg);
+		
+		&:before {
+			transform: rotate(-90deg);
+		}
 	}
 }

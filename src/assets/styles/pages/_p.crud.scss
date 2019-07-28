@@ -2,7 +2,7 @@
 	position: relative;
 
 	ol {
-		max-height: calc(100% - #{$height-header} - #{$gutter-2});
+		max-height: calc(100% - #{var(--height-header)} - #{$gutter-2});
 		overflow-y: scroll;
 		font-size: $font-size-xs;
 	}

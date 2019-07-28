@@ -4,8 +4,11 @@ $breakpoints: $coke-breakpoints;
 $font-size: $coke-font-size;
 
 // (2)
-$height-header: 80px;
-$left-tools: 4vw;
-
+:root {
+	--height-header: 80px;
+	--top-tools: var(--height-header);
+	--left-tools: 4vw;
+	--width-tools: 5rem;
+}
 // 1: Transference Coke -> Starr variables.
 // 2: Starr variables.

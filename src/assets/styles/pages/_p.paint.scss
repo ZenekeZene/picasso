@@ -1,6 +1,6 @@
 .paint {
 	position: relative;
-	@include share(width, height, 100%);
+	@include size();
 
 		.colors {
 			@include absolute(left $gutter-3-2);

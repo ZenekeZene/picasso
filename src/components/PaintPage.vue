@@ -16,12 +16,12 @@
 						v-for="(color, index) in colors"
 						:key="`color-${index}`"
 						:style="{ backgroundColor: color }"
-						@click.prevent="strokeStyle = color; "
+						v-touch:end="strokeStyle = color"
 						:class="{ '--selected': strokeStyle === color }"
 					></li>
 					<li
 						:style="{ backgroundColor: colorErase }"
-						@click.prevent="strokeStyle = colorErase; "
+						v-touch:end="strokeStyle = colorErase"
 						:class="{ '--selected': strokeStyle === colorErase }"
 						class="--erase"
 					></li>
@@ -40,16 +40,16 @@
 					></span>
 				</div>
 			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }" v-touch:end="clean">
-				<span class="icon-trash"></span>
+			<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
+				<span class="icon-trash" v-touch:end="clean"></span>
 				<span class="label">Clear Canvas</span>
 			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }" v-touch:end="undo">
-				<span class="icon-reply"></span>
+			<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
+				<span class="icon-reply" v-touch:end="undo"></span>
 				<span class="label">Undo</span>
 			</li>
-			<li class="tools__item" :class="{ '--playing': isPlaying, '--disabled': isPainting }" v-touch:end="replay">
-				<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }"></span>
+			<li class="tools__item" :class="{ '--playing': isPlaying, '--disabled': isPainting }">
+				<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }" v-touch:end="replay"></span>
 				<span class="label" v-if="!isPlaying">Replay</span>
 				<span class="label" v-else>Stop</span>
 			</li>

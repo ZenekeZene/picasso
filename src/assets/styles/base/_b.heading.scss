@@ -15,11 +15,11 @@ h6 {
 .heading {
 	position: absolute;
 	z-index: depth(1);
-	height: $height-header;
+	height: var(--height-header);
 	margin-bottom: 0;
 	padding-top: 5vh;
 	text-align: left;
-	padding-left: calc(#{$left-tools} + #{$gutter-1-2} + #{$gutter});
+	padding-left: calc(#{var(--left-tools)} + #{$gutter-1-2} + #{$gutter});
 
 	@include media('<=phablet') {
 		display: block;

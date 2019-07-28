@@ -1,5 +1,5 @@
 <template>
-<modal name="modal-delete" :adaptive="true" :pivotY="0" height="auto">
+<modal name="modal-delete" :adaptive="true" :pivotY="0" height="auto" transition="fadeInDown">
 	<span @click="$modal.hide('modal-delete')" class="icon-cross"></span>
 	<h3 class="--hot">Borrar usuario</h3>
 	<p>¿De verdad quieres borrar el siguiente usuario?</p>

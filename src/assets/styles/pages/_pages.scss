@@ -3,6 +3,6 @@
 
 .button-bottom {
 	@include absolute(bottom $gutter);
-	left: calc(#{$left-tools} + #{$gutter-1-2});
+	left: calc(#{var(--left-tools)} + #{$gutter-1-2});
 	padding: $gutter $gutter-3-2;
 }

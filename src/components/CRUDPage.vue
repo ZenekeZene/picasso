@@ -3,21 +3,18 @@
 		<ul class="tools --left">
 			<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length > 0 }"
-				@click="launchCreateUser"
 			>
-				<span class="icon-plus"></span>
+				<span class="icon-plus" @click="launchCreateUser"></span>
 			</li>
 			<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length === 0 }"
-				@click="launchEditUser"
 			>
-				<span class="icon-write"></span>
+				<span class="icon-write" @click="launchEditUser"></span>
 			</li>
 			<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length === 0 }"
-				@click="launchDeleteUser"
 			>
-				<span class="icon-cross"></span>
+				<span class="icon-cross" @click="launchDeleteUser"></span>
 			</li>
 			<!--<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length > 0 || users.length < 3 }"
@@ -27,10 +24,11 @@
 			</li>-->
 			<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length > 0 || users.length < 3 }"
-				@click="orderBy"
 			>
 				<span class="icon-forward --down"
-					:class="{ '--up': orderDirection === 'asc' }"></span>
+					:class="{ '--up': orderDirection === 'asc' }"
+					@click="orderBy"
+				></span>
 			</li>
 			<li class="tools__item --disabled" @click="mockData">
 				<span class="icon-rain"></span>

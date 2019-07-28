@@ -1,6 +1,7 @@
 .users {
-	@include absolute(right $gutter);
-	width: calc(100% - #{$height-header} - #{$gutter-2});
+	@include absolute(top var(--top-tools) right $gutter);
+	width: calc(100% - var(--width-tools) - #{$gutter-2});
+	padding-left: 3vw;
 
 	&__item {
 		position: relative;
