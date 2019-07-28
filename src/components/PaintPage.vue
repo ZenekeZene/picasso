@@ -3,8 +3,9 @@
 		<ol class="paint__tools tools"
 			v-on="!isPlaying ? { mouseover } : {}"
 			@mouseleave="toolsVisible = false"
+			:class="{ '--disabled': isPainting }"
 		>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }">
+			<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
 				<span class="icon"
 					:style="{ backgroundColor: strokeStyle }"
 					v-show="!toolsVisible"
@@ -26,7 +27,7 @@
 					></li>
 				</ol>
 			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }">
+			<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
 				<span font-bold style="text-align: left;">{{ strokeWidth }}</span>
 				<div class="range" v-show="toolsVisible">
 					<input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth">
@@ -39,20 +40,20 @@
 					></span>
 				</div>
 			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }" v-touch:end="clean">
+			<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }" v-touch:end="clean">
 				<span class="icon-trash"></span>
 				<span class="label">Clear Canvas</span>
 			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }" v-touch:end="undo">
+			<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }" v-touch:end="undo">
 				<span class="icon-reply"></span>
 				<span class="label">Undo</span>
 			</li>
-			<li class="tools__item" :class="{ '--playing': isPlaying }" v-touch:end="replay">
+			<li class="tools__item" :class="{ '--playing': isPlaying, '--disabled': isPainting }" v-touch:end="replay">
 				<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }"></span>
 				<span class="label" v-if="!isPlaying">Replay</span>
 				<span class="label" v-else>Stop</span>
 			</li>
-			<li class="tools__item" :class="{ '--disabled': isPlaying }">
+			<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
 				<a :href="dataURI"
 					download="my-awesome-drawing-of-painter"
 					v-show="!isPlaying"
@@ -75,7 +76,10 @@
 			v-touch:moving="handleMouseMove"
 			v-touch:end="handleMouseUp"
 		></canvas>
-		<span class="button-bottom icon-users" @click="$router.push('crud')"></span>
+		<span class="button-bottom icon-users"
+			:class="{ '--disabled': isPlaying || isPainting }"
+			@click="$router.push('crud')"
+		></span>
 	</section>
 </template>
 
@@ -99,8 +103,8 @@ export default {
 				'rgb(252, 222, 192)',
 				'rgb(27, 37, 52)',
 			],
-			colorErase: 'rgb(246,246,247)',
-			backgroundColor: 'rgb(246,246,247)',
+			colorErase: 'rgb(246, 246, 247)',
+			backgroundColor: 'rgb(246, 246, 247)',
 			strokeWidth: 10,
 			strokeStyle: 'red',
 			history: [],
@@ -140,6 +144,7 @@ export default {
 			this.toolsVisible = false;
 			const { offsetX, offsetY } = event;
 			this.isPainting = true;
+			this.$emit('isPainting', true);
 			this.prevPosition = { offsetX, offsetY };
 			this.history.push([]);
 		},
@@ -161,6 +166,7 @@ export default {
 		handleMouseUp() {
 			if (this.isPainting && !this.isPlaying) {
 				this.isPainting = false;
+				this.$emit('isPainting', false);
 				this.currentIndex += 1;
 				this.saveToImage();
 			}

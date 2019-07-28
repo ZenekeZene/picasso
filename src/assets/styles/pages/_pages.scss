@@ -13,6 +13,7 @@
 
 		&__item {
 			margin-right: $gutter;
+			transition: opacity 250ms ease-in;
 
 			&.--disabled {
 				opacity: 0.2;
