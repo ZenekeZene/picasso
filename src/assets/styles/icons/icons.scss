@@ -11,28 +11,20 @@ $font-icons: 'paint';
 
 @include icon('forward') {
 	transition: transform $duration $ease;
+
+	&:before {
+		display: inline-block;
+	}
 	
-	&.--down {
-		display: inline-block;
-
-		&:before {
-			transform: rotate(90deg);
-		}
+	&.--down:before {
+		transform: rotate(90deg);
 	}
 
-	&.--left {
-		display: inline-block;
-
-		&:before {
-			transform: rotate(180deg);
-		}
+	&.--left:before {
+		transform: rotate(180deg);
 	}
 
-	&.--up {
-		display: inline-block;
-		
-		&:before {
-			transform: rotate(-90deg);
-		}
+	&.--up:before {
+		transform: rotate(-90deg);
 	}
 }
