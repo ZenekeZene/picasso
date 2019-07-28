@@ -1,7 +1,13 @@
 .users {
-	@include absolute(top var(--top-tools) right $gutter);
-	width: calc(100% - var(--width-tools) - #{$gutter-2});
+	width: 100%;
 	padding-left: 3vw;
+
+	&-wrapper {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		height: 100%;
+	}
 
 	&__item {
 		position: relative;

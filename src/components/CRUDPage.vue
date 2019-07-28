@@ -2,7 +2,7 @@
 	<section class="crud" @click="blur">
 		<ul class="tools --left">
 			<li class="tools__item"
-				:class="{ '--disabled': userSelected.name.length > 0 }"
+				:class="{ '--disabled': userSelected.name.length > 0 || users.length === 0 }"
 			>
 				<span class="icon-search" @click="showSearch = true" v-mobile-hover:#4992a9></span>
 			</li>
@@ -40,21 +40,24 @@
 				<span class="icon-rain"></span>
 			</li>
 		</ul>
-		<input type="text" class="search" :class="{ '--disabled': userSelected.name.length > 0 }" v-model="search" @focus="resetUserSelected" v-if="!loading" />
+		<div v-if="users.length === 0 && !loading" class="empty"><p>Aún no tienes usuarios. Prueba a crear uno.</p></div>
 		<spinner-item class="loading" v-if="loading"></spinner-item>
-		<transition-group name="fade" tag="ol"  class="users" v-else>
-			<li
-				class="users__item"
-				v-for="(user) in filteredUsers"
-				:key="user.id"
-				:data-id="user.id"
-				:class="{ '--selected': userSelected && userSelected.id == user.id }"
-				@click.stop="handSelectUser(user)"
-			>
-				<span font-bold margin-right>{{ user.name }}</span>
-				<span>{{ user.email }}</span>
-			</li>
-		</transition-group>
+		<div class="users-wrapper" v-if="users.length > 0">
+			<input type="text" class="search" :class="{ '--disabled': userSelected.name.length > 0 }" v-model="search" @focus="resetUserSelected" v-if="!loading" />
+			<transition-group ref="usersList" name="fade" tag="ol" class="users" v-if="!loading">
+				<li
+					class="users__item"
+					v-for="(user) in filteredUsers"
+					:key="user.id"
+					:data-id="user.id"
+					:class="{ '--selected': userSelected && userSelected.id == user.id }"
+					@click.stop="handSelectUser(user)"
+				>
+					<span font-bold margin-right>{{ user.name }}</span>
+					<span>{{ user.email }}</span>
+				</li>
+			</transition-group>
+		</div>
 		<span class="button-bottom icon-forward --left" @click="$router.push('/')"></span>
 		<modal-delete
 			:user="userSelected"
@@ -75,6 +78,7 @@ import ModalEdit from './ModalEdit';
 import SpinnerItem from './SpinnerItem';
 import { mock } from '../mock.users.js';
 import Vue from 'vue';
+import { setTimeout } from 'timers';
 
 export default {
 	name: 'CRUDPage',
@@ -121,7 +125,14 @@ export default {
 			});
 		});
 	},
+	updated() {
+        // whenever data changes and the component re-renders, this is called.
+        this.$nextTick(() => this.scrollToEnd());
+    },
 	methods: {
+		scrollToEnd() {
+			this.$refs.usersList.$el.scrollTop = this.$refs.usersList.$el.lastElementChild.offsetTop;
+		},
 		blur(event) {
 			if (event.target.classList.contains('crud')) {
 				this.userSelected = {
@@ -153,16 +164,20 @@ export default {
 		},
 		launchCreateUser(event) {
 			if (this.userSelected.name.length === 0) {
-				console.log(event);
 				this.action = 'create';
 				this.$modal.show('modal-edit');
 			}
 		},
 		saveUser(newUser) {
-			this.userSelected = newUser;
-			window.db.collection('user').add(newUser);
+			const result = window.db.collection('user').add(newUser).then((snapshot) => {
+				this.userSelected = {
+					name: newUser.name,
+					email: newUser.email,
+					id: snapshot.id,
+				};
+				this.$nextTick(() => this.scrollToEnd());
+			});
 			this.$modal.hide('modal-edit');
-			this.resetUserSelected();
 			// this.users.push(newUser); // (*)
 			// this.getAllUsers(); // (*)
 		},

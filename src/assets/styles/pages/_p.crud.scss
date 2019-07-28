@@ -2,30 +2,34 @@
 	position: relative;
 	
 	ol {
-		max-height: calc(100% - #{var(--height-header)} - #{$gutter-2} - #{var(--top-tools)});
-		overflow-y: scroll;
 		font-size: $font-size-xs;
 	}
 
-	$height: $gutter-3;
+	$height-search: $gutter-3;
 	.search {
-		position: absolute;
-		top: calc(var(--top-tools) + #{$gutter-1-2});
-		left: calc(var(--width-tools) + #{$gutter});
-		width: calc(100% - var(--left-tools) - var(--width-tools) - #{$gutter-2});
-		height: $height;
+		width: 100%;
+		height: $height-search;
 		margin-bottom: 0;
 		font-size: $font-size-xs;
 		background: none;
 	}
 
 	.loading {
-		position: absolute;
-		top: calc(var(--top-tools) + #{$height} + #{$gutter});
-		left: 50%;
+		margin: $gutter-2 auto;
 	}
 
 	.users {
-		top: calc(var(--top-tools) + #{$height} + #{$gutter});
+		max-height: calc(100% - var(--height-header) - #{$height-search});
+		overflow-y: scroll;
+		margin-top: $gutter;
+	}
+
+	.empty {
+
+		p {
+			font-size: $font-size-xs;
+			padding-top: $gutter-4;
+			text-align: left;
+		}
 	}
 }

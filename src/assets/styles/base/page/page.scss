@@ -61,6 +61,7 @@ aside {
 	}
 
 	& > section {
+		@include flex(flex, start, start);
 		padding: var(--height-header) $gutter $gutter $gutter;
 	}
 }
