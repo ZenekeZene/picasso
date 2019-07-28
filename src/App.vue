@@ -4,9 +4,7 @@
 		transition
 		:class="{ '--disabled': isPainting }"
 	>Picass<span class="icon-heart animated"
-		@mouseover="easterEgg = true"
-		@mouseleave="easterEgg = false"
-		:class="{ 'heartBeat': easterEgg }"
+		v-mobile-hover:#4992a9="'heartBeat'"
 	></span></h1>
 	<transition name="fade" mode="out-in">
 		<router-view @isPainting="isPainting = $event" />
@@ -28,7 +26,6 @@ export default {
 	},
 	data() {
 		return {
-			easterEgg: false,
 			isPainting: false,
 		};
 	},

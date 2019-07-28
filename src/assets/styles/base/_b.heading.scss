@@ -33,9 +33,5 @@ h6 {
 		font-size: 0.6em;
 		transform: rotate(0deg);
 		transition: all $duration $ease;
-
-		&:hover {
-			color: $color-tertiary;
-		}
 	}
 }
