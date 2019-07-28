@@ -140,9 +140,12 @@ export default {
 				this.loading = false;
 			});
 		},
-		launchCreateUser() {
-			this.action = 'create';
-			this.$modal.show('modal-edit');
+		launchCreateUser(event) {
+			if (this.userSelected.name.length === 0) {
+				console.log(event);
+				this.action = 'create';
+				this.$modal.show('modal-edit');
+			}
 		},
 		saveUser(newUser) {
 			this.userSelected = newUser;
@@ -152,8 +155,10 @@ export default {
 			// this.users.push(newUser); // (*)
 			// this.getAllUsers(); // (*)
 		},
-		launchDeleteUser() {
-			this.$modal.show('modal-delete');
+		launchDeleteUser(event) {
+			if (this.userSelected.name.length > 0) {
+				this.$modal.show('modal-delete');
+			}
 		},
 		deleteUser() {
 			const idUserToDelete = this.userSelected.id;
@@ -163,16 +168,20 @@ export default {
 			});
 			this.$modal.hide('modal-delete');
 		},
-		launchEditUser() {
-			this.action = 'update';
-			this.$modal.show('modal-edit');
+		launchEditUser(event) {
+			if (this.userSelected.name.length > 0) {
+				this.action = 'update';
+				this.$modal.show('modal-edit');
+			}
 		},
 		updateUser(user) {
-			this.$modal.hide('modal-edit');
-			window.db.collection('user').doc(this.userSelected.id).update({
-				name: user.name,
-				email: user.email,
-			});
+			if (userSelected.name.length > 0) {
+				this.$modal.hide('modal-edit');
+				window.db.collection('user').doc(this.userSelected.id).update({
+					name: user.name,
+					email: user.email,
+				});
+			}
 		},
 		filterUSers() {
 			this.loading = true;
@@ -188,20 +197,22 @@ export default {
 				this.loading = false;
 			});
 		},
-		orderBy() {
-			this.loading = true;
-			this.users = [];
-			this.orderDirection = this.orderDirection === 'asc' ? 'desc' : 'asc';
-			window.db.collection('user').orderBy('name', this.orderDirection).get().then((snapshot) => {
-				snapshot.docs.forEach((user) => {
-					this.users.push({
-						id: user.id,
-						name: user.data().name,
-						email: user.data().email,
+		orderBy(event) {
+			if (this.userSelected.name.length === 0 && this.users.length > 3) {
+				this.loading = true;
+				this.users = [];
+				this.orderDirection = this.orderDirection === 'asc' ? 'desc' : 'asc';
+				window.db.collection('user').orderBy('name', this.orderDirection).get().then((snapshot) => {
+					snapshot.docs.forEach((user) => {
+						this.users.push({
+							id: user.id,
+							name: user.data().name,
+							email: user.data().email,
+						});
 					});
+					this.loading = false;
 				});
-				this.loading = false;
-			});
+			}
 		},
 		getRandomUser() {
 			const indexRandom = this.getRandomNumber(this.users.length - 1);
