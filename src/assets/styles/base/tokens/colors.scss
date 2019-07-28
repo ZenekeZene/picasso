@@ -6,7 +6,7 @@ $color-grey: grey !default;
 // DEFAULT SKIN:
 $color-primary: #2c3e50 !default;
 $color-secondary: #fafafa !default;
-$color-tertiary: #4992a9;
+$color-tertiary: rgb(73, 146, 169);
 $color-neutral: #dcedf3;
 $color-input: #bde5f1;
 $color-outline: #8ea2ae;
@@ -29,4 +29,5 @@ $color-false: #cc3232;
 
 :root {
 	--color-background: rgb(246, 246, 246);
+	--color-react: rgb(73, 146, 169);
 }

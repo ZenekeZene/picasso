@@ -30,10 +30,10 @@
 			width: 100%;
 			padding: $gutter-1-2 $gutter;
 
-			&:active,
-			&:focus,
-			&:hover {
-				color: $color-tertiary;
+			@media (hover: hover) {
+				&:hover {
+					color: $color-tertiary !important;
+				}
 			}
 		} 
 

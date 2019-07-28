@@ -41,15 +41,18 @@
 				</div>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
-				<span class="icon-trash" v-touch:end="clean"></span>
+				<span class="icon-trash" v-touch:end="clean" v-mobile-hover:#4992a9></span>
 				<span class="label">Clear Canvas</span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
-				<span class="icon-reply" v-touch:end="undo"></span>
+				<span class="icon-reply" v-touch:end="undo" v-mobile-hover:#4992a9></span>
 				<span class="label">Undo</span>
 			</li>
 			<li class="tools__item" :class="{ '--playing': isPlaying, '--disabled': isPainting }">
-				<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }" v-touch:end="replay"></span>
+				<span :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }"
+					v-touch:end="replay"
+					v-mobile-hover:#4992a9
+				></span>
 				<span class="label" v-if="!isPlaying">Replay</span>
 				<span class="label" v-else>Stop</span>
 			</li>
@@ -79,6 +82,7 @@
 		<span class="button-bottom icon-users"
 			:class="{ '--disabled': isPlaying || isPainting }"
 			@click="$router.push('crud')"
+			v-mobile-hover:#4992a9
 		></span>
 	</section>
 </template>
@@ -119,8 +123,7 @@ export default {
 		this.canvas.width = window.screen.width;
 		this.canvas.height = window.screen.height;
 		this.ctx = this.canvas.getContext('2d');
-		this.colorErase = this.backgroundColor = window.getComputedStyle(document.documentElement)
-			.getPropertyValue('--color-background');
+		this.colorErase = this.backgroundColor = colors.background;
 		this.setBackgroundCanvas();
 		this.ctx.lineJoin = 'round';
 		this.ctx.lineCap = 'round';
@@ -250,7 +253,6 @@ export default {
 			}
 		},
 		clean(event) {
-			event.preventDefault();
 			if (!this.isPlaying) {
 				this.history = [];
 				this.currentIndex = 0;

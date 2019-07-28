@@ -4,17 +4,17 @@
 			<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length > 0 }"
 			>
-				<span class="icon-plus" @click="launchCreateUser"></span>
+				<span class="icon-plus" @click="launchCreateUser" v-mobile-hover:#4992a9></span>
 			</li>
 			<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length === 0 }"
 			>
-				<span class="icon-write" @click="launchEditUser"></span>
+				<span class="icon-write" @click="launchEditUser" v-mobile-hover:#4992a9></span>
 			</li>
 			<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length === 0 }"
 			>
-				<span class="icon-cross" @click="launchDeleteUser"></span>
+				<span class="icon-cross" @click="launchDeleteUser" v-mobile-hover:#4992a9></span>
 			</li>
 			<!--<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length > 0 || users.length < 3 }"
@@ -28,9 +28,10 @@
 				<span class="icon-forward --down"
 					:class="{ '--up': orderDirection === 'asc' }"
 					@click="orderBy"
+					v-mobile-hover:#4992a9
 				></span>
 			</li>
-			<li class="tools__item --disabled" @click="mockData">
+			<li class="tools__item --disabled" @click="mockData" v-mobile-hover:#4992a9>
 				<span class="icon-rain"></span>
 			</li>
 		</ul>
