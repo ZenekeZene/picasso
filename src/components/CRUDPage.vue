@@ -4,6 +4,11 @@
 			<li class="tools__item"
 				:class="{ '--disabled': userSelected.name.length > 0 }"
 			>
+				<span class="icon-search" @click="showSearch = true" v-mobile-hover:#4992a9></span>
+			</li>
+			<li class="tools__item"
+				:class="{ '--disabled': userSelected.name.length > 0 }"
+			>
 				<span class="icon-plus" @click="launchCreateUser" v-mobile-hover:#4992a9></span>
 			</li>
 			<li class="tools__item"
@@ -35,11 +40,12 @@
 				<span class="icon-rain"></span>
 			</li>
 		</ul>
-		<spinner-item v-if="loading"></spinner-item>
+		<input type="text" class="search" :class="{ '--disabled': userSelected.name.length > 0 }" v-model="search" @focus="resetUserSelected" v-if="!loading" />
+		<spinner-item class="loading" v-if="loading"></spinner-item>
 		<transition-group name="fade" tag="ol"  class="users" v-else>
 			<li
 				class="users__item"
-				v-for="(user) in users"
+				v-for="(user) in filteredUsers"
 				:key="user.id"
 				:data-id="user.id"
 				:class="{ '--selected': userSelected && userSelected.id == user.id }"
@@ -86,8 +92,17 @@ export default {
 				email: '',
 			},
 			action: 'create',
+			search: '',
 			orderDirection: 'desc',
+			showSearch: false,
 		};
+	},
+	computed: {
+		filteredUsers() {
+			return this.users.filter((user) => {
+				return user.name.toLowerCase().includes(this.search.toLowerCase());
+			});
+		},
 	},
 	mounted() {
 		window.db.collection('user').onSnapshot((snapshot) => {

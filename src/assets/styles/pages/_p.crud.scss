@@ -1,9 +1,31 @@
 .crud {
 	position: relative;
-
+	
 	ol {
-		max-height: calc(100% - #{var(--height-header)} - #{$gutter-2});
+		max-height: calc(100% - #{var(--height-header)} - #{$gutter-2} - #{var(--top-tools)});
 		overflow-y: scroll;
 		font-size: $font-size-xs;
+	}
+
+	$height: $gutter-3;
+	.search {
+		position: absolute;
+		top: calc(var(--top-tools) + #{$gutter-1-2});
+		left: calc(var(--width-tools) + #{$gutter});
+		width: calc(100% - var(--left-tools) - var(--width-tools) - #{$gutter-2});
+		height: $height;
+		margin-bottom: 0;
+		font-size: $font-size-xs;
+		background: none;
+	}
+
+	.loading {
+		position: absolute;
+		top: calc(var(--top-tools) + #{$height} + #{$gutter});
+		left: 50%;
+	}
+
+	.users {
+		top: calc(var(--top-tools) + #{$height} + #{$gutter});
 	}
 }
