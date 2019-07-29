@@ -76,7 +76,6 @@ import SpinnerItem from './SpinnerItem';
 import scrollTo from '../scrollTo';
 import { mock } from '../mock.users.js';
 import Vue from 'vue';
-import { setTimeout } from 'timers';
 
 export default {
 	name: 'CRUDPage',
