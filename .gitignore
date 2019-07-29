@@ -43,7 +43,6 @@ sassdoc/
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
-package-lock.json
 config.xml
 Gemfile.lock
 .history
