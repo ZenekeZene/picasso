@@ -47,3 +47,4 @@ package-lock.json
 config.xml
 Gemfile.lock
 .history
+.netlify
