@@ -11,6 +11,7 @@ It is designed to be implemented on my own portfolio, but you can fork it and us
 Among other things, it has the following...
 
 ## [Demo](https://picassopaint.netlify.com/#/)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/65eda3c5-e361-449a-8d23-992870c85ee6/deploy-status)](https://app.netlify.com/sites/picassopaint/deploys)
 
 ## You can
 
