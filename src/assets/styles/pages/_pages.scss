@@ -1,0 +1,8 @@
+@import 'p.paint';
+@import 'p.crud';
+
+.button-bottom {
+	@include absolute(bottom $gutter);
+	left: calc(#{var(--left-tools)} + #{$gutter-1-2});
+	padding: $gutter $gutter-3-2;
+}

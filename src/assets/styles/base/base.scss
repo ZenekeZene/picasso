@@ -1,0 +1,26 @@
+@import 'tokens/tokens';
+@import 'page/page';
+
+*:not(.fn-axis) {
+	@include outline;
+}
+
+ul,
+ol {
+	list-style: none;
+	display: inline-flex;
+	flex-direction: column;
+	margin: 0;
+	padding: $gutter-1-2;
+}
+
+a:visited,
+a:focus {
+	color: inherit;
+	-webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+}
+
+@import 'b.input';
+@import 'b.button';
+@import 'b.heading';
+@import 'b.range';

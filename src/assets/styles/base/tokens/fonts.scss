@@ -1,0 +1,39 @@
+// Font weights (Coke's transference):
+$font-light: $coke-font-light !default;
+$font-regular: $coke-font-regular !default;
+$font-bold: $coke-font-bold !default;
+$font-black: $coke-font-black !default;
+
+$font-heading: 'Fredoka One' !default;
+$font-primary: 'Open Sans' !default;
+$font-fallback: sans-serif !default;
+
+[font-primary],
+.font-primary {
+	font-family: $font-primary, $font-fallback;
+}
+
+@mixin font-primary {
+	font-family: $font-primary, $font-fallback;
+}
+
+@function font-primary() {
+	@return $font-primary, $font-fallback;
+}
+
+@mixin font-heading {
+	font-family: $font-heading, $font-fallback;
+}
+
+@function font-heading() {
+	@return $font-heading, $font-fallback;
+}
+
+@font-face {
+	font-family: $font-primary, $font-fallback;
+}
+
+@font-face {
+	font-family: $font-heading, $font-fallback;
+}
+

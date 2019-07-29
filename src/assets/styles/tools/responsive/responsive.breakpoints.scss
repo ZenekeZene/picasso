@@ -1,0 +1,11 @@
+$coke-breakpoints: (
+	'phone': 20rem,
+	'phablet': 36rem,
+	'tablet': 48rem,
+	'desktop': 64rem,
+	'big-desktop': 75rem,
+) !default;
+
+// We transfer the reference of our map of the template
+// to the map used by responsive.include-media.
+$breakpoints: $coke-breakpoints;

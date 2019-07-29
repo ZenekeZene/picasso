@@ -1,0 +1,17 @@
+.paint {
+	position: relative;
+	@include size();
+
+		.colors {
+			@include absolute(left $gutter-3-2);
+		}
+
+		.range {
+			@include absolute(left $gutter-3);
+		}
+
+	&__canvas {
+		@include absolute(top left);
+		touch-action: none;
+	}
+}

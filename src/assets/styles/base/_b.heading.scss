@@ -1,0 +1,37 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	@include font-heading;
+	font-weight: $font-light;
+
+	&.--hot {
+		color: $color-false;
+	}
+}
+
+.heading {
+	position: absolute;
+	z-index: depth(1);
+	height: var(--height-header);
+	margin-bottom: 0;
+	padding-top: 5vh;
+	text-align: left;
+	padding-left: calc(#{var(--left-tools)} + #{$gutter-1-2} + #{$gutter});
+
+	@include media('<=phablet') {
+		display: block;
+		width: 100%;
+		padding-top: 0;
+		padding-left: 0;
+		text-align: center;
+	}
+
+	[class^='icon'] {
+		font-size: 0.6em;
+		transform: rotate(0deg);
+		transition: all $duration $ease;
+	}
+}

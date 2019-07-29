@@ -1,0 +1,142 @@
+$padding: $gutter;
+$padding-double: $padding * 2;
+
+// Paddings:
+[padding-zero] {
+	padding: 0 !important;
+}
+
+[padding-vertical] {
+	padding-top: $padding !important;
+	padding-bottom: $padding !important;
+}
+
+[padding-horizontal] {
+	padding-right: $padding !important;
+	padding-left: $padding !important;
+}
+
+[padding] {
+	padding: $padding !important;
+}
+
+[padding-top] {
+	padding-top: $padding !important;
+}
+
+[padding-right] {
+	padding-right: $padding !important;
+}
+
+[padding-bottom] {
+	padding-bottom: $padding !important;
+}
+
+[padding-left] {
+	padding-left: $padding !important;
+}
+
+// Padding Double:
+[padding-2] {
+	padding: $padding-double !important;
+}
+
+[padding-vertical-2] {
+	padding-top: $padding-double !important;
+	padding-bottom: $padding-double !important;
+}
+
+// Margins:
+$margin: $gutter;
+$margin-double: $margin * 2;
+
+[margin-zero] {
+	margin: 0 !important;
+}
+
+[margin-vertical] {
+	margin-top: $margin !important;
+	margin-bottom: $margin !important;
+}
+
+[margin-horizontal] {
+	margin-right: $margin !important;
+	margin-left: $margin !important;
+}
+
+[margin] {
+	margin: $margin !important;
+}
+
+[margin-top] {
+	margin-top: $margin !important;
+}
+
+[margin-right] {
+	margin-right: $margin !important;
+}
+
+[margin-bottom] {
+	margin-bottom: $margin !important;
+}
+
+[margin-left] {
+	margin-left: $margin !important;
+}
+
+// Margin Double:
+[margin-2] {
+	margin: $margin-double !important;
+}
+
+[margin-vertical-2] {
+	margin-top: $margin-double !important;
+	margin-bottom: $margin-double !important;
+}
+
+[margin-horizontal-2] {
+	margin-right: $margin-double !important;
+	margin-left: $margin-double !important;
+}
+
+[margin-top-2] {
+	margin-top: $margin-double !important;
+}
+
+[margin-right-2] {
+	margin-right: $margin-double !important;
+}
+
+[margin-bottom-2] {
+	margin-bottom: $margin-double !important;
+}
+
+[margin-left-2] {
+	margin-left: $margin-double !important;
+}
+
+@mixin size($size: 100%) {
+	width: $size;
+	height: $size;
+}
+
+// Block elements:
+@mixin block() {
+	display: block;
+	width: 100%;
+}
+
+[block],
+.block {
+	@include block;
+}
+
+@mixin block--full {
+	@include block;
+	height: 100%;
+}
+
+[block--full],
+.block--full {
+	@include block--full;
+}

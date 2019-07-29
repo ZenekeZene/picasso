@@ -1,0 +1,55 @@
+// Various shortcuts, attribute's mode:
+
+// Flexbox:
+[f-mid-mid] {
+	@include flex(flex, center, center);
+}
+[f-start-mid] {
+	@include flex(flex, start, center);
+}
+[f-start-end] {
+	@include flex(flex, start, end);
+}
+
+// Margin and paddings:
+@mixin margins-paddings-to-zero() {
+	@include share(margin, padding, 0);
+}
+
+[margins-paddings-to-zero] {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+[margin-bottom-zero] {
+	margin-bottom: 0 !important;
+}
+
+// Basic colors:
+[color-white] {
+	color: white !important;
+}
+[color-black] {
+	color: black !important;
+}
+
+// States:
+[hover] {
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+// Text align:
+[text-center] { text-align: center !important; }
+[text-left]   { text-align: left !important; }
+[text-right]  { text-align: right !important; }
+
+// Positions:
+[relative] { position: relative !important; }
+[absolute] { position: absolute !important; }
+
+[top] 	 { top: 0 !important; }
+[right]  { right: 0 !important; }
+[bottom] { bottom: 0 !important; }
+[left]   { left: 0 !important; }

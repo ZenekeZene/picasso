@@ -1,0 +1,21 @@
+.range {
+	position: relative;
+	@include flex(flex, center, center);
+	width: 8rem;
+	margin-left: $gutter;
+	
+	&__label {
+		@include absolute(left 100%);
+		display: inline-block;
+		$size: 5px;
+		@include share(
+			min-width,
+			min-height,
+			width,
+			height,
+			$size
+		);
+		margin-left: $gutter;
+		border-radius: 50%;
+	}
+}

@@ -1,0 +1,6 @@
+.users-wrapper {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	@include size;
+}

@@ -1,0 +1,80 @@
+.tools {
+	position: relative;
+	z-index: depth(1);
+	width: 100%;
+	max-width: var(--width-tools);
+	@include flex(inline, start, center);
+	flex-direction: column;
+
+	&:before {
+		content: '';
+		@include absolute(top left);
+		@include size();
+		background-color: var(--color-background);
+		opacity: 0.5;
+		border-radius: 4px;
+	}
+
+	&__item {
+		@include flex(flex, center, center);
+		position: relative;
+		width: 100%;
+		min-height: 3rem;
+		cursor: pointer;
+		transition: opacity $duration $ease;
+		
+		.icon {
+			display: inline-block;
+			@include size($gutter);
+			border-radius: 50%;
+		}
+
+		@include icon {
+			width: 100%;
+			padding: $gutter-1-2 $gutter;
+
+			@media (hover: hover) {
+				&:hover {
+					color: $color-tertiary !important;
+				}
+			}
+		} 
+
+		.label {
+			@include absolute(left 4rem);
+			display: none;
+			font-size: 0.8rem;
+			width: var(--width-tools);
+			font-weight: $font-black;
+			text-align: left;
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		&:hover .label {
+			@include media('>phablet') {
+				display: block;
+			}
+		}
+	}
+}
+
+.--disabled {
+	opacity: 0.2;
+
+	&:hover {
+		cursor: normal;
+
+		@include icon {
+			color: inherit;
+		}
+	}
+}
+
+.--playing {
+	color: $color-primary;
+}
+
