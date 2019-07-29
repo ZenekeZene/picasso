@@ -95,6 +95,7 @@
 
 <script>
 import ModalPainting from './ModalPainting';
+
 export default {
 	name: 'PaintPage',
 	components: {
@@ -300,7 +301,7 @@ export default {
 				email: paintingData.email,
 				history: JSON.stringify(this.history),
 			}).then(() => {
-				console.log('Dibujo subido con éxito');
+				this.$toasted.show('Dibujo subido con éxito!');
 			});
 			this.$modal.hide('modal-painting');
 		},
