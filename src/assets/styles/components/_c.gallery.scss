@@ -1,0 +1,16 @@
+.gallery {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 0.5rem;
+	padding: 0.8rem;
+	font-size: $font-size-xxs;
+
+	&__item {
+		@include flex(flex, end, center);
+		flex-direction: column;
+		height: 100px;
+		padding: $gutter-1-2;
+		border: 1px solid rgba(128, 128, 128, 0.32);
+		border-radius: 4px;
+	}
+}

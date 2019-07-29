@@ -6,6 +6,7 @@ h5,
 h6 {
 	@include font-heading;
 	font-weight: $font-light;
+	line-height: 1.2;
 
 	&.--hot {
 		color: $color-false;

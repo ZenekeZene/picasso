@@ -1,9 +1,15 @@
 <template>
-	<section class="gallery">
-		<ol class="list">
-			<li class="list__item"
-				v-for="paint in paintings" :key="paint.id" @click="$router.push(`paint/${paint.id}`)">
-				<span font-bold margin-right>{{ paint.name }}</span>
+	<section class="p-gallery">
+		<h5 margin-zero margin-auto-horizontal>Galería</h5>
+		<p v-if="paintings.length === 0" margin-top block font-size-xs text-center>Aún no hay dibujos.</p>
+		<ol class="gallery">
+			<li class="gallery__item"
+				v-for="paint in paintings"
+				:key="paint.id"
+				@click="$router.push(`paint/${paint.id}`)"
+			>
+				<span font-bold>{{ paint.name }}</span>
+				<span>{{ paint.email }}</span>
 			</li>
 		</ol>
 		<transition name="fade">
@@ -31,6 +37,7 @@ export default {
 					this.paintings.push({
 						id: painting.id,
 						name: painting.data().name,
+						email: painting.data().email,
 						history: painting.data().history,
 					});
 				});

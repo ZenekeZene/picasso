@@ -1,5 +1,5 @@
 <template>
-	<section class="crud" @click="blur">
+	<section class="p-crud" @click="blur">
 		<ul class="tools">
 			<li class="tools__item" :class="{ '--disabled': haveUserSelected || users.length === 0 }">
 				<span class="icon-search" @click="goToSearch" v-mobile-hover:#4992a9></span>

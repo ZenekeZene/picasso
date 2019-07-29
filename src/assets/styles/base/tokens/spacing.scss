@@ -140,3 +140,8 @@ $margin-double: $margin * 2;
 .block--full {
 	@include block--full;
 }
+
+[margin-auto-horizontal] {
+	margin-right: auto !important;
+	margin-left: auto !important;
+}

@@ -1,5 +1,6 @@
 @import 'p.paint';
 @import 'p.crud';
+@import 'p.gallery';
 
 .button-bottom {
 	@include absolute(bottom $gutter);

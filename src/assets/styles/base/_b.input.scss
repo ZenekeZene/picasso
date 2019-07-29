@@ -1,7 +1,7 @@
 input[type='text'] {
 	width: 100%;
 	margin-bottom: $gutter;
-	padding: $gutter;
+	padding: $gutter 0;
 	border: none;
 	border-bottom: 2px solid $color-neutral;
 	outline: none;

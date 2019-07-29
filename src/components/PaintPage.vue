@@ -1,5 +1,5 @@
 <template>
-	<section class="paint">
+	<section class="p-paint">
 		<ol class="tools --left"
 			v-on="!isPlaying ? { mouseover } : {}"
 			@mouseleave="toolsVisible = false"
@@ -60,7 +60,7 @@
 				<a :href="dataURI"
 					download="my-awesome-drawing-of-painter"
 					v-show="!isPlaying"
-				><span class="icon-download"></span></a>
+				><span class="icon-printer"></span></a>
 				<span class="label">Download</span>
 			</li>
 			<li class="tools__item">
@@ -72,7 +72,7 @@
 			ref="canvas"
 			width="1698"
 			height="1028"
-			class="paint__canvas"
+			class="p-paint__canvas"
 			v-touch:start="handleMouseDown"
 			v-touch:moving="handleMouseMove"
 			v-touch:end="handleMouseUp"
@@ -294,20 +294,10 @@ export default {
 		launchSave() {
 			this.$modal.show('modal-painting');
 		},
-		save(name) {
-			const history = [];
-			for (let i = 0; i < this.history.length; i += 1) {
-				const stroke = this.history[i];
-				history[i] = [];
-				for (let j = 0; j < stroke.length; j += 1) {
-					const dot = stroke[j];
-					history[i][j] = dot;
-				}
-				history[i] = JSON.stringify(history[i]);
-			}
-
+		save(paintingData) {
 			window.db.collection('painting').add({
-				name: name,
+				name: paintingData.name,
+				email: paintingData.email,
 				history: JSON.stringify(this.history),
 			}).then(() => {
 				console.log('Dibujo subido con éxito');
