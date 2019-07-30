@@ -23,7 +23,7 @@ Vue.directive('mobile-hover', {
 					event.target.style.color = 'unset';
 					if (binding.expression) {
 						el.classList.remove(
-							binding.expression.replace(/'/g, '') 
+							binding.expression.replace(/'/g, '')
 						);
 					}
 				}, 250);
