@@ -9,7 +9,6 @@
 				@click="$router.push(`paint/${paint.id}`)"
 			>
 				<span font-bold>{{ paint.name }}</span>
-				<span>{{ paint.email }}</span>
 			</li>
 		</ol>
 		<transition name="fade">
@@ -32,7 +31,6 @@ export default {
 		getAllPaintings() {
 			this.paintings = [];
 			window.db.collection('painting').get().then((snapshot) => {
-				console.log(snapshot.docs);
 				snapshot.docs.forEach(painting => {
 					this.paintings.push({
 						id: painting.id,

@@ -1,7 +1,8 @@
 .gallery {
 	display: grid;
+	width: 100%;
 	grid-template-columns: 1fr 1fr;
-	grid-gap: 0.5rem;
+	grid-gap: $gutter-1-2;
 	padding: 0.8rem;
 	font-size: $font-size-xxs;
 
@@ -10,6 +11,7 @@
 		flex-direction: column;
 		height: 100px;
 		padding: $gutter-1-2;
+		word-break: break-all;
 		border: 1px solid rgba(128, 128, 128, 0.32);
 		border-radius: 4px;
 	}
