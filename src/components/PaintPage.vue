@@ -83,11 +83,6 @@
 				@click="$router.push('/gallery')"
 				v-mobile-hover:#4992a9
 			></span>
-			<span class="icon-users"
-				:class="{ '--disabled': isPlaying || isPainting }"
-				@click="$router.push('/crud')"
-				v-mobile-hover:#4992a9
-			></span>
 		</div>
 		<modal-painting @sendPainting="save"></modal-painting>
 	</section>

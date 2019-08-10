@@ -9,13 +9,13 @@
 	<transition name="fade" mode="out-in">
 		<router-view @isPainting="isPainting = $event" @inputFocused="anyInputFocused = $event"/>
 	</transition>
-	<transition name="fade">
+	<!--<transition name="fade">
 		<github-item href="https://github.com/ZenekeZene/picasso#picasso"
 			transition
 			v-if="!anyInputFocused"
 			:class="{ '--disabled': isPainting }"
 		></github-item>
-	</transition>
+	</transition>-->
   </main>
 </template>
 

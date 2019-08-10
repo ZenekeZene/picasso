@@ -60,8 +60,10 @@ aside {
 		margin-bottom: $gutter;
 	}
 
-	& > section {
+	& > section,
+	& > article {
 		@include flex(flex, start, start);
+		width: 100%;
 		padding: var(--height-header) $gutter $gutter $gutter;
 	}
 }

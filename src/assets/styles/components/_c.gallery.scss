@@ -1,6 +1,9 @@
 .gallery {
+	position: relative;
 	display: grid;
 	width: 100%;
+	height: calc(100vh - 200px);
+	overflow-y: auto; 
 	grid-template-columns: 1fr 1fr;
 	grid-gap: $gutter-1-2;
 	padding: 0.8rem;
@@ -14,5 +17,10 @@
 		word-break: break-all;
 		border: 1px solid rgba(128, 128, 128, 0.32);
 		border-radius: 4px;
+	}
+
+	&-wrapper {
+		position: relative;
+		padding: $gutter-2 0;
 	}
 }
