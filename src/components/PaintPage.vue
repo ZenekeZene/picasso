@@ -126,7 +126,6 @@ export default {
 	},
 	created() {
 		this.paintingId = this.$route.params.id;
-		console.log("TCL: created -> this.paintingId", this.paintingId);
 		
 		if (this.paintingId) {
 			window.db.collection('painting').doc(this.paintingId).get().then((snapshot) => {
@@ -135,6 +134,9 @@ export default {
 				this.replay();
 			});
 		}
+
+		var auth = firebase.auth();
+    	var storageRef = firebase.storage().ref();
 	},
 	mounted() {
 		this.canvas = this.$refs.canvas;
