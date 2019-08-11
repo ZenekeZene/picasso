@@ -15,7 +15,7 @@ export default new Router({
 		},
 		{
 			path: '/paint/:id',
-			name: 'paint',
+			name: 'paintById',
 			component: PaintPage,
 		},
 		{

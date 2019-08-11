@@ -10,13 +10,25 @@
 	font-size: $font-size-xxs;
 
 	&__item {
+		position: relative;
 		@include flex(flex, end, center);
 		flex-direction: column;
 		height: 100px;
+		overflow: hidden;
 		padding: $gutter-1-2;
 		word-break: break-all;
 		border: 1px solid rgba(128, 128, 128, 0.32);
 		border-radius: 4px;
+
+		img {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			z-index: -1;
+			width: auto;
+			height: 200%;
+			transform: translateY(-50%);
+		}
 	}
 
 	&-wrapper {

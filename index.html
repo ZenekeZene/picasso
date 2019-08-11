@@ -23,10 +23,12 @@
 		<!-- Add Firebase products that you want to use -->
 
 		<script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-firestore.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-storage.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-auth.js"></script>
 
 		<script>
 			// Your web app's Firebase configuration
-			var firebaseConfig = {
+			const firebaseConfig = {
 				apiKey: 'AIzaSyCZiju0lvnf3kAip_Z5JeGwJaiMteWhZzs',
 				authDomain: 'picasso-paint.firebaseapp.com',
 				databaseURL: 'https://picasso-paint.firebaseio.com',
@@ -38,6 +40,8 @@
 			// Initialize Firebase
 			defaultProject = firebase.initializeApp(firebaseConfig);
 			db = defaultProject.firestore();
+			auth = firebase.auth();
+			storage = firebase.storage();
 		</script>
 	</body>
 </html>

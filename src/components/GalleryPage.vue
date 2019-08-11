@@ -9,6 +9,7 @@
 					:key="paint.id"
 					@click="$router.push(`paint/${paint.id}`)"
 				>
+					<img :src="paint.url">
 					<span font-bold>{{ paint.name }}</span>
 				</li>
 			</ol>
@@ -39,6 +40,7 @@ export default {
 						name: painting.data().name,
 						email: painting.data().email,
 						history: painting.data().history,
+						url: painting.data().url,
 					});
 				});
 			});
