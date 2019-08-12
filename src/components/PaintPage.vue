@@ -1,93 +1,93 @@
 <template>
   <section class="p-paint">
 	<ol
-	  class="tools --left"
-	  v-on="!isPlaying ? { mouseover } : {}"
-	  @mouseleave="toolsVisible = false"
-	  :class="{ '--disabled': isPainting }"
+		class="tools --left"
+		v-on="!isPlaying ? { mouseover } : {}"
+		@mouseleave="toolsVisible = false"
+		:class="{ '--disabled': isPainting }"
 	>
-	  <li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
-		<span
-		  class="icon"
-		  :style="{ backgroundColor: strokeStyle }"
-		  v-show="!toolsVisible"
-		  :class="{ '--erase': strokeStyle === colorErase }"
-		></span>
-		<ol class="colors" v-show="toolsVisible">
-		  <li
-			v-for="(color, index) in colors"
-			:key="`color-${index}`"
-			:style="{ backgroundColor: color }"
-			@click="strokeStyle = color;"
-			:class="{ '--selected': strokeStyle === color }"
-		  ></li>
-		  <li
-			:style="{ backgroundColor: colorErase }"
-			@click="strokeStyle = colorErase;"
-			:class="{ '--selected': strokeStyle === colorErase }"
-			class="--erase"
-		  ></li>
-		</ol>
-	  </li>
-	  <li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
-		<span font-bold style="text-align: left;">{{ strokeWidth }}</span>
-		<div class="range" v-show="toolsVisible">
-		  <input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth" />
-		  <span
-			class="range__label"
-			:style="{
-						minWidth: `${strokeWidth}px`,
-						minHeight: `${strokeWidth}px`,
-						backgroundColor: strokeStyle,
-					}"
-			:class="{ '--erase': strokeStyle === colorErase }"
-		  ></span>
-		</div>
-	  </li>
-	  <li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
-		<span class="icon-trash" v-touch:end="clean" v-mobile-hover:#4992a9></span>
-		<span class="label">Clear Canvas</span>
-	  </li>
-	  <li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
-		<span class="icon-reply" v-touch:end="undo" v-mobile-hover:#4992a9></span>
-		<span class="label">Undo</span>
-	  </li>
-	  <li class="tools__item" :class="{ '--playing': isPlaying, '--disabled': isPainting }">
-		<span
-		  :class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }"
-		  v-touch:end="replay"
-		  v-mobile-hover:#4992a9
-		></span>
-		<span class="label" v-if="!isPlaying">Replay</span>
-		<span class="label" v-else>Stop</span>
-	  </li>
-	  <li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
-		<a :href="dataURI" download="my-awesome-drawing-of-painter" v-show="!isPlaying">
-		  <span class="icon-printer"></span>
-		</a>
-		<span class="label">Download</span>
-	  </li>
-	  <li class="tools__item">
-		<span class="icon-upload" @click="launchSave" v-mobile-hover:#4992a9></span>
-		<span class="label">Upload</span>
-	  </li>
+		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
+			<span
+				class="icon"
+				:style="{ backgroundColor: strokeStyle }"
+				v-show="!toolsVisible"
+				:class="{ '--erase': strokeStyle === colorErase }"
+			></span>
+			<ol class="colors" v-show="toolsVisible">
+				<li
+					v-for="(color, index) in colors"
+					:key="`color-${index}`"
+					:style="{ backgroundColor: color }"
+					@click="strokeStyle = color;"
+					:class="{ '--selected': strokeStyle === color }"
+				></li>
+				<li
+					:style="{ backgroundColor: colorErase }"
+					@click="strokeStyle = colorErase;"
+					:class="{ '--selected': strokeStyle === colorErase }"
+					class="--erase"
+				></li>
+			</ol>
+		</li>
+		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
+			<span font-bold style="text-align: left;">{{ strokeWidth }}</span>
+			<div class="range" v-show="toolsVisible">
+			<input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth" />
+			<span
+				class="range__label"
+				:style="{
+							minWidth: `${strokeWidth}px`,
+							minHeight: `${strokeWidth}px`,
+							backgroundColor: strokeStyle,
+						}"
+				:class="{ '--erase': strokeStyle === colorErase }"
+			></span>
+			</div>
+		</li>
+		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting || history.length === 0 }">
+			<span class="icon-trash" v-touch:end="clean" v-mobile-hover:#4992a9></span>
+			<span class="label">Clear Canvas</span>
+		</li>
+		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting || history.length === 0 }">
+			<span class="icon-reply" v-touch:end="undo" v-mobile-hover:#4992a9></span>
+			<span class="label">Undo</span>
+		</li>
+		<li class="tools__item" :class="{ '--playing': isPlaying, '--disabled': isPainting || history.length === 0 }">
+			<span
+				:class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }"
+				v-touch:end="replay"
+				v-mobile-hover:#4992a9
+			></span>
+			<span class="label" v-if="!isPlaying">Replay</span>
+			<span class="label" v-else>Stop</span>
+		</li>
+		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting || history.length === 0 }">
+			<a :href="dataURI" download="my-awesome-drawing-of-painter">
+			<span class="icon-printer"></span>
+			</a>
+			<span class="label">Download</span>
+		</li>
+		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting || history.length === 0 }">
+			<span class="icon-upload" @click="launchSave" v-mobile-hover:#4992a9></span>
+			<span class="label">Upload</span>
+		</li>
 	</ol>
 	<canvas
-	  ref="canvas"
-	  width="1698"
-	  height="1028"
-	  class="p-paint__canvas"
-	  v-touch:start="handleMouseDown"
-	  v-touch:moving="handleMouseMove"
-	  v-touch:end="handleMouseUp"
+		ref="canvas"
+		width="1698"
+		height="1028"
+		class="p-paint__canvas"
+		v-touch:start="handleMouseDown"
+		v-touch:moving="handleMouseMove"
+		v-touch:end="handleMouseUp"
 	></canvas>
 	<div class="button-bottom">
-	  <span
-		class="icon-book"
-		:class="{ '--disabled': isPlaying || isPainting }"
-		@click="$router.push('/gallery')"
-		v-mobile-hover:#4992a9
-	  ></span>
+		<span
+			class="icon-book"
+			:class="{ '--disabled': isPlaying || isPainting }"
+			@click="$router.push('/gallery')"
+			v-mobile-hover:#4992a9
+		></span>
 	</div>
 	<modal-painting @sendPainting="save"></modal-painting>
   </section>
@@ -141,7 +141,7 @@ export default {
 				.then((snapshot) => {
 					const historyRAW = snapshot.data().history;
 					this.history = JSON.parse(historyRAW);
-					this.replay();
+					this.replay(4);
 				});
 		}
 
@@ -204,8 +204,10 @@ export default {
 			}
 		},
 		handleMouseUp() {
+			this.$emit('isPainting', false);
+			this.isPainting = false;
+			
 			if (this.isPainting && !this.isPlaying) {
-				this.isPainting = false;
 				this.$emit('isPainting', false);
 				this.currentIndex += 1;
 				this.saveToImage();
@@ -247,7 +249,7 @@ export default {
 				}
 			}
 		},
-		replay() {
+		replay(interval = 100) {
 			if (!this.isPlaying) {
 				if (this.history.length > 0) {
 					this.isPlaying = true;
@@ -262,7 +264,7 @@ export default {
 						() => {
 							this.isPlaying = false;
 						},
-						100
+						interval
 					);
 				}
 			} else {
@@ -277,7 +279,7 @@ export default {
 			i += 1;
 			if (i < howManyTimes) {
 				this.loopTimer = setTimeout(() => {
-					this.loop(i, howManyTimes, f, callback);
+					this.loop(i, howManyTimes, f, callback, ms);
 				}, ms);
 			} else {
 				callback();
@@ -339,11 +341,6 @@ export default {
 			});
 		
 			this.$modal.hide('modal-painting');
-		},
-		load() {
-			const history = localStorage.getItem('dibujo1');
-			this.history = JSON.parse(`[${history}']`);
-			this.replay();
 		},
 		getCanvasBlob() {
 			return new Promise((resolve, reject) => {

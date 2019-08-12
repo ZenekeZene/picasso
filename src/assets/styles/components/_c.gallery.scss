@@ -20,12 +20,13 @@
 		box-shadow: 0 0 3px rgba(128, 128, 128, 0.32);
 		border-radius: 4px;
 
-		img {
+		& > img {
 			width: auto;
+			min-width: 47px;
 			height: 100%;
 		}
 
-		& > span {
+		& span {
 			padding: $gutter;
 		}
 

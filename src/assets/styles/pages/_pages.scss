@@ -6,4 +6,5 @@
 	@include absolute(bottom $gutter-1-2 left $gutter-1-2);
 	width: var(--width-tools);
 	padding: $gutter;
+	transition: opacity 250ms ease-in;
 }

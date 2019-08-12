@@ -11,7 +11,7 @@
 		</swiper-slide>
 		<swiper-slide>
 			<div padding>
-				<h1>Inserta tu email, por favor &nbsp;&nbsp;🙏</h1>
+				<h1>Inserta tu email,<br/> por favor &nbsp;&nbsp;🙏</h1>
 				<input type="text" placeholder="Tu email" v-model="email">
 				<button margin-top class="btn"
 					@click="$emit('sendPainting',{ 'name': name, 'email': email })">Enviar dibujo</button>

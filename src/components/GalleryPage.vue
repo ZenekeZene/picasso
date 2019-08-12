@@ -1,19 +1,22 @@
 <template>
 	<article class="p-gallery">
 		<h5 margin-zero margin-auto-horizontal>Galería</h5>
-		<p v-if="paintings.length === 0" margin-top block font-size-xs text-center>Aún no hay dibujos.</p>
-		<section class="gallery-wrapper">
-			<ol class="gallery">
-				<li class="gallery__item"
-					v-for="paint in paintings"
-					:key="paint.id"
-					@click="$router.push(`paint/${paint.id}`)"
-				>
-					<img :src="paint.url">
-					<span font-bold>{{ paint.name }}</span>
-				</li>
-			</ol>
-		</section>
+		<transition name="fade" mode="out-in">
+			<p v-if="!isLoading && paintings.length === 0" margin-top block font-size-xs text-center>Aún no hay dibujos.</p>
+			<div class="lds-heart" v-if="isLoading" margin-auto-horizontal margin-top><div></div></div>
+			<section class="gallery-wrapper">
+				<ol class="gallery">
+					<li class="gallery__item"
+						v-for="paint in paintings"
+						:key="paint.id"
+						@click="$router.push(`paint/${paint.id}`)"
+					>
+						<img :src="paint.url">
+						<span font-bold>{{ paint.name }}</span>
+					</li>
+				</ol>
+			</section>
+		</transition>
 		<transition name="fade">
 			<span class="button-bottom icon-forward --left" @click="$router.push('/')"></span>
 		</transition>
@@ -25,6 +28,7 @@ export default {
 	data() {
 		return {
 			paintings: [],
+			isLoading: true,
 		};
 	},
 	mounted() {
@@ -43,6 +47,7 @@ export default {
 						url: painting.data().url,
 					});
 				});
+				this.isLoading = false;
 			});
 		},
 	},
