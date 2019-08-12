@@ -206,7 +206,6 @@ export default {
 		handleMouseUp() {
 			this.$emit('isPainting', false);
 			this.isPainting = false;
-
 			if (this.isPainting && !this.isPlaying) {
 				this.$emit('isPainting', false);
 				this.currentIndex += 1;
@@ -320,7 +319,7 @@ export default {
 				var metadata = {
 					'contentType': 'image/png'
 				};
-				window.storage.ref().child(`images/${Math.floor(Date.now() / 1000)}`).put(blob, metadata).then((snapshot) => {
+				window.storage.ref().child('images/prueba').put(blob, metadata).then((snapshot) => {
 					console.log('Uploaded', snapshot.totalBytes, 'bytes.');
 					snapshot.ref.getDownloadURL().then((url) => {
 						window.db

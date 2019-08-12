@@ -20,14 +20,23 @@
 		box-shadow: 0 0 3px rgba(128, 128, 128, 0.32);
 		border-radius: 4px;
 
-		& > img {
-			width: auto;
-			min-width: 47px;
+		& > div {
+			@include flex(flex, start, center);
+			width: 47px;
 			height: 100%;
+			transition: all 250ms ease-in;
+		}
+
+		& img {
+			width: 47px;
+			height: auto;
 		}
 
 		& span {
-			padding: $gutter;
+			flex-grow: 1;
+			padding: $gutter-1-2;
+			text-align: left;
+			overflow: hidden;
 		}
 
 		&:last-child {
