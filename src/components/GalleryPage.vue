@@ -1,6 +1,6 @@
 <template>
 	<article class="p-gallery">
-		<h5 margin-zero margin-auto-horizontal>Galería</h5>
+		<!--<h5 margin-zero margin-auto-horizontal>Galería</h5>-->
 		<transition name="fade" mode="out-in">
 			<p v-if="!isLoading && paintings.length === 0" margin-top block font-size-xs text-center>Aún no hay dibujos.</p>
 			<div v-else style="width: 100%; height: 100%;">
@@ -13,7 +13,7 @@
 							@click="$router.push(`paint/${paint.id}`)"
 						>
 							<transition-group name="fade" mode="out-in" tag="div">
-								<spinner-item v-show="!loaded" key="spinner"></spinner-item>
+								<spinner-item v-show="!loaded" key="spinner" class="--mini"></spinner-item>
 								<img :src="paint.url" v-on:load="loaded = true" key="image">
 							</transition-group>
 							<span font-bold>{{ paint.name }}</span>

@@ -15,6 +15,14 @@
 			animation-delay: -0.5s;
 		}
 	}
+
+	&.--mini {
+		transform: scale(0.5);
+
+		div {
+			border-color: $color-outline;
+		}
+	}
 }
 
 @keyframes lds-ripple {

@@ -2,7 +2,8 @@
 	position: relative;
 	display: grid;
 	width: 100%;
-	height: calc(100% - #{$gutter-2});
+	max-height: calc(100% - #{$gutter-2});
+	min-height: 100px;
 	overflow-y: auto; 
 	grid-template-columns: 1fr 1fr;
 	grid-gap: $gutter-1-2;

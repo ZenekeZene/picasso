@@ -144,12 +144,6 @@ export default {
 					this.replay(4);
 				});
 		}
-
-		window.auth.onAuthStateChanged((user) => {
-			if (user) {
-				console.log('Anonymous user signed-in.', user);
-			}
-		});
 	},
 	mounted() {
 		this.canvas = this.$refs.canvas;
