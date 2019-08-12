@@ -5,10 +5,9 @@ $font-size: $coke-font-size;
 
 // (2)
 :root {
-	--height-header: 80px;
+	--height-header: 60px;
 	--top-tools: var(--height-header);
-	--left-tools: 4vw;
-	--width-tools: 5rem;
+	--width-tools: 4rem;
 }
 // 1: Transference Coke -> Starr variables.
 // 2: Starr variables.

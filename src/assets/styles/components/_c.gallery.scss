@@ -2,7 +2,7 @@
 	position: relative;
 	display: grid;
 	width: 100%;
-	height: calc(100vh - 200px);
+	height: 100%;
 	overflow-y: auto; 
 	grid-template-columns: 1fr 1fr;
 	grid-gap: $gutter-1-2;
@@ -11,28 +11,26 @@
 
 	&__item {
 		position: relative;
-		@include flex(flex, end, center);
-		flex-direction: column;
+		@include flex(flex, start, center);
 		height: 100px;
 		overflow: hidden;
 		padding: $gutter-1-2;
 		word-break: break-all;
-		border: 1px solid rgba(128, 128, 128, 0.32);
+		box-shadow: 0 0 3px rgba(128, 128, 128, 0.32);
 		border-radius: 4px;
 
 		img {
-			position: absolute;
-			top: 50%;
-			left: 0;
-			z-index: -1;
 			width: auto;
-			height: 200%;
-			transform: translateY(-50%);
+			height: 100%;
+		}
+
+		& > span {
+			padding: $gutter;
 		}
 	}
 
 	&-wrapper {
 		position: relative;
-		padding: $gutter-2 0;
+		height: calc(100% - 6rem);
 	}
 }

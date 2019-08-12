@@ -5,6 +5,7 @@
 	max-width: var(--width-tools);
 	@include flex(inline, start, center);
 	flex-direction: column;
+	padding: 0;
 
 	&:before {
 		content: '';

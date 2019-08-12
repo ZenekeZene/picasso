@@ -1,3 +1,7 @@
+h1 {
+	font-size: 2rem;
+}
+
 h1,
 h2,
 h3,
@@ -17,10 +21,11 @@ h6 {
 	position: absolute;
 	z-index: depth(1);
 	height: var(--height-header);
+	line-height: 4rem;
 	margin-bottom: 0;
-	padding-top: 5vh;
+	padding-top: $gutter;
+	padding-left: $gutter-3;
 	text-align: left;
-	padding-left: calc(#{var(--left-tools)} + #{$gutter-1-2} + #{$gutter});
 
 	@include media('<=phablet') {
 		display: block;

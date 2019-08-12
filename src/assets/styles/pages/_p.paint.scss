@@ -1,6 +1,7 @@
 .p-paint {
 	position: relative;
 	@include size();
+	padding-left: $gutter-1-2 !important;
 
 		.colors {
 			@include absolute(left $gutter-3-2);

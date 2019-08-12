@@ -3,7 +3,7 @@
 @import 'p.gallery';
 
 .button-bottom {
-	@include absolute(bottom $gutter);
-	left: calc(#{var(--left-tools)} + #{$gutter-1-2});
-	padding: $gutter $gutter-3-2;
+	@include absolute(bottom $gutter-1-2 left $gutter-1-2);
+	width: var(--width-tools);
+	padding: $gutter;
 }
