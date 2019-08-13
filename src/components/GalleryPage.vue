@@ -10,7 +10,7 @@
 						<li class="gallery__item"
 							v-for="paint in paintings"
 							:key="paint.id"
-							@click="$router.push(`paint/${paint.id}`)"
+							@click="goToPainting(paint)"
 						>
 							<transition-group name="fade" mode="out-in" tag="div">
 								<spinner-item v-show="!loaded" key="spinner" class="--mini"></spinner-item>
@@ -23,11 +23,12 @@
 			</div>
 		</transition>
 		<transition name="fade">
-			<span class="button-bottom icon-forward --left" @click="$router.push('/')"></span>
+			<span class="button-bottom icon-forward --left" @click="goToRoot"></span>
 		</transition>
 	</article>
 </template>
 <script>
+import { mapState, mapMutations } from 'vuex';
 import SpinnerItem from './SpinnerItem';
 
 export default {
@@ -46,6 +47,9 @@ export default {
 		this.getAllPaintings();
 	},
 	methods: {
+		...mapMutations([
+			'setHistoryPersisted',
+		]),
 		getAllPaintings() {
 			this.paintings = [];
 			window.db.collection('painting').get().then((snapshot) => {
@@ -60,6 +64,15 @@ export default {
 				});
 				this.isLoading = false;
 			});
+		},
+		goToPainting(paint) {
+			this.setHistoryPersisted({
+				historyPersisted: paint.history,
+			})
+			this.$router.push(`paint/${paint.id}`);
+		},
+		goToRoot() {
+			this.$router.push('/');
 		},
 	},
 };

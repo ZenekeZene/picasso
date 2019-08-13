@@ -105,12 +105,14 @@ export default {
 	computed: {
 		...mapState([
 			'historyPersisted',
+			'indexLine',
+			'mode',
 		]),
 		isDisabled() {
-			return this.isPlaying || this.isPainting || this.history.length === 0;
+			return this.isPlaying || this.isPainting || this.historyPersisted.length === 0;
 		},
 		isPauseDisabled() {
-			return this.isPainting || this.history.length === 0;
+			return this.isPainting || this.historyPersisted.length === 0;
 		},
 	},
 	data() {
@@ -129,35 +131,16 @@ export default {
 				'rgb(252, 222, 192)',
 				'rgb(27, 37, 52)',
 			],
-			history: [],
 			colorErase: '',
 			backgroundColor: '',
 			strokeWidth: 10,
 			strokeStyle: 'red',
 			toolsVisible: false,
-			currentIndex: 0,
 			dataURI: '',
 			loopTimer: null,
 			paintingId: null,
 			raw: null,
-			mode: 'edit',
 		};
-	},
-	created() {
-		this.paintingId = this.$route.params.id;
-
-		if (this.paintingId) {
-			window.db
-				.collection('painting')
-				.doc(this.paintingId)
-				.get()
-				.then((snapshot) => {
-					const historyRAW = snapshot.data().history;
-					this.history = JSON.parse(historyRAW);
-					this.replay(4);
-				});
-			this.mode = 'read';
-		}
 	},
 	mounted() {
 		this.canvas = this.$refs.canvas;
@@ -182,17 +165,46 @@ export default {
 		document.addEventListener('mouseout', (event) => {
 			this.handleMouseUp(event);
 		});
+
+		if (this.historyPersisted.length > 0) {
+			this.player();
+		}
+
+		this.paintingId = this.$route.params.id;
+
+		if (this.paintingId) {
+			window.db
+				.collection('painting')
+				.doc(this.paintingId)
+				.get()
+				.then((snapshot) => {
+					this.setHistoryOfPainting({
+						raw: snapshot.data().history
+					});
+					this.replay(4);
+				});
+			this.setModeToReadable();
+		}
 	},
 	methods: {
 		...mapMutations([
-			'setHistory',
+			'setHistoryPersisted',
+			'pushDotOnHistory',
+			'createNewStrokeOnHistory',
+			'removeStrokeOnHistory',
+			'deleteAllHistory',
+			'incrementIndexLine',
+			'decreaseIndexLine',
+			'resetIndexLine',
+			'setHistoryOfPainting',
+			'setModeToReadable',
 		]),
 		isToolEnabled(event) {
 			return !event.target.classList.contains('--disabled');
 		},
 		goToGallery() {
-			this.setHistory({
-				historyPersisted: this.history,
+			this.setHistoryPersisted({
+				historyPersisted: this.historyPersisted,
 			});
 			this.$router.push('/gallery');
 		},
@@ -207,7 +219,7 @@ export default {
 				this.isPainting = true;
 				this.$emit('isPainting', true);
 				this.prevPosition = { offsetX, offsetY };
-				this.history.push([]);
+				this.createNewStrokeOnHistory();
 			}
 		},
 		handleMouseMove(event) {
@@ -230,7 +242,7 @@ export default {
 			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
 				this.isPainting = false;
 				this.$emit('isPainting', false);
-				this.currentIndex += 1;
+				this.incrementIndexLine();
 				this.saveToImage();
 			}
 		},
@@ -246,7 +258,9 @@ export default {
 				pmousey: offsetY,
 			};
 			this.paintDot(dot);
-			this.history[this.currentIndex].push(dot);
+			this.pushDotOnHistory({
+				dot: dot,
+			});
 		},
 		paintDot(dot) {
 			const x = dot.mousex;
@@ -262,8 +276,8 @@ export default {
 			this.prevPosition = { offsetX, offsetY };
 		},
 		player() {
-			for (let i = 0; i < this.history.length; i += 1) {
-				const stroke = this.history[i];
+			for (let i = 0; i < this.historyPersisted.length; i += 1) {
+				const stroke = this.historyPersisted[i];
 				for (let j = 0; j < stroke.length; j += 1) {
 					const dot = stroke[j];
 					this.paintDot(dot);
@@ -272,10 +286,10 @@ export default {
 		},
 		replay(interval = 100) {
 			if (!this.isPlaying) {
-				if (this.history.length > 0) {
+				if (this.historyPersisted.length > 0) {
 					this.isPlaying = true;
 					this.clearCanvas();
-					const history = [].concat(...this.history);
+					const history = [].concat(...this.historyPersisted);
 					this.loop(
 						0,
 						history.length,
@@ -308,16 +322,16 @@ export default {
 		},
 		undo(event) {
 			if (this.currentIndex - 1 >= 0 && !this.isPlaying && this.isToolEnabled(event)) {
-				this.history.pop();
-				this.currentIndex -= 1;
+				this.removeStrokeOnHistory();
+				this.decreaseIndexLine();
 				this.clearCanvas();
 				this.player();
 			}
 		},
 		clean(event) {
 			if (!this.isPlaying && this.isToolEnabled(event)) {
-				this.history = [];
-				this.currentIndex = 0;
+				this.deleteAllHistory();
+				this.resetIndexLine();
 				this.clearCanvas();
 			}
 		},
@@ -349,7 +363,7 @@ export default {
 							.collection('painting')
 							.add({
 								name: paintingData.name,
-								history: JSON.stringify(this.history),
+								history: JSON.stringify(this.historyPersisted),
 								url: url,
 							})
 							.then(() => {
