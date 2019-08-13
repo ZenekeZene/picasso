@@ -6,12 +6,12 @@
 		@mouseleave="toolsVisible = false"
 		:class="{ '--disabled': isPainting }"
 	>
-		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
+		<li class="tools__item">
 			<span
 				class="icon"
 				:style="{ backgroundColor: strokeStyle }"
 				v-show="!toolsVisible"
-				:class="{ '--erase': strokeStyle === colorErase }"
+				:class="{ '--erase': strokeStyle === colorErase, '--disabled': isPlaying || isPainting || mode === 'read' }"
 			></span>
 			<ol class="colors" v-show="toolsVisible">
 				<li
@@ -29,7 +29,7 @@
 				></li>
 			</ol>
 		</li>
-		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting }">
+		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting || mode === 'read' }">
 			<span font-bold style="text-align: left;">{{ strokeWidth }}</span>
 			<div class="range" v-show="toolsVisible">
 			<input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth" />
@@ -44,31 +44,31 @@
 			></span>
 			</div>
 		</li>
-		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting || history.length === 0 }">
-			<span class="icon-trash" v-touch:end="clean" v-mobile-hover:#4992a9></span>
+		<li class="tools__item">
+			<span class="icon-trash" v-touch:end="clean" v-mobile-hover:#4992a9 :class="{ '--disabled': isDisabled || mode === 'read' }"></span>
 			<span class="label">Clear Canvas</span>
 		</li>
-		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting || history.length === 0 }">
-			<span class="icon-reply" v-touch:end="undo" v-mobile-hover:#4992a9></span>
+		<li class="tools__item">
+			<span class="icon-reply" v-touch:end="undo" v-mobile-hover:#4992a9 :class="{ '--disabled': isDisabled || mode === 'read' }"></span>
 			<span class="label">Undo</span>
 		</li>
-		<li class="tools__item" :class="{ '--playing': isPlaying, '--disabled': isPainting || history.length === 0 }">
+		<li class="tools__item">
 			<span
-				:class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying }"
+				:class="{ 'icon-stop': isPlaying, 'icon-play': !isPlaying , '--playing': isPlaying, '--disabled': isPauseDisabled }"
 				v-touch:end="replay"
 				v-mobile-hover:#4992a9
 			></span>
 			<span class="label" v-if="!isPlaying">Replay</span>
 			<span class="label" v-else>Stop</span>
 		</li>
-		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting || history.length === 0 }">
+		<li class="tools__item" :class="{ '--disabled': isDisabled }">
 			<a :href="dataURI" download="my-awesome-drawing-of-painter">
 			<span class="icon-printer"></span>
 			</a>
 			<span class="label">Download</span>
 		</li>
-		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting || history.length === 0 }">
-			<span class="icon-upload" @click="launchSave" v-mobile-hover:#4992a9></span>
+		<li class="tools__item">
+			<span class="icon-upload" @click="launchSave" v-mobile-hover:#4992a9 :class="{ '--disabled': isDisabled || mode === 'read' }"></span>
 			<span class="label">Upload</span>
 		</li>
 	</ol>
@@ -85,7 +85,7 @@
 		<span
 			class="icon-book"
 			:class="{ '--disabled': isPlaying || isPainting }"
-			@click="$router.push('/gallery')"
+			@click="goToGallery"
 			v-mobile-hover:#4992a9
 		></span>
 	</div>
@@ -94,12 +94,24 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
 import ModalPainting from './ModalPainting';
 
 export default {
 	name: 'PaintPage',
 	components: {
 		ModalPainting,
+	},
+	computed: {
+		...mapState([
+			'historyPersisted',
+		]),
+		isDisabled() {
+			return this.isPlaying || this.isPainting || this.history.length === 0;
+		},
+		isPauseDisabled() {
+			return this.isPainting || this.history.length === 0;
+		},
 	},
 	data() {
 		return {
@@ -117,17 +129,18 @@ export default {
 				'rgb(252, 222, 192)',
 				'rgb(27, 37, 52)',
 			],
+			history: [],
 			colorErase: '',
 			backgroundColor: '',
 			strokeWidth: 10,
 			strokeStyle: 'red',
-			history: [],
 			toolsVisible: false,
 			currentIndex: 0,
 			dataURI: '',
 			loopTimer: null,
 			paintingId: null,
 			raw: null,
+			mode: 'edit',
 		};
 	},
 	created() {
@@ -143,6 +156,7 @@ export default {
 					this.history = JSON.parse(historyRAW);
 					this.replay(4);
 				});
+			this.mode = 'read';
 		}
 	},
 	mounted() {
@@ -170,20 +184,34 @@ export default {
 		});
 	},
 	methods: {
+		...mapMutations([
+			'setHistory',
+		]),
+		isToolEnabled(event) {
+			return !event.target.classList.contains('--disabled');
+		},
+		goToGallery() {
+			this.setHistory({
+				historyPersisted: this.history,
+			});
+			this.$router.push('/gallery');
+		},
 		mouseover(event) {
 			event.preventDefault();
 			this.toolsVisible = true;
 		},
 		handleMouseDown(event) {
-			this.toolsVisible = false;
-			const { offsetX, offsetY } = event;
-			this.isPainting = true;
-			this.$emit('isPainting', true);
-			this.prevPosition = { offsetX, offsetY };
-			this.history.push([]);
+			if (this.mode === 'edit') {
+				this.toolsVisible = false;
+				const { offsetX, offsetY } = event;
+				this.isPainting = true;
+				this.$emit('isPainting', true);
+				this.prevPosition = { offsetX, offsetY };
+				this.history.push([]);
+			}
 		},
 		handleMouseMove(event) {
-			if (this.isPainting && !this.isPlaying) {
+			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
 				let offsetX;
 				let offsetY;
 				if (event.offsetX) {
@@ -199,8 +227,8 @@ export default {
 		},
 		handleMouseUp() {
 			this.$emit('isPainting', false);
-			this.isPainting = false;
-			if (this.isPainting && !this.isPlaying) {
+			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
+				this.isPainting = false;
 				this.$emit('isPainting', false);
 				this.currentIndex += 1;
 				this.saveToImage();
@@ -279,8 +307,7 @@ export default {
 			}
 		},
 		undo(event) {
-			event.preventDefault();
-			if (this.currentIndex - 1 >= 0 && !this.isPlaying) {
+			if (this.currentIndex - 1 >= 0 && !this.isPlaying && this.isToolEnabled(event)) {
 				this.history.pop();
 				this.currentIndex -= 1;
 				this.clearCanvas();
@@ -288,7 +315,7 @@ export default {
 			}
 		},
 		clean(event) {
-			if (!this.isPlaying) {
+			if (!this.isPlaying && this.isToolEnabled(event)) {
 				this.history = [];
 				this.currentIndex = 0;
 				this.clearCanvas();
@@ -305,22 +332,23 @@ export default {
 			this.ctx.fillStyle = this.backgroundColor;
 			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		},
-		launchSave() {
-			this.$modal.show('modal-painting');
+		launchSave(event) {
+			if (this.isToolEnabled(event)) {
+				this.$modal.show('modal-painting');
+			}
 		},
 		save(paintingData) {
 			this.getCanvasBlob().then((blob) => {
 				var metadata = {
 					'contentType': 'image/png'
 				};
-				window.storage.ref().child('images/prueba').put(blob, metadata).then((snapshot) => {
+				window.storage.ref().child(`images/${Math.floor(Date.now() / 1000)}`).put(blob, metadata).then((snapshot) => {
 					console.log('Uploaded', snapshot.totalBytes, 'bytes.');
 					snapshot.ref.getDownloadURL().then((url) => {
 						window.db
 							.collection('painting')
 							.add({
 								name: paintingData.name,
-								email: paintingData.email,
 								history: JSON.stringify(this.history),
 								url: url,
 							})

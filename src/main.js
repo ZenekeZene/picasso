@@ -7,6 +7,7 @@ import Toasted from 'vue-toasted';
 
 import App from './App';
 import router from './router';
+import store from './store';
 
 import 'swiper/dist/css/swiper.css'
 import './assets/styles/main.scss';
@@ -46,6 +47,7 @@ Vue.config.productionTip = false;
 new Vue({
 	el: '#app',
 	router,
+	store,
 	components: { App },
 	template: '<App/>',
 });
