@@ -44,9 +44,9 @@
 		.label {
 			@include absolute(left 4rem);
 			display: none;
-			font-size: 0.8rem;
-			width: var(--width-tools);
+			font-size: $font-size-xxs;
 			font-weight: $font-black;
+			width: var(--width-tools);
 			text-align: left;
 		}
 

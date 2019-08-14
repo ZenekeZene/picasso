@@ -1,6 +1,6 @@
 <template>
 	<article class="p-gallery">
-		<!--<h5 margin-zero margin-auto-horizontal>Galería</h5>-->
+		<p class="intro">Dibujos aleatorios de gente muy local:</p>
 		<transition name="fade" mode="out-in">
 			<p v-if="!isLoading && paintings.length === 0" margin-top block font-size-xs text-center>Aún no hay dibujos.</p>
 			<div v-else style="width: 100%; height: 100%;">
@@ -23,7 +23,10 @@
 			</div>
 		</transition>
 		<transition name="fade">
-			<span class="button-bottom icon-forward --left" @click="goToRoot"></span>
+			<div class="button-bottom" @click="goToRoot">
+				<span class="icon-write --left"></span>
+				<span class="label">Crear dibujo</span>
+			</div>
 		</transition>
 	</article>
 </template>

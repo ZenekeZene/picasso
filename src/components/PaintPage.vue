@@ -25,18 +25,19 @@
 		v-touch:moving="handleMouseMove"
 		v-touch:end="handleMouseUp"
 	></canvas>
-	<div class="button-bottom">
+	<div class="button-bottom" @click="goToGallery"
+		:class="{ '--disabled': isPlaying || isPainting }">
 		<span
 			class="icon-book"
-			:class="{ '--disabled': isPlaying || isPainting }"
-			@click="goToGallery"
 			v-mobile-hover:#4992a9
 		></span>
+		<span class="label">Galería</span>
 	</div>
-	<div class="button-bottom --right" v-if="mode === 'read'">
+	<div class="button-bottom --right" v-if="mode === 'read'"
+		:class="{ '--disabled': isPlaying || isPainting }">
+		<span class="label">Crear dibujo</span>
 		<span
 			class="icon-write"
-			:class="{ '--disabled': isPlaying || isPainting }"
 			@click="goToPaint"
 			v-mobile-hover:#4992a9
 		></span>
