@@ -22,6 +22,7 @@ export default {
 		...mapState([
 			'mode',
 			'canvas',
+			'historyPersisted',
 		]),
 		...mapGetters([
 			'isDisabled',
@@ -33,7 +34,7 @@ export default {
 		},
 		save(paintingData) {
 			this.getCanvasBlob().then((blob) => {
-				var metadata = {
+				const metadata = {
 					'contentType': 'image/png'
 				};
 				window.storage.ref().child(`images/${Math.floor(Date.now() / 1000)}`).put(blob, metadata).then((snapshot) => {
