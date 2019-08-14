@@ -103,7 +103,9 @@ export default {
 		this.setContextCanvas({
 			canvas: this.canvas,
 		});
-		//this.setBackgroundCanvas();
+		this.canvas.width = window.screen.width;
+		this.canvas.height = window.screen.height;
+		this.setBackgroundCanvas();
 		this.ctx.lineJoin = 'round';
 		this.ctx.lineCap = 'round';
 		this.ctx.lineWidth = this.strokeWidth;
@@ -156,6 +158,7 @@ export default {
 			'setPaintingStatus',
 			'setModeToEditable',
 			'clearCanvas',
+			'setBackgroundCanvas',
 		]),
 		isToolEnabled(event) {
 			return !event.target.classList.contains('--disabled');

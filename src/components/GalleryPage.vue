@@ -1,6 +1,6 @@
 <template>
 	<article class="p-gallery">
-		<p class="intro">Dibujos anónimos de gente <span font-bold>muy loca</span>.</p>
+		<p class="intro">Dibujos <span font-bold>anónimos</span> de gente <span font-bold>muy loca</span>.</p>
 		<transition name="fade" mode="out-in">
 			<p v-if="!isLoading && paintings.length === 0" block font-size-xs text-center>[ &nbsp;Aún no hay dibujos&nbsp;&nbsp;<span font-size-l>🥺</span>&nbsp; ]</p>
 			<div v-else style="width: 100%; height: 100%;">
