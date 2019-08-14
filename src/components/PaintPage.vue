@@ -31,7 +31,7 @@
 			v-mobile-hover:#4992a9
 		></span>
 	</div>
-	<div class="button-bottom --right">
+	<div class="button-bottom --right" v-if="mode === 'read'">
 		<span
 			class="icon-write"
 			:class="{ '--disabled': isPlaying || isPainting }"
