@@ -6,11 +6,11 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
 	strict: process.env.NODE_ENV !== 'production',
-	/*plugins: [
+	plugins: [
 		createPersistedState({
 			key: 'picasso-state',
 		}),
-	],*/
+	],
 	state: {
 		historyPersisted: [[]],
 		indexLine: 0,
@@ -19,6 +19,9 @@ const store = new Vuex.Store({
 		ctx: null,
 		isPlaying: false,
 		isPainting: false,
+		colorStroke: '#008f7a',
+		colorErase: '',
+		strokeWidth: 10,
 	},
 	getters: {
 		isDisabled: (state) => {
@@ -33,6 +36,12 @@ const store = new Vuex.Store({
 		},
 	},
 	mutations: {
+		setColorStroke(state, payload) {
+			state.colorStroke = payload.colorStroke;
+		},
+		setColorErase(state, payload) {
+			state.colorErase = payload.colorErase;
+		},
 		setHistoryPersisted(state, payload) {
 			state.historyPersisted = payload.historyPersisted;
 		},
@@ -77,6 +86,9 @@ const store = new Vuex.Store({
 		},
 		setPaintingStatus(state, payload) {
 			state.isPainting = payload.status;
+		},
+		setStrokeWidth(state, payload) {
+			state.strokeWidth = payload.strokeWidth;
 		},
 	},
 });

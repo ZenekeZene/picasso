@@ -6,44 +6,8 @@
 		@mouseleave="toolsVisible = false"
 		:class="{ '--disabled': isPainting }"
 	>
-		<li class="tools__item">
-			<span
-				class="icon"
-				:style="{ backgroundColor: strokeStyle }"
-				v-show="!toolsVisible"
-				:class="{ '--erase': strokeStyle === colorErase, '--disabled': isPlaying || isPainting || mode === 'read' }"
-			></span>
-			<ol class="colors" v-show="toolsVisible">
-				<li
-					v-for="(color, index) in colors"
-					:key="`color-${index}`"
-					:style="{ backgroundColor: color }"
-					@click="strokeStyle = color;"
-					:class="{ '--selected': strokeStyle === color }"
-				></li>
-				<li
-					:style="{ backgroundColor: colorErase }"
-					@click="strokeStyle = colorErase;"
-					:class="{ '--selected': strokeStyle === colorErase }"
-					class="--erase"
-				></li>
-			</ol>
-		</li>
-		<li class="tools__item" :class="{ '--disabled': isPlaying || isPainting || mode === 'read' }">
-			<span font-bold style="text-align: left;">{{ strokeWidth }}</span>
-			<div class="range" v-show="toolsVisible">
-			<input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth" />
-			<span
-				class="range__label"
-				:style="{
-							minWidth: `${strokeWidth}px`,
-							minHeight: `${strokeWidth}px`,
-							backgroundColor: strokeStyle,
-						}"
-				:class="{ '--erase': strokeStyle === colorErase }"
-			></span>
-			</div>
-		</li>
+		<colors-tool :toolsVisible="toolsVisible"></colors-tool>
+		<stroke-tool :toolsVisible="toolsVisible"></stroke-tool>
 		<replay-tool @replay="replay" @clearCanvas="clearCanvas"></replay-tool>
 		<clean-tool @clearCanvas="clearCanvas"></clean-tool>
 		<undo-tool @player="player" @clearCanvas="clearCanvas"></undo-tool>
@@ -77,6 +41,8 @@ import UndoTool from './tools/UndoTool';
 import ReplayTool from './tools/ReplayTool';
 import DownloadTool from './tools/DownloadTool';
 import UploadTool from './tools/UploadTool';
+import ColorsTool from './tools/ColorsTool';
+import StrokeTool from './tools/StrokeTool';
 
 export default {
 	name: 'PaintPage',
@@ -86,6 +52,8 @@ export default {
 		ReplayTool,
 		DownloadTool,
 		UploadTool,
+		ColorsTool,
+		StrokeTool,
 	},
 	computed: {
 		...mapState([
@@ -96,6 +64,9 @@ export default {
 			'ctx',
 			'isPainting',
 			'isPlaying',
+			'colorStroke',
+			'colorErase',
+			'strokeWidth',
 		]),
 		isDisabled() {
 			return this.isPlaying || this.isPainting || this.historyPersisted.length === 0;
@@ -104,19 +75,6 @@ export default {
 	data() {
 		return {
 			prevPosition: { offsetX: 0, offsetY: 0 },
-			colors: [
-				'#008F7A',
-				'#845EC2',
-				'#D65DB1',
-				'#FF6F91',
-				'#FFC75F',
-				'rgb(252, 222, 192)',
-				'rgb(27, 37, 52)',
-			],
-			colorErase: '',
-			backgroundColor: '',
-			strokeWidth: 10,
-			strokeStyle: 'red',
 			toolsVisible: false,
 			dataURI: '',
 			paintingId: null,
@@ -131,13 +89,9 @@ export default {
 		this.setContextCanvas({
 			canvas: this.canvas,
 		});
-		this.colorErase = this.backgroundColor = window
-			.getComputedStyle(document.documentElement)
-			.getPropertyValue('--color-background');
-		this.setBackgroundCanvas();
+		//this.setBackgroundCanvas();
 		this.ctx.lineJoin = 'round';
 		this.ctx.lineCap = 'round';
-		[this.strokeStyle] = this.colors;
 		this.ctx.lineWidth = this.strokeWidth;
 
 		document.addEventListener('keydown', (event) => {
@@ -207,7 +161,6 @@ export default {
 				this.setPaintingStatus({
 					status: true,
 				});
-				this.$emit('isPainting', true);
 				this.prevPosition = { offsetX, offsetY };
 				this.createNewStrokeOnHistory();
 			}
@@ -228,12 +181,11 @@ export default {
 			}
 		},
 		handleMouseUp() {
-			this.$emit('isPainting', false);
+			this.setPaintingStatus({
+				status: false,
+			});
+			
 			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
-				this.setPaintingStatus({
-					status: false,
-				});
-				this.$emit('isPainting', false);
 				this.incrementIndexLine();
 				this.saveToImage();
 			}
@@ -243,7 +195,7 @@ export default {
 			const { offsetX: x, offsetY: y } = this.prevPosition;
 			const dot = {
 				size: this.strokeWidth,
-				color: this.strokeStyle,
+				color: this.colorStroke,
 				mousex: x,
 				mousey: y,
 				pmousex: offsetX,
