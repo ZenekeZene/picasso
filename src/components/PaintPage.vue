@@ -31,6 +31,14 @@
 			v-mobile-hover:#4992a9
 		></span>
 	</div>
+	<div class="button-bottom --right">
+		<span
+			class="icon-write"
+			:class="{ '--disabled': isPlaying || isPainting }"
+			@click="goToPaint"
+			v-mobile-hover:#4992a9
+		></span>
+	</div>
   </section>
 </template>
 
@@ -140,6 +148,7 @@ export default {
 			'setCanvas',
 			'setPlayingStatus',
 			'setPaintingStatus',
+			'setModeToEditable',
 		]),
 		isToolEnabled(event) {
 			return !event.target.classList.contains('--disabled');
@@ -149,6 +158,12 @@ export default {
 				historyPersisted: this.historyPersisted,
 			});
 			this.$router.push('/gallery');
+		},
+		goToPaint() {
+			this.setModeToEditable();
+			this.deleteAllHistory();
+			this.resetIndexLine();
+			this.clearCanvas();
 		},
 		mouseover(event) {
 			event.preventDefault();
@@ -181,11 +196,11 @@ export default {
 			}
 		},
 		handleMouseUp() {
-			this.setPaintingStatus({
-				status: false,
-			});
-			
 			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
+				this.setPaintingStatus({
+					status: false,
+				});
+			
 				this.incrementIndexLine();
 				this.saveToImage();
 			}
@@ -236,7 +251,7 @@ export default {
 			this.setBackgroundCanvas();
 		},
 		setBackgroundCanvas() {
-			this.ctx.fillStyle = this.backgroundColor;
+			this.ctx.fillStyle = this.colorErase;
 			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		},
 		replay(interval = 10) {

@@ -1,12 +1,12 @@
 <template>
-	<li class="tools__item">
-			<span class="icon-reply"
-				v-touch:end="undo"
-				v-mobile-hover:#4992a9
-				:class="{ '--disabled': isDisabled || mode === 'read' }"
-			></span>
-			<span class="label">Undo</span>
-		</li>
+	<li class="tools__item"  v-if="mode === 'edit'">
+		<span class="icon-reply"
+			v-touch:end="undo"
+			v-mobile-hover:#4992a9
+			:class="{ '--disabled': isDisabled || mode === 'read' }"
+		></span>
+		<span class="label">Undo</span>
+	</li>
 </template>
 
 <script>

@@ -6,6 +6,7 @@
 	@include icon('cross') {
 		@include absolute(top $gutter-3-2 right $gutter);
 		z-index: depth(1);
+		width: auto;
 		padding: 0 $gutter;
 		font-size: $font-size-m;
 	}

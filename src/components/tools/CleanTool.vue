@@ -1,5 +1,5 @@
 <template>
-	<li class="tools__item">
+	<li class="tools__item" v-if="mode === 'edit'">
 		<span class="icon-trash"
 			v-touch:end="clean"
 			v-mobile-hover:#4992a9

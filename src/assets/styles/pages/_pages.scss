@@ -7,4 +7,9 @@
 	width: var(--width-tools);
 	padding: $gutter;
 	transition: opacity 250ms ease-in;
+
+	&.--right {
+		right: $gutter-1-2;
+		left: unset;
+	}
 }
