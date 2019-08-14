@@ -7,7 +7,10 @@
 		v-mobile-hover:#4992a9="'heartBeat'"
 	></span></h1>
 	<transition name="fade" mode="out-in">
-		<router-view @isPainting="isPainting = $event" @inputFocused="anyInputFocused = $event"/>
+		<router-view
+			@isPainting="isPainting = $event"
+			@inputFocused="anyInputFocused = $event"
+		/>
 	</transition>
 	<!--<transition name="fade">
 		<github-item href="https://github.com/ZenekeZene/picasso#picasso"
