@@ -4,7 +4,7 @@
 		class="tools --left"
 		v-on="!isPlaying ? { mouseover } : {}"
 		@mouseleave="toolsVisible = false"
-		:class="{ '--disabled': isPainting }"
+		:class="{ '--disabled': isPainting || showSpinner }"
 	>
 		<colors-tool :toolsVisible="toolsVisible"></colors-tool>
 		<stroke-tool :toolsVisible="toolsVisible"></stroke-tool>
@@ -12,13 +12,15 @@
 		<clean-tool @clearCanvas="clearCanvas"></clean-tool>
 		<undo-tool @player="player" @clearCanvas="clearCanvas"></undo-tool>
 		<download-tool :downloadURI="dataURI"></download-tool>
-		<upload-tool></upload-tool>
+		<upload-tool @showSpinner="showSpinner = $event.status"></upload-tool>
 	</ol>
+	<spinner-item v-show="showSpinner"></spinner-item>
 	<canvas
 		ref="canvas"
 		width="1698"
 		height="1028"
 		class="p-paint__canvas"
+		:class="{ '--blur': showSpinner }"
 		v-touch:start="handleMouseDown"
 		v-touch:moving="handleMouseMove"
 		v-touch:end="handleMouseUp"
@@ -51,6 +53,7 @@ import DownloadTool from './tools/DownloadTool';
 import UploadTool from './tools/UploadTool';
 import ColorsTool from './tools/ColorsTool';
 import StrokeTool from './tools/StrokeTool';
+import SpinnerItem from './SpinnerItem';
 
 export default {
 	name: 'PaintPage',
@@ -62,6 +65,7 @@ export default {
 		UploadTool,
 		ColorsTool,
 		StrokeTool,
+		SpinnerItem,
 	},
 	computed: {
 		...mapState([
@@ -88,6 +92,7 @@ export default {
 			paintingId: null,
 			raw: null,
 			loopTimer: null,
+			showSpinner: false,
 		};
 	},
 	mounted() {

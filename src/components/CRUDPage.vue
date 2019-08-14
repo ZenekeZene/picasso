@@ -70,8 +70,8 @@
 </template>
 
 <script>
-import ModalDelete from './ModalDelete';
-import ModalEdit from './ModalEdit';
+import ModalDelete from './modals/ModalDelete';
+import ModalEdit from './modals/ModalEdit';
 import SpinnerItem from './SpinnerItem';
 import scrollTo from '../scrollTo';
 import { mock } from '../mock.users.js';

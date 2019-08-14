@@ -11,7 +11,7 @@
 </template>
 <script>
 import { mapState, mapGetters, } from 'vuex';
-import ModalPainting from '../ModalPainting';
+import ModalPainting from '../modals/ModalPainting';
 
 export default {
 	name: 'UploadTool',
@@ -37,6 +37,7 @@ export default {
 				const metadata = {
 					'contentType': 'image/png'
 				};
+				this.$emit('showSpinner', { status: true });
 				window.storage.ref().child(`images/${Math.floor(Date.now() / 1000)}`).put(blob, metadata).then((snapshot) => {
 					console.log('Uploaded', snapshot.totalBytes, 'bytes.');
 					snapshot.ref.getDownloadURL().then((url) => {
@@ -49,10 +50,15 @@ export default {
 							})
 							.then(() => {
 								this.$toasted.show('Dibujo subido con éxito!');
+								this.$emit('showSpinner', { status: false });
+							}).catch((error) => {
+								this.$toasted.show('Ha surgido un error!');
+								this.$emit('showSpinner', { status: false });
 							});
 					});
 				}).catch((error) => {
-					console.error('Upload failed:', error);
+					this.$toasted.show('Ha surgido un error!');
+					this.$emit('showSpinner', { status: false });
 				});
 			});
 		
