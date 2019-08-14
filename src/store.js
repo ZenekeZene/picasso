@@ -6,15 +6,31 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
 	strict: process.env.NODE_ENV !== 'production',
-	plugins: [
+	/*plugins: [
 		createPersistedState({
 			key: 'picasso-state',
 		}),
-	],
+	],*/
 	state: {
 		historyPersisted: [[]],
 		indexLine: 0,
 		mode: 'edit',
+		canvas: null,
+		ctx: null,
+		isPlaying: false,
+		isPainting: false,
+	},
+	getters: {
+		isDisabled: (state) => {
+			return (
+				state.isPlaying ||
+				state.isPainting ||
+				state.historyPersisted.length === 0
+			);
+		},
+		isPauseDisabled: (state) => {
+			return state.isPainting || state.historyPersisted.length === 0;
+		},
 	},
 	mutations: {
 		setHistoryPersisted(state, payload) {
@@ -49,6 +65,18 @@ const store = new Vuex.Store({
 		},
 		setModeToReadable(state) {
 			state.mode = 'read';
+		},
+		setCanvas(state, payload) {
+			state.canvas = payload.canvas;
+		},
+		setContextCanvas(state, payload) {
+			state.ctx = payload.canvas.getContext('2d');
+		},
+		setPlayingStatus(state, payload) {
+			state.isPlaying = payload.status;
+		},
+		setPaintingStatus(state, payload) {
+			state.isPainting = payload.status;
 		},
 	},
 });

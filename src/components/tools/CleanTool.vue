@@ -1,0 +1,42 @@
+<template>
+	<li class="tools__item">
+		<span class="icon-trash"
+			v-touch:end="clean"
+			v-mobile-hover:#4992a9
+			:class="{ '--disabled': isDisabled || mode === 'read' }"
+		>
+		</span>
+	</li>
+</template>
+
+<script>
+import { mapState, mapGetters, mapMutations, } from 'vuex';
+
+export default {
+	name: 'CleanTool',
+	computed: {
+		...mapState([
+			'canvas',
+			'ctx',
+			'isPlaying',
+			'mode',
+		]),
+		...mapGetters([
+			'isDisabled',
+		]),
+	},
+	methods: {
+		...mapMutations([
+			'deleteAllHistory',
+			'resetIndexLine',
+		]),
+		clean(event) {
+			if (!this.isPlaying) {
+				this.deleteAllHistory();
+				this.resetIndexLine();
+				this.$emit('clearCanvas');
+			}
+		},
+	},
+};
+</script>
