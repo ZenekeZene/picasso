@@ -90,6 +90,11 @@ const store = new Vuex.Store({
 		setStrokeWidth(state, payload) {
 			state.strokeWidth = payload.strokeWidth;
 		},
+		clearCanvas(state) {
+			state.ctx.clearRect(0, 0, state.canvas.width, state.canvas.height);
+			state.ctx.fillStyle = state.colorErase;
+			state.ctx.fillRect(0, 0, state.canvas.width, state.canvas.height);
+		}
 	},
 });
 

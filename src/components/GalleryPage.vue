@@ -23,9 +23,9 @@
 			</div>
 		</transition>
 		<transition name="fade">
-			<div class="button-bottom" @click="goToRoot">
+			<div class="button-bottom" @click="goToPaint">
 				<span class="icon-write --left"></span>
-				<span class="label">Crear dibujo</span>
+				<span class="label">{{ backLiteral }}</span>
 			</div>
 		</transition>
 	</article>
@@ -46,12 +46,25 @@ export default {
 	components: {
 		SpinnerItem,
 	},
+	computed: {
+		...mapState([
+			'historyPersisted',
+			'mode',
+		]),
+		backLiteral() {
+			return this.historyPersisted.length && this.mode === 'edit' > 0 ? 'Seguir con mi dibujo': 'Crear dibujo nuevo';
+		},
+	},
 	mounted() {
 		this.getAllPaintings();
 	},
 	methods: {
 		...mapMutations([
 			'setHistoryPersisted',
+			'setModeToEditable',
+			'deleteAllHistory',
+			'resetIndexLine',
+			'clearCanvas',
 		]),
 		getAllPaintings() {
 			this.paintings = [];
@@ -74,8 +87,14 @@ export default {
 			})
 			this.$router.push(`paint/${paint.id}`);
 		},
-		goToRoot() {
+		goToPaint() {
 			this.$router.push('/');
+			if (this.mode === 'read') {
+				this.setModeToEditable();
+				this.deleteAllHistory();
+				this.resetIndexLine();
+				this.clearCanvas();
+			}
 		},
 	},
 };

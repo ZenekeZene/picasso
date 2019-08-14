@@ -155,6 +155,7 @@ export default {
 			'setPlayingStatus',
 			'setPaintingStatus',
 			'setModeToEditable',
+			'clearCanvas',
 		]),
 		isToolEnabled(event) {
 			return !event.target.classList.contains('--disabled');
@@ -251,14 +252,6 @@ export default {
 		},
 		saveToImage() {
 			this.dataURI = this.canvas.toDataURL('png');
-		},
-		clearCanvas() {
-			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			this.setBackgroundCanvas();
-		},
-		setBackgroundCanvas() {
-			this.ctx.fillStyle = this.colorErase;
-			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		},
 		replay(interval = 10) {
 			if (!this.isPlaying) {
