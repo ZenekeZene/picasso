@@ -52,7 +52,7 @@ export default {
 			'mode',
 		]),
 		backLiteral() {
-			return this.historyPersisted.length && this.mode === 'edit' > 0 ? 'Seguir con mi dibujo': 'Crear dibujo nuevo';
+			return this.historyPersisted.length > 0 && this.mode === 'edit' ? 'Seguir con mi dibujo': 'Crear dibujo nuevo';
 		},
 	},
 	mounted() {
