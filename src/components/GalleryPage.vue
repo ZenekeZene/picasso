@@ -121,7 +121,13 @@ export default {
 		},
 		goToPaint(event) {
 			if (!event.target.classList.contains('--disabled')) {
-				this.$router.push('/');
+				if (this.paintingSelected) {
+					setTimeout(() => {
+						this.$router.push(`paint/${this.paintingSelected}`);
+					}, 100);
+				} else {
+					this.$router.push('/');
+				}
 			}
 		},
 		goToCreateNewPaint(event) {

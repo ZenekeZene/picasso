@@ -1,6 +1,6 @@
 <template>
 	<li class="tools__item" :class="{ '--disabled': isDisabled }">
-		<a :href="dataURI" download="my-awesome-drawing-of-painter">
+		<a :href="downloadURI" download="my-awesome-drawing-of-painter">
 			<span class="icon-printer"></span>
 		</a>
 		<span class="label">Download</span>
@@ -16,10 +16,10 @@ export default {
 		]),
 	},
 	props: {
-		dataURI: {
+		downloadURI: {
 			type: String,
 			default: '',
 		},
 	},
-}
+};
 </script>

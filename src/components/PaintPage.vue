@@ -1,20 +1,24 @@
 <template>
   <section class="p-paint">
-	<ol
-		class="tools --left"
-		v-on="!isPlaying ? { mouseover } : {}"
-		@mouseleave="toolsVisible = false"
-		:class="{ '--disabled': isPainting || showSpinner }"
-	>
-		<colors-tool :toolsVisible="toolsVisible"></colors-tool>
-		<stroke-tool :toolsVisible="toolsVisible"></stroke-tool>
-		<replay-tool @replay="replay" @clearCanvas="clearCanvas"></replay-tool>
-		<clean-tool @clearCanvas="clearCanvas"></clean-tool>
-		<undo-tool @player="player" @clearCanvas="clearCanvas"></undo-tool>
-		<!--<download-tool :downloadURI="dataURI"></download-tool>-->
-		<upload-tool @showSpinner="showSpinner = $event.status"></upload-tool>
-	</ol>
-	<spinner-item v-show="showSpinner"></spinner-item>
+	<transition name="fade" appear>
+		<ol
+			class="tools --left"
+			v-on="!isPlaying ? { mouseover } : {}"
+			@mouseleave="toolsVisible = false"
+			:class="{ '--disabled': isPainting || showSpinner }"
+		>
+			<colors-tool :toolsVisible="toolsVisible"></colors-tool>
+			<stroke-tool :toolsVisible="toolsVisible"></stroke-tool>
+			<replay-tool @replay="replay" @clearCanvas="clearCanvas"></replay-tool>
+			<clean-tool @clearCanvas="clearCanvas"></clean-tool>
+			<undo-tool @player="player" @clearCanvas="clearCanvas"></undo-tool>
+			<download-tool :downloadURI="dataURI"></download-tool>
+			<upload-tool @showSpinner="showSpinner = $event.status"></upload-tool>
+		</ol>
+	</transition>
+	<transition name="fade" appear>
+		<spinner-item v-show="showSpinner"></spinner-item>
+	</transition>
 	<canvas
 		ref="canvas"
 		width="1698"
@@ -25,27 +29,31 @@
 		v-touch:moving="handleMouseMove"
 		v-touch:end="handleMouseUp"
 	></canvas>
-	<div class="button-floated --bottom --left"
-		@click="goToGallery"
-		:class="{ '--disabled': isPlaying || isPainting }"
-		v-mobile-hover:#4992a9
-	>
-		<span
-			class="icon-book"
-		></span>
-		<span class="label">Galería</span>
-	</div>
-	<div class="button-floated --bottom --right"
-		v-if="mode === 'read'"
-		@click="goToPaint"
-		:class="{ '--disabled': isPlaying || isPainting }"
-		v-mobile-hover:#4992a9
-	>
-		<span class="label">Crear nuevo dibujo</span>
-		<span
-			class="icon-write"
-		></span>
-	</div>
+	<transition name="fade" appear>
+		<div class="button-floated --bottom --left"
+			@click="goToGallery"
+			:class="{ '--disabled': isPlaying || isPainting }"
+			v-mobile-hover:#4992a9
+		>
+			<span
+				class="icon-book"
+			></span>
+			<span class="label">Galería</span>
+		</div>
+	</transition>
+	<transition name="fade" appear>
+		<div class="button-floated --bottom --right"
+			v-if="mode === 'read'"
+			@click="goToPaint"
+			:class="{ '--disabled': isPlaying || isPainting }"
+			v-mobile-hover:#4992a9
+		>
+			<span class="label">Crear nuevo dibujo</span>
+			<span
+				class="icon-write"
+			></span>
+		</div>
+	</transition>
   </section>
 </template>
 
