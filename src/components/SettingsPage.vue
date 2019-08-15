@@ -33,25 +33,34 @@ export default {
 	methods: {
 		...mapMutations([
 			'changeTheme',
+			'setColorErase',
+			'deleteAllHistory',
 		]),
 		toggleTheme() {
 			if (this.theme === 'light') {
 				document.documentElement.style.setProperty('--color-text', 'white');
 				document.documentElement.style.setProperty('--color-background', 'rgb(39, 39, 39)');
+				this.setColorErase({
+					colorErase: 'rgb(39, 39, 39)',
+				});
 				this.changeTheme({
 					theme: 'dark',
 				});
 			} else {
 				document.documentElement.style.setProperty('--color-text', '#2c3e50');
 				document.documentElement.style.setProperty('--color-background', 'rgb(246, 246, 246)');
+				this.setColorErase({
+					colorErase: 'rgb(246, 246, 246)',
+				});
 				this.changeTheme({
 					theme: 'light',
 				});
 			}
 		},
 		clearCache() {
-			this.$store.commit('deleteAllHistory');
+			this.deleteAllHistory();
 			localStorage.clear();
+			location.reload();
 		},
 	},
 };

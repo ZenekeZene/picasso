@@ -84,6 +84,7 @@ export default {
 			'colorStroke',
 			'colorErase',
 			'strokeWidth',
+			'theme',
 		]),
 		isDisabled() {
 			return this.isPlaying || this.isPainting || this.history.length === 0;
@@ -249,6 +250,11 @@ export default {
 			this.ctx.beginPath();
 			this.ctx.lineWidth = dot.size;
 			this.ctx.strokeStyle = dot.color;
+			if (this.theme === 'light' && dot.color === 'rgb(39, 39, 39)') {
+				this.ctx.strokeStyle = 'rgb(246, 246, 246)';
+			} else if (this.theme === 'dark' && dot.color === 'rgb(246, 246, 246)') {
+				this.ctx.strokeStyle = 'rgb(39, 39, 39)';
+			}
 			this.ctx.moveTo(x, y);
 			this.ctx.lineTo(offsetX, offsetY);
 			this.ctx.stroke();

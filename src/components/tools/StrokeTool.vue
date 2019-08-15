@@ -30,7 +30,6 @@ export default {
 			'mode',
 			'colorStroke',
 			'colorErase',
-			'strokeWidth',
 		]),
 	},
 	props: {
@@ -39,6 +38,11 @@ export default {
 			type: Boolean,
 		},
 	},
+	data() {
+		return {
+			strokeWidth: 10,
+		};
+	},
 	methods: {
 		...mapMutations([
 			'setStrokeWidth',
@@ -46,7 +50,7 @@ export default {
 	},
 	watch: {
 		strokeWidth() {
-			this.setStrokeWidth({ strokeWidth: this.strokeWidth });
+			this.setStrokeWidth({ strokeWidth: this.strokeWidth});
 		},
 	},
 };
