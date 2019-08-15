@@ -1,8 +1,12 @@
 <template>
 	<article class="p-gallery">
-		<p class="intro">Dibujos <span font-bold>anónimos</span> de gente <span font-bold>muy loca</span>.</p>
+		<p class="intro">Dibujos
+			<span font-bold>anónimos</span> de gente <span font-bold>muy loca</span>.
+		</p>
 		<transition name="fade" mode="out-in">
-			<p v-if="!isLoading && paintings.length === 0" block font-size-xs text-center>[ &nbsp;Aún no hay dibujos&nbsp;&nbsp;<span font-size-l>🥺</span>&nbsp; ]</p>
+			<p v-if="!isLoading && paintings.length === 0"
+				block font-size-xs text-center
+			>[ &nbsp;Aún no hay dibujos&nbsp;&nbsp;<span font-size-l>🥺</span>&nbsp; ]</p>
 			<div v-else style="width: 100%; height: 100%;">
 				<spinner-item v-if="isLoading" block margin-auto-horizontal margin-top></spinner-item>
 				<section class="gallery-wrapper">
@@ -11,6 +15,7 @@
 							v-for="paint in paintings"
 							:key="paint.id"
 							@click="goToPainting(paint)"
+							:class="{ '--selected': paintingSelected === paint.id }"
 						>
 							<transition-group name="fade" mode="out-in" tag="div">
 								<spinner-item v-show="!loaded" key="spinner" class="--mini"></spinner-item>
@@ -24,8 +29,16 @@
 		</transition>
 		<transition name="fade">
 			<div class="button-bottom" @click="goToPaint">
+				<span class="icon-forward --left"></span>
+			</div>
+		</transition>
+		<transition name="fade">
+			<div class="button-bottom --right"
+				@click="goToCreateNewPaint"
+				v-if="mode === 'read'"
+			>
+				<span class="label">Crear nuevo dibujo</span>
 				<span class="icon-write --left"></span>
-				<span class="label">{{ backLiteral }}</span>
 			</div>
 		</transition>
 	</article>
@@ -48,11 +61,14 @@ export default {
 	},
 	computed: {
 		...mapState([
-			'historyPersisted',
+			'history',
 			'mode',
+			'paintingSelected',
 		]),
 		backLiteral() {
-			return this.historyPersisted.length > 0 && this.mode === 'edit' ? 'Seguir con mi dibujo': 'Crear dibujo nuevo';
+			return this.history.length > 0 && this.mode === 'edit' ?
+				'Seguir con mi dibujo' :
+				'Crear dibujo nuevo';
 		},
 	},
 	mounted() {
@@ -60,16 +76,17 @@ export default {
 	},
 	methods: {
 		...mapMutations([
-			'setHistoryPersisted',
+			'setHistory',
 			'setModeToEditable',
 			'deleteAllHistory',
 			'resetIndexLine',
 			'clearCanvas',
+			'setPaintingSelected',
 		]),
 		getAllPaintings() {
 			this.paintings = [];
 			window.db.collection('painting').get().then((snapshot) => {
-				snapshot.docs.forEach(painting => {
+				snapshot.docs.forEach((painting) => {
 					this.paintings.push({
 						id: painting.id,
 						name: painting.data().name,
@@ -82,21 +99,37 @@ export default {
 			});
 		},
 		goToPainting(paint) {
-			this.setHistoryPersisted({
-				historyPersisted: paint.history,
-			})
-			this.$router.push(`paint/${paint.id}`);
+			this.setPaintingSelected({
+				paintingSelected: paint.id,
+			});
+			this.setHistory({
+				history: paint.history,
+			});
+			setTimeout(() => {
+				this.$router.push(`paint/${paint.id}`);
+			}, 100);
 		},
-		goToPaint() {
-			this.$router.push('/');
-			if (this.mode === 'read') {
+		goToPaint(event) {
+			if (!event.target.classList.contains('--disabled')) {
+				if (this.mode === 'read') {
+					this.$router.back();
+				} else {
+					this.$router.push('/');
+				}
+			}
+		},
+		goToCreateNewPaint(event) {
+			if (!event.target.classList.contains('--disabled')) {
+				this.$router.push('/');
 				this.setModeToEditable();
 				this.deleteAllHistory();
 				this.resetIndexLine();
 				this.clearCanvas();
+				this.setPaintingSelected({
+					paintingSelected: null,
+				});
 			}
 		},
 	},
 };
 </script>
-

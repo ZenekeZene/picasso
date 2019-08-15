@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 
 export default {
 	name: 'CleanTool',
@@ -31,7 +31,7 @@ export default {
 			'resetIndexLine',
 		]),
 		clean(event) {
-			if (!this.isPlaying) {
+			if (!this.isPlaying && !event.target.classList.contains('--disabled')) {
 				this.deleteAllHistory();
 				this.resetIndexLine();
 				this.$emit('clearCanvas');

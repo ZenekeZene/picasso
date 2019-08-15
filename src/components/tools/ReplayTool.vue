@@ -1,7 +1,7 @@
 <template>
 	<li class="tools__item">
 		<span
-			:class="{ 
+			:class="{
 				'icon-stop': isPlaying,
 				'icon-play': !isPlaying ,
 				'--playing': isPlaying,
@@ -15,7 +15,8 @@
 </template>
 
 <script>
-import { mapState, mapGetters, } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
+
 export default {
 	name: 'ReplayTool',
 	computed: {
@@ -27,9 +28,11 @@ export default {
 		]),
 	},
 	methods: {
-		replay() {
-			this.$emit('replay');
+		replay(event) {
+			if (!event.target.classList.contains('--disabled')) {
+				this.$emit('replay');
+			}
 		},
 	},
-}
+};
 </script>

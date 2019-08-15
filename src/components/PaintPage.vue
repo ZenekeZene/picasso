@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import CleanTool from './tools/CleanTool';
 import UndoTool from './tools/UndoTool';
 import ReplayTool from './tools/ReplayTool';
@@ -70,7 +70,7 @@ export default {
 	},
 	computed: {
 		...mapState([
-			'historyPersisted',
+			'history',
 			'indexLine',
 			'mode',
 			'canvas',
@@ -82,7 +82,7 @@ export default {
 			'strokeWidth',
 		]),
 		isDisabled() {
-			return this.isPlaying || this.isPainting || this.historyPersisted.length === 0;
+			return this.isPlaying || this.isPainting || this.history.length === 0;
 		},
 	},
 	data() {
@@ -91,89 +91,93 @@ export default {
 			toolsVisible: false,
 			dataURI: '',
 			paintingId: null,
-			raw: null,
 			loopTimer: null,
 			showSpinner: false,
 		};
 	},
 	mounted() {
-		this.setCanvas({
-			canvas: this.$refs.canvas,
-		});
-		this.setContextCanvas({
-			canvas: this.canvas,
-		});
-		this.canvas.width = window.screen.width;
-		this.canvas.height = window.screen.height;
-		this.setBackgroundCanvas();
-		this.ctx.lineJoin = 'round';
-		this.ctx.lineCap = 'round';
-		this.ctx.lineWidth = this.strokeWidth;
-
-		document.addEventListener('keydown', (event) => {
-			if (event.keyCode === 90 && (event.ctrlKey || event.metaKey)) {
-				this.undo(event);
-			}
-		});
+		this.configureCanvas();
 
 		document.addEventListener('mouseout', (event) => {
 			this.handleMouseUp(event);
 		});
 
-		if (this.historyPersisted.length > 0) {
+		if (this.history.length > 0) {
 			this.player();
 		}
 
 		this.paintingId = this.$route.params.id;
 
 		if (this.paintingId) {
-			window.db
-				.collection('painting')
-				.doc(this.paintingId)
-				.get()
-				.then((snapshot) => {
-					this.setHistoryOfPainting({
-						raw: snapshot.data().history
-					});
-					this.replay(4);
-				});
-			this.setModeToReadable();
+			this.showSpinner = true;
+			this.getHistoryOfPainting({
+				paintingId: this.paintingId,
+			})
+			.then(() => {
+				this.showSpinner = false;
+				this.replay(4);
+				this.setModeToReadable();
+			})
+			.catch(() => {
+				this.$toasted.show('Ha surgido un error!');
+				this.showSpinner = false;
+			});
+		}
+
+		if (this.mode === 'edit') {
+			this.setPaintingSelected({
+				paintingSelected: null,
+			});
 		}
 	},
 	methods: {
 		...mapMutations([
-			'setHistoryPersisted',
 			'pushDotOnHistory',
 			'createNewStrokeOnHistory',
-			'removeStrokeOnHistory',
 			'deleteAllHistory',
 			'incrementIndexLine',
-			'decreaseIndexLine',
 			'resetIndexLine',
-			'setHistoryOfPainting',
 			'setModeToReadable',
-			'setContextCanvas',
 			'setCanvas',
 			'setPlayingStatus',
 			'setPaintingStatus',
 			'setModeToEditable',
 			'clearCanvas',
 			'setBackgroundCanvas',
+			'setPaintingSelected',
 		]),
+		...mapActions([
+			'getHistoryOfPainting',
+		]),
+		configureCanvas() {
+			this.setCanvas({
+				canvas: this.$refs.canvas,
+			});
+			this.canvas.width = window.screen.width;
+			this.canvas.height = window.screen.height;
+			this.ctx.lineJoin = 'round';
+			this.ctx.lineCap = 'round';
+			this.ctx.lineWidth = this.strokeWidth;
+			this.setBackgroundCanvas();
+		},
 		isToolEnabled(event) {
 			return !event.target.classList.contains('--disabled');
 		},
-		goToGallery() {
-			this.setHistoryPersisted({
-				historyPersisted: this.historyPersisted,
-			});
-			this.$router.push('/gallery');
+		goToGallery(event) {
+			if (!event.target.classList.contains('--disabled')) {
+				this.$router.push('/gallery');
+			}
 		},
-		goToPaint() {
-			this.setModeToEditable();
-			this.deleteAllHistory();
-			this.resetIndexLine();
-			this.clearCanvas();
+		goToPaint(event) {
+			if (!event.target.classList.contains('--disabled')) {
+				this.setModeToEditable();
+				this.deleteAllHistory();
+				this.resetIndexLine();
+				this.clearCanvas();
+				this.setPaintingSelected({
+					paintingSelected: null,
+				});
+			}
 		},
 		mouseover(event) {
 			event.preventDefault();
@@ -195,8 +199,7 @@ export default {
 				let offsetX;
 				let offsetY;
 				if (event.offsetX) {
-					offsetX = event.offsetX;
-					offsetY = event.offsetY;
+					({ offsetX, offsetY } = event);
 				} else {
 					offsetX = event.touches[0].clientX;
 					offsetY = event.touches[0].clientY;
@@ -210,7 +213,7 @@ export default {
 				this.setPaintingStatus({
 					status: false,
 				});
-			
+
 				this.incrementIndexLine();
 				this.saveToImage();
 			}
@@ -228,7 +231,7 @@ export default {
 			};
 			this.paintDot(dot);
 			this.pushDotOnHistory({
-				dot: dot,
+				DownloadTool,
 			});
 		},
 		paintDot(dot) {
@@ -245,8 +248,8 @@ export default {
 			this.prevPosition = { offsetX, offsetY };
 		},
 		player() {
-			for (let i = 0; i < this.historyPersisted.length; i += 1) {
-				const stroke = this.historyPersisted[i];
+			for (let i = 0; i < this.history.length; i += 1) {
+				const stroke = this.history[i];
 				for (let j = 0; j < stroke.length; j += 1) {
 					const dot = stroke[j];
 					this.paintDot(dot);
@@ -258,12 +261,12 @@ export default {
 		},
 		replay(interval = 10) {
 			if (!this.isPlaying) {
-				if (this.historyPersisted.length > 0) {
+				if (this.history.length > 0) {
 					this.setPlayingStatus({
 						status: true,
 					});
 					this.clearCanvas();
-					const history = [].concat(...this.historyPersisted);
+					const history = [].concat(...this.history);
 					this.loop(
 						0,
 						history.length,

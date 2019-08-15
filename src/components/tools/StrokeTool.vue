@@ -20,6 +20,7 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
+
 export default {
 	name: 'StrokeTool',
 	computed: {
@@ -29,6 +30,7 @@ export default {
 			'mode',
 			'colorStroke',
 			'colorErase',
+			'strokeWidth',
 		]),
 	},
 	props: {
@@ -42,15 +44,10 @@ export default {
 			'setStrokeWidth',
 		]),
 	},
-	data() {
-		return {
-			strokeWidth: 10,
-		};
-	},
 	watch: {
 		strokeWidth() {
-			this.setStrokeWidth({ strokeWidth: this.strokeWidth});
+			this.setStrokeWidth({ strokeWidth: this.strokeWidth });
 		},
 	},
-}
+};
 </script>

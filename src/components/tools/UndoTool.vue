@@ -10,7 +10,8 @@
 </template>
 
 <script>
-	import { mapState, mapGetters, mapMutations, } from 'vuex';
+	import { mapState, mapGetters, mapMutations } from 'vuex';
+
 	export default {
 		name: 'UndoTool',
 		computed: {
@@ -25,13 +26,20 @@
 				'isDisabled',
 			]),
 		},
+		mounted() {
+			document.addEventListener('keydown', (event) => {
+				if (event.keyCode === 90 && (event.ctrlKey || event.metaKey)) {
+					this.undo(event);
+				}
+			});
+		},
 		methods: {
 			...mapMutations([
 				'removeStrokeOnHistory',
 				'decreaseIndexLine',
 			]),
 			undo(event) {
-				if (this.indexLine - 1 >= 0 && !this.isPlaying) {
+				if (this.indexLine - 1 >= 0 && !this.isPlaying && !event.target.classList.contains('--disabled')) {
 					this.removeStrokeOnHistory();
 					this.decreaseIndexLine();
 					this.$emit('clearCanvas');
@@ -39,5 +47,5 @@
 				}
 			},
 		},
-	}
+	};
 </script>

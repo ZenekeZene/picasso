@@ -10,7 +10,7 @@
 	</li>
 </template>
 <script>
-import { mapState, mapGetters, } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import ModalPainting from '../modals/ModalPainting';
 
 export default {
@@ -22,50 +22,53 @@ export default {
 		...mapState([
 			'mode',
 			'canvas',
-			'historyPersisted',
+			'history',
 		]),
 		...mapGetters([
 			'isDisabled',
 		]),
 	},
 	methods: {
-		launchSave() {
-			this.$modal.show('modal-painting');
+		launchSave(event) {
+			if (!event.target.classList.contains('--disabled')) {
+				this.$modal.show('modal-painting');
+			}
 		},
 		save(paintingData) {
 			this.getCanvasBlob().then((blob) => {
 				const metadata = {
-					'contentType': 'image/png'
+					contentType: 'image/png',
 				};
 				this.$emit('showSpinner', { status: true });
 				window.storage.ref().child(`images/${Math.floor(Date.now() / 1000)}`).put(blob, metadata).then((snapshot) => {
-					console.log('Uploaded', snapshot.totalBytes, 'bytes.');
 					snapshot.ref.getDownloadURL().then((url) => {
 						window.db
 							.collection('painting')
 							.add({
 								name: paintingData.name,
-								history: JSON.stringify(this.historyPersisted),
-								url: url,
+								history: JSON.stringify(this.history),
+								url,
 							})
 							.then(() => {
 								this.$toasted.show('Dibujo subido con éxito!');
 								this.$emit('showSpinner', { status: false });
-							}).catch((error) => {
+							})
+							.catch(() => {
 								this.$toasted.show('Ha surgido un error!');
 								this.$emit('showSpinner', { status: false });
 							});
 					});
-				}).catch((error) => {
+				})
+				.catch(() => {
 					this.$toasted.show('Ha surgido un error!');
 					this.$emit('showSpinner', { status: false });
 				});
 			});
-		
+
 			this.$modal.hide('modal-painting');
 		},
 		getCanvasBlob() {
-			return new Promise((resolve, reject) => {
+			return new Promise((resolve) => {
 				this.canvas.toBlob((blob) => {
 					resolve(blob);
 				});
