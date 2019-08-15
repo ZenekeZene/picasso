@@ -29,6 +29,19 @@
 	min-width: var(--width-tools);
 	padding: $gutter;
 	transition: opacity 250ms ease-in;
+	
+	& > div {
+		display: flex;
+		padding: $gutter-1-2 0;
+
+		* {
+			pointer-events: none;
+		}
+	}
+
+	& > *:not(div) {
+		pointer-events: none;
+	}
 
 	&.--left {
 		left: $gutter-1-2;
@@ -44,6 +57,13 @@
 
 	&.--bottom {
 		bottom: $gutter-1-2;
+	}
+
+	&.--column {
+		flex-direction: column;
+		justify-content: flex-end;
+		align-items: flex-end;
+		padding: $gutter-1-2 $gutter;
 	}
 
 	.label {

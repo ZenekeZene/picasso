@@ -1,5 +1,5 @@
 <template>
-  <section class="p-paint">
+  <article class="p-paint">
 	<transition name="fade" appear>
 		<ol
 			class="tools --left"
@@ -31,7 +31,7 @@
 	></canvas>
 	<transition name="fade" appear>
 		<div class="button-floated --bottom --left"
-			@click="goToGallery"
+			@click.stop.prevent="goToGallery"
 			:class="{ '--disabled': isPlaying || isPainting }"
 			v-mobile-hover:#4992a9
 		>
@@ -42,19 +42,33 @@
 		</div>
 	</transition>
 	<transition name="fade" appear>
-		<div class="button-floated --bottom --right"
-			v-if="mode === 'read'"
-			@click="goToPaint"
-			:class="{ '--disabled': isPlaying || isPainting }"
-			v-mobile-hover:#4992a9
-		>
-			<span class="label">Crear nuevo dibujo</span>
-			<span
-				class="icon-write"
-			></span>
+		<div class="button-floated --column --bottom --right">
+			<div
+				@click.stop.prevent="launchRating"
+				:class="{ '--disabled': isPlaying || isPainting }"
+				v-if="mode === 'read'"
+				v-mobile-hover:#4992a9
+			>
+				<span class="label">Puntuar este dibujo</span>
+				<span
+					class="icon-star"
+				></span>
+			</div>
+			<div
+				v-if="mode === 'read'"
+				@click="goToPaint"
+				:class="{ '--disabled': isPlaying || isPainting }"
+				v-mobile-hover:#4992a9
+			>
+				<span class="label">Crear nuevo dibujo</span>
+				<span
+					class="icon-write"
+				></span>
+			</div>
 		</div>
 	</transition>
-  </section>
+	<modal-rating></modal-rating>
+  </article>
 </template>
 
 <script>
@@ -67,6 +81,7 @@ import UploadTool from './tools/UploadTool';
 import ColorsTool from './tools/ColorsTool';
 import StrokeTool from './tools/StrokeTool';
 import SpinnerItem from './SpinnerItem';
+import ModalRating from './modals/ModalRating';
 
 export default {
 	name: 'PaintPage',
@@ -79,6 +94,7 @@ export default {
 		ColorsTool,
 		StrokeTool,
 		SpinnerItem,
+		ModalRating,
 	},
 	computed: {
 		...mapState([
@@ -141,6 +157,7 @@ export default {
 		}
 
 		if (this.mode === 'edit') {
+			console.log('Edit');
 			this.setPaintingSelected({
 				paintingSelected: null,
 			});
@@ -176,16 +193,16 @@ export default {
 			this.ctx.lineWidth = this.strokeWidth;
 			this.setBackgroundCanvas();
 		},
-		isToolEnabled(event) {
+		isOptionEnabled(event) {
 			return !event.target.classList.contains('--disabled');
 		},
 		goToGallery(event) {
-			if (!event.target.classList.contains('--disabled')) {
+			if (this.isOptionEnabled(event)) {
 				this.$router.push('/gallery');
 			}
 		},
 		goToPaint(event) {
-			if (!event.target.classList.contains('--disabled')) {
+			if (this.isOptionEnabled(event)) {
 				this.setModeToEditable();
 				this.deleteAllHistory();
 				this.resetIndexLine();
@@ -320,6 +337,11 @@ export default {
 				}, ms);
 			} else {
 				callback();
+			}
+		},
+		launchRating(event) {
+			if (this.isOptionEnabled(event)) {
+				this.$modal.show('modal-rating');
 			}
 		},
 	},
