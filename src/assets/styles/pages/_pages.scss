@@ -1,24 +1,4 @@
 @import 'p.paint';
 @import 'p.crud';
 @import 'p.gallery';
-
-.button-bottom {
-	@include absolute(bottom $gutter-1-2 left $gutter-1-2);
-	@include flex(flex, center, center);
-	min-width: var(--width-tools);
-	padding: $gutter;
-	transition: opacity 250ms ease-in;
-
-	&.--right {
-		right: $gutter-1-2;
-		left: unset;
-	}
-
-	.label {
-		padding-right: $gutter-1-2;
-		padding-left: $gutter-1-2;
-		font-size: $font-size-xxs;
-		font-weight: $font-black;
-		text-align: left;
-	}
-}
+@import 'p.settings';

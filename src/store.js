@@ -23,6 +23,7 @@ const store = new Vuex.Store({
 		colorErase: '',
 		strokeWidth: 10,
 		paintingSelected: null,
+		theme: 'light',
 	},
 	getters: {
 		isDisabled: state => (state.isPlaying || state.isPainting || state.history.length === 0),
@@ -49,6 +50,7 @@ const store = new Vuex.Store({
 		},
 		deleteAllHistory(state) {
 			state.history = [];
+			state.indexLine = 0;
 		},
 		incrementIndexLine(state) {
 			state.indexLine += 1;
@@ -92,6 +94,9 @@ const store = new Vuex.Store({
 		},
 		setPaintingSelected(state, payload) {
 			state.paintingSelected = payload.paintingSelected;
+		},
+		changeTheme(state, payload) {
+			state.theme = payload.theme;
 		},
 	},
 	actions: {

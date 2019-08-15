@@ -11,7 +11,7 @@
 		<replay-tool @replay="replay" @clearCanvas="clearCanvas"></replay-tool>
 		<clean-tool @clearCanvas="clearCanvas"></clean-tool>
 		<undo-tool @player="player" @clearCanvas="clearCanvas"></undo-tool>
-		<download-tool :downloadURI="dataURI"></download-tool>
+		<!--<download-tool :downloadURI="dataURI"></download-tool>-->
 		<upload-tool @showSpinner="showSpinner = $event.status"></upload-tool>
 	</ol>
 	<spinner-item v-show="showSpinner"></spinner-item>
@@ -25,21 +25,25 @@
 		v-touch:moving="handleMouseMove"
 		v-touch:end="handleMouseUp"
 	></canvas>
-	<div class="button-bottom" @click="goToGallery"
-		:class="{ '--disabled': isPlaying || isPainting }">
+	<div class="button-floated --bottom --left"
+		@click="goToGallery"
+		:class="{ '--disabled': isPlaying || isPainting }"
+		v-mobile-hover:#4992a9
+	>
 		<span
 			class="icon-book"
-			v-mobile-hover:#4992a9
 		></span>
 		<span class="label">Galería</span>
 	</div>
-	<div class="button-bottom --right" v-if="mode === 'read'"
-		:class="{ '--disabled': isPlaying || isPainting }">
-		<span class="label">Crear dibujo</span>
+	<div class="button-floated --bottom --right"
+		v-if="mode === 'read'"
+		@click="goToPaint"
+		:class="{ '--disabled': isPlaying || isPainting }"
+		v-mobile-hover:#4992a9
+	>
+		<span class="label">Crear nuevo dibujo</span>
 		<span
 			class="icon-write"
-			@click="goToPaint"
-			v-mobile-hover:#4992a9
 		></span>
 	</div>
   </section>
@@ -110,6 +114,9 @@ export default {
 
 		if (this.paintingId) {
 			this.showSpinner = true;
+			this.setPaintingSelected({
+				paintingSelected: this.paintingId,
+			});
 			this.getHistoryOfPainting({
 				paintingId: this.paintingId,
 			})
@@ -231,7 +238,7 @@ export default {
 			};
 			this.paintDot(dot);
 			this.pushDotOnHistory({
-				DownloadTool,
+				dot,
 			});
 		},
 		paintDot(dot) {

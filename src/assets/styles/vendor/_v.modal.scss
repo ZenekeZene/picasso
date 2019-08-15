@@ -1,6 +1,6 @@
 .v--modal {
-	&-box {
-		//padding: $gutter-2 !important;
+	h1 {
+		color: $color-primary;
 	}
 
 	@include icon('cross') {

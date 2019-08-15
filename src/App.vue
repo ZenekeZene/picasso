@@ -12,29 +12,33 @@
 			@inputFocused="anyInputFocused = $event"
 		/>
 	</transition>
-	<!--<transition name="fade">
-		<github-item href="https://github.com/ZenekeZene/picasso#picasso"
-			transition
-			v-if="!anyInputFocused"
-			:class="{ '--disabled': isPainting }"
-		></github-item>
-	</transition>-->
   </main>
 </template>
 
 <script>
-import GithubItem from './components/GithubItem';
+import { mapState } from 'vuex';
 
 export default {
 	name: 'App',
-	components: {
-		GithubItem,
+	computed: {
+		...mapState([
+			'isPainting',
+			'theme',
+		]),
 	},
 	data() {
 		return {
 			anyInputFocused: false,
-			isPainting: false,
 		};
+	},
+	created() {
+		if (this.theme === 'dark') {
+			document.documentElement.style.setProperty('--color-text', 'white');
+			document.documentElement.style.setProperty('--color-background', 'rgb(39, 39, 39)');
+		} else {
+			document.documentElement.style.setProperty('--color-text', '#2c3e50');
+			document.documentElement.style.setProperty('--color-background', 'rgb(246, 246, 246)');
+		}
 	},
 };
 </script>

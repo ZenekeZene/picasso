@@ -28,19 +28,29 @@
 			</div>
 		</transition>
 		<transition name="fade">
-			<div class="button-bottom" @click="goToPaint">
+			<div class="button-floated --bottom --left" @click="goToPaint">
 				<span class="icon-forward --left"></span>
 			</div>
 		</transition>
 		<transition name="fade">
-			<div class="button-bottom --right"
+			<div class="button-floated --bottom --right"
 				@click="goToCreateNewPaint"
 				v-if="mode === 'read'"
+				v-mobile-hover:#4992a9
 			>
 				<span class="label">Crear nuevo dibujo</span>
-				<span class="icon-write --left"></span>
+				<span class="icon-write"></span>
 			</div>
 		</transition>
+		<transition name="fade">
+		<div class="button-floated --top --right"
+			@click="$router.push('settings')"
+			v-mobile-hover:#4992a9
+			style="z-index: 200;"
+		>
+			<span class="icon-cog"></span>
+		</div>
+	</transition>
 	</article>
 </template>
 <script>
@@ -111,11 +121,7 @@ export default {
 		},
 		goToPaint(event) {
 			if (!event.target.classList.contains('--disabled')) {
-				if (this.mode === 'read') {
-					this.$router.back();
-				} else {
-					this.$router.push('/');
-				}
+				this.$router.push('/');
 			}
 		},
 		goToCreateNewPaint(event) {

@@ -45,7 +45,8 @@
 		}
 
 		&.--selected {
-			background-color: rgb(225, 225, 225);
+			color: var(--color-background);
+			background-color: var(--color-react);
 		}
 	}
 

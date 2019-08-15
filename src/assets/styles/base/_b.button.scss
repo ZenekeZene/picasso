@@ -22,3 +22,35 @@
 		background-color: $color-false;
 	}
 }
+
+.button-floated {
+	position: absolute;
+	@include flex(flex, center, center);
+	min-width: var(--width-tools);
+	padding: $gutter;
+	transition: opacity 250ms ease-in;
+
+	&.--left {
+		left: $gutter-1-2;
+	}
+
+	&.--right {
+		right: $gutter-1-2;
+	}
+
+	&.--top {
+		top: $gutter-1-2;
+	}
+
+	&.--bottom {
+		bottom: $gutter-1-2;
+	}
+
+	.label {
+		padding-right: $gutter-1-2;
+		padding-left: $gutter-1-2;
+		font-size: $font-size-xxs;
+		font-weight: $font-black;
+		text-align: left;
+	}
+}
