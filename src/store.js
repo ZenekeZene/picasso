@@ -71,8 +71,8 @@ const store = new Vuex.Store({
 			state.mode = 'read';
 		},
 		setCanvas(state, payload) {
-			state.canvas = payload.canvas;
-			state.ctx = state.canvas.getContext('2d');
+			state.canvas = payload.canvasRef;
+			state.ctx = payload.canvasRef.getContext('2d');
 		},
 		setBackgroundCanvas(state) {
 			state.ctx.fillStyle = state.colorErase;

@@ -11,9 +11,13 @@
 
 <script>
 	import { mapState, mapGetters, mapMutations } from 'vuex';
+	import PlayerDot from '../PlayerDot.mixin';
 
 	export default {
 		name: 'UndoTool',
+		mixins: [
+			PlayerDot,
+		],
 		computed: {
 			...mapState([
 				'isPlaying',
@@ -43,7 +47,7 @@
 					this.removeStrokeOnHistory();
 					this.decreaseIndexLine();
 					this.$emit('clearCanvas');
-					this.$emit('player');
+					this.player();
 				}
 			},
 		},
