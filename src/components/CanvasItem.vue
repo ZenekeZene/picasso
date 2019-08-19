@@ -4,7 +4,6 @@
 			ref="canvas"
 			width="1698"
 			height="1028"
-			class="p-paint__canvas"
 			v-touch:start="handleMouseDown"
 			v-touch:moving="handleMouseMove"
 			v-touch:end="handleMouseUp"

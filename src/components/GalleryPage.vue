@@ -95,18 +95,21 @@ export default {
 		]),
 		getAllPaintings() {
 			this.paintings = [];
-			window.db.collection('painting').get().then((snapshot) => {
-				snapshot.docs.forEach((painting) => {
-					this.paintings.push({
-						id: painting.id,
-						name: painting.data().name,
-						email: painting.data().email,
-						history: painting.data().history,
-						url: painting.data().url,
+			window.db.collection('painting').get()
+				.then((snapshot) => {
+					snapshot.docs.forEach((doc) => {
+						const data = doc.data();
+						this.paintings.push({
+							id: doc.id,
+							name: data.name,
+							email: data.email,
+							history: data.history,
+							url: data.url,
+							avgRating: data.avgRating,
+						});
 					});
+					this.isLoading = false;
 				});
-				this.isLoading = false;
-			});
 		},
 		goToPainting(paint) {
 			this.setPaintingSelected({

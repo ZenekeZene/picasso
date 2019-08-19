@@ -42,7 +42,6 @@ export default {
 				this.$emit('showSpinner', { status : false });
 				this.replay();
 				this.setModeToReadable();
-				this.$emit('paintingRecovery', { painting: data });
 			})
 			.catch((error) => {
 				console.error(error);

@@ -9,7 +9,7 @@
 		>
 			<colors-tool :toolsVisible="toolsVisible"></colors-tool>
 			<stroke-tool :toolsVisible="toolsVisible"></stroke-tool>
-			<replay-tool @paintingRecovery="handPaintingRecovery" @showSpinner="showSpinner = $event.status" @clearCanvas="clearCanvas"></replay-tool>
+			<replay-tool @showSpinner="showSpinner = $event.status" @clearCanvas="clearCanvas"></replay-tool>
 			<clean-tool @clearCanvas="clearCanvas"></clean-tool>
 			<undo-tool @clearCanvas="clearCanvas"></undo-tool>
 			<download-tool :downloadURI="dataURI"></download-tool>
@@ -19,7 +19,7 @@
 	<transition name="fade" appear>
 		<spinner-item v-show="showSpinner"></spinner-item>
 	</transition>
-	<canvas-item></canvas-item>
+	<canvas-item class="p-paint__canvas" :class="{ '--blur': showSpinner }"></canvas-item>
 	<transition name="fade" appear>
 		<div class="button-floated --bottom --left"
 			@click.stop.prevent="goToGallery"
@@ -58,7 +58,7 @@
 			</div>
 		</div>
 	</transition>
-	<modal-rating :rating="rating" @setRating="rating = $event"></modal-rating>
+	<modal-rating @showSpinner="showSpinner = $event.status"></modal-rating>
   </article>
 </template>
 
@@ -104,7 +104,6 @@ export default {
 			toolsVisible: false,
 			dataURI: '',
 			showSpinner: false,
-			rating: 0,
 		};
 	},
 	/*mounted() {
@@ -120,11 +119,6 @@ export default {
 			'clearCanvas',
 			'setPaintingSelected',
 		]),
-		handPaintingRecovery($event) {
-			if ($event.painting.rating) {
-				this.rating = $event.painting.rating;
-			}
-		},
 		isOptionEnabled(event) {
 			return !event.target.classList.contains('--disabled');
 		},

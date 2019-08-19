@@ -16,10 +16,8 @@
 		touch-action: none;
 		transition: filter 250ms ease-in;
 
-		&.--blur {
-			filter: blur(22px);
-		} 
 	}
+
 
 	.lds-ripple {
 		@include absolute(top 50% left 50%);
@@ -27,3 +25,8 @@
 		z-index: 1;
 	}
 }
+
+.--blur {
+	filter: blur(22px);
+
+} 

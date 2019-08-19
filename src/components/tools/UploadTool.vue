@@ -48,6 +48,9 @@ export default {
 								name: paintingData.name,
 								history: JSON.stringify(this.history),
 								url,
+								avgRating: 0,
+								numRatings: 0,
+								timestamp: new Date(),
 							})
 							.then(() => {
 								this.$toasted.show('Dibujo subido con éxito!');
