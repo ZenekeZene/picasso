@@ -133,6 +133,7 @@ export default {
 				this.deleteAllHistory();
 				this.resetIndexLine();
 				this.clearCanvas();
+				this.setPaintingSelected({ status: null });
 				this.$router.push('/');
 			}
 		},
