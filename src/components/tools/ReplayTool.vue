@@ -16,9 +16,13 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
+import PlayerDot from '../PlayerDot.mixin';
 
 export default {
 	name: 'ReplayTool',
+	mixins: [
+		PlayerDot,
+	],
 	computed: {
 		...mapState([
 			'isPlaying',
@@ -31,13 +35,14 @@ export default {
 	mounted() {
 		this.setPaintingSelected({ paintingSelected: this.$route.params.id });
 		
-		if (this.paintingSelected && true == false) {
+		if (this.paintingSelected) {
 			this.$emit('showSpinner', { status : true });
 			this.getHistoryOfPainting({ paintingId: this.paintingSelected })
-			.then(() => {
+			.then((data) => {
 				this.$emit('showSpinner', { status : false });
 				this.replay();
 				this.setModeToReadable();
+				this.$emit('paintingRecovery', { painting: data });
 			})
 			.catch((error) => {
 				console.error(error);
@@ -63,7 +68,7 @@ export default {
 		},
 		replay(interval = 10) {
 			if (!this.isPlaying) {
-				if (this.history.length > 0) {
+				if (this.paintingSelected) {
 					this.setPlayingStatus({ status: true });
 					this.clearCanvas();
 					const history = [].concat(...this.history);

@@ -110,7 +110,7 @@ const store = new Vuex.Store({
 						commit('setHistoryOfPainting', {
 							raw: snapshot.data().history,
 						});
-						resolve();
+						resolve(snapshot.data());
 					})
 					.catch((error) => {
 						console.error(error);

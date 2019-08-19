@@ -100,7 +100,7 @@ export default {
 	mounted() {
 		this.$store.commit('setCanvas', { canvasRef: this.$refs.canvas });
 		this.configureCanvas();
-		if (this.history.length > 0) {
+		if (this.mode === 'edit') {
 			this.player();
 		}
 	},

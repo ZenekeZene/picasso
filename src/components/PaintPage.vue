@@ -9,7 +9,7 @@
 		>
 			<colors-tool :toolsVisible="toolsVisible"></colors-tool>
 			<stroke-tool :toolsVisible="toolsVisible"></stroke-tool>
-			<replay-tool @showSpinner="showSpinner = $event.status" @clearCanvas="clearCanvas"></replay-tool>
+			<replay-tool @paintingRecovery="handPaintingRecovery" @showSpinner="showSpinner = $event.status" @clearCanvas="clearCanvas"></replay-tool>
 			<clean-tool @clearCanvas="clearCanvas"></clean-tool>
 			<undo-tool @clearCanvas="clearCanvas"></undo-tool>
 			<download-tool :downloadURI="dataURI"></download-tool>
@@ -58,7 +58,7 @@
 			</div>
 		</div>
 	</transition>
-	<modal-rating></modal-rating>
+	<modal-rating :rating="rating" @setRating="rating = $event"></modal-rating>
   </article>
 </template>
 
@@ -104,20 +104,27 @@ export default {
 			toolsVisible: false,
 			dataURI: '',
 			showSpinner: false,
+			rating: 0,
 		};
 	},
-	mounted() {
+	/*mounted() {
 		document.addEventListener('mouseout', (event) => {
 			this.handleMouseUp(event);
 		});
-	},
+	},*/
 	methods: {
 		...mapMutations([
-			'resetIndexLine',
 			'setModeToEditable',
+			'deleteAllHistory',
+			'resetIndexLine',
 			'clearCanvas',
 			'setPaintingSelected',
 		]),
+		handPaintingRecovery($event) {
+			if ($event.painting.rating) {
+				this.rating = $event.painting.rating;
+			}
+		},
 		isOptionEnabled(event) {
 			return !event.target.classList.contains('--disabled');
 		},
@@ -132,7 +139,7 @@ export default {
 				this.deleteAllHistory();
 				this.resetIndexLine();
 				this.clearCanvas();
-				this.setPaintingSelected({ paintingSelected: null });
+				this.$router.push('/');
 			}
 		},
 		mouseover(event) {
