@@ -13,16 +13,18 @@
 			<li
 				v-for="(color, index) in colors"
 				:key="`color-${index}`"
-				:style="{ backgroundColor: color }"
 				@click="setColorStroke({ colorStroke: color })"
 				:class="{ '--selected': colorStroke === color }"
-			></li>
+			>
+				<span :style="{ backgroundColor: color }"></span>
+			</li>
 			<li
-				:style="{ backgroundColor: colorErase }"
 				@click="setColorStroke({ colorStroke: colorErase })"
 				:class="{ '--selected': colorStroke === colorErase }"
 				class="--erase"
-			></li>
+			>
+				<span :style="{ backgroundColor: colorErase }"></span>
+			</li>
 		</ol>
 	</li>
 </template>

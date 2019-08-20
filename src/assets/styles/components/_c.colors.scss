@@ -5,21 +5,27 @@
 	
 	li {
 		@include flex(flex, center, center);
-		@include share(width, height, 1rem);
-		margin-right: $gutter-1-2;
-		padding: 2px 0;
+		@include share(width, height, 2rem);
 		border-radius: 50%;
 
 		&:hover {
 			cursor: pointer;
 		}
+
+		span {
+			position: relative;
+			@include share(width, height, 1rem);
+			border-radius: 50%;
+		}
 	}
 
-	.--selected:before {
+	.--selected span:before {
 		content: $icon-target;
+		@include absolute(top left);
+		@include share(width, height, 1rem);
+		margin-top: -1px;
 		font-family: $font-icons;
 		font-size: $font-size-xxs;
-		margin-top: 1px;
 	}
 }
 

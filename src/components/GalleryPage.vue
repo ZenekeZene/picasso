@@ -50,7 +50,7 @@
 		</transition>
 		<transition name="fade">
 			<div class="button-floated --bottom --left" @click="goToPaint" v-if="mode === 'edit'">
-				<span class="icon-write"></span>
+				<span class="icon-forward --left"></span>
 				<span class="label">Seguir dibujando</span>
 			</div>
 		</transition>
