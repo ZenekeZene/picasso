@@ -5,7 +5,19 @@
 		<swiper-slide>
 			<div padding>
 				<h1>Puntúa este dibujo</h1>
-				<vue-stars v-model="rating"></vue-stars>
+				<star-rating
+					v-model="rating"
+					:star-size="60"
+					:padding="3"
+					:glow="0"
+					:rounded-corners="true"
+					:border-width="0"
+					:increment="0.5"
+					:fixed-points="2"
+					:show-rating="false"
+					:round-start-rating="false"
+					margin-vertical-2
+				></star-rating>
 				<button margin-top class="btn" @click="sendRating">Enviar puntuación</button>
 			</div>
 		</swiper-slide>
@@ -15,7 +27,7 @@
 <script>
 import { mapState } from 'vuex';
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
-import { VueStars } from "vue-stars";
+import StarRating from 'vue-star-rating';
 import axios from 'axios';
 
 export default {
@@ -23,7 +35,7 @@ export default {
 	components: {
 		swiper,
 		swiperSlide,
-		VueStars,
+		StarRating,
 	},
 	data() {
 		return {
@@ -70,20 +82,20 @@ export default {
 		sendRating() {
 			this.$emit('showSpinner', { status: true });
 			const document = window.db.collection('painting').doc(this.paintingSelected);
-			window.db.runTransaction((transaction) => {
-				return transaction.get(document).then((doc) => {
-					var data = doc.data();
+			window.db.runTransaction(transaction => transaction.get(document)
+				.then((doc) => {
+					const data = doc.data();
 
-					let newAverage =
+					const newAverage =
 						(data.numRatings * data.avgRating + this.rating) /
 						(data.numRatings + 1);
 
 					transaction.update(document, {
 						numRatings: data.numRatings + 1,
-						avgRating: newAverage
+						avgRating: newAverage,
 					});
-				});
-			}).then(() => {
+				}))
+			.then(() => {
 				this.$toasted.show('¡Valoración enviada!');
 				this.$emit('showSpinner', { status: false });
 				this.$modal.hide('modal-rating');

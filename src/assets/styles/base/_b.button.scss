@@ -30,17 +30,13 @@
 	padding: $gutter;
 	transition: opacity 250ms ease-in;
 	
-	& > div {
+	& > div:first-child {
 		display: flex;
 		padding: $gutter-1-2 0;
 
 		* {
 			pointer-events: none;
 		}
-	}
-
-	& > *:not(div) {
-		pointer-events: none;
 	}
 
 	&.--left {

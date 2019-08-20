@@ -55,6 +55,7 @@ module.exports = {
 		'comma-dangle': ['error', 'always-multiline'],
 		'import/extensions': 'off',
 		'import/no-unresolved': 'off',
+		'no-console': 0,
 	},
 	settings: {
 		'import/resolver': {

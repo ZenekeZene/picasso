@@ -9,11 +9,13 @@
 		>
 			<colors-tool :toolsVisible="toolsVisible"></colors-tool>
 			<stroke-tool :toolsVisible="toolsVisible"></stroke-tool>
-			<replay-tool @showSpinner="showSpinner = $event.status" @clearCanvas="clearCanvas"></replay-tool>
-			<clean-tool @clearCanvas="clearCanvas"></clean-tool>
+			<replay-tool
+				@showSpinner="showSpinner = $event.status"
+				@clearCanvas="clearCanvas"
+			></replay-tool>
 			<undo-tool @clearCanvas="clearCanvas"></undo-tool>
 			<download-tool :downloadURI="dataURI"></download-tool>
-			<upload-tool @showSpinner="showSpinner = $event.status"></upload-tool>
+			<clean-tool @clearCanvas="clearCanvas"></clean-tool>
 		</ol>
 	</transition>
 	<transition name="fade" appear>
@@ -36,34 +38,22 @@
 		<div class="button-floated --column --bottom --right">
 			<div
 				@click.stop.prevent="launchRating"
-				:class="{ '--disabled': isPlaying || isPainting }"
+				:class="{ '--disabled': isPainting }"
 				v-if="mode === 'read'"
 				v-mobile-hover:#4992a9
 			>
 				<span class="label">Puntuar este dibujo</span>
-				<span
-					class="icon-star"
-				></span>
-			</div>
-			<div
-				v-if="mode === 'read'"
-				@click="goToPaint"
-				:class="{ '--disabled': isPlaying || isPainting }"
-				v-mobile-hover:#4992a9
-			>
-				<span class="label">Crear nuevo dibujo</span>
-				<span
-					class="icon-write"
-				></span>
+				<span class="icon-star-full"></span>
 			</div>
 		</div>
 	</transition>
+	<upload-tool @showSpinner="showSpinner = $event.status" v-if="mode === 'edit'"></upload-tool>
 	<modal-rating @showSpinner="showSpinner = $event.status"></modal-rating>
   </article>
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import CanvasItem from './CanvasItem';
 import CleanTool from './tools/CleanTool';
 import UndoTool from './tools/UndoTool';
@@ -74,7 +64,6 @@ import ColorsTool from './tools/ColorsTool';
 import StrokeTool from './tools/StrokeTool';
 import SpinnerItem from './SpinnerItem';
 import ModalRating from './modals/ModalRating';
-import PlayerDot from './PlayerDot.mixin';
 
 export default {
 	name: 'PaintPage',
@@ -106,11 +95,6 @@ export default {
 			showSpinner: false,
 		};
 	},
-	/*mounted() {
-		document.addEventListener('mouseout', (event) => {
-			this.handleMouseUp(event);
-		});
-	},*/
 	methods: {
 		...mapMutations([
 			'setModeToEditable',

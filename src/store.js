@@ -24,9 +24,11 @@ const store = new Vuex.Store({
 		strokeWidth: 10,
 		paintingSelected: null,
 		theme: 'light',
+		filterCriterion: 'alphabet',
+		filterDirection: 'asc',
 	},
 	getters: {
-		isDisabled: state => (state.isPlaying || state.isPainting || state.history.length === 0),
+		isDisabled: state => state.isPlaying || state.isPainting || state.history.length === 0,
 		isPauseDisabled: state => state.isPainting || state.history.length === 0,
 	},
 	mutations: {
@@ -98,6 +100,12 @@ const store = new Vuex.Store({
 		changeTheme(state, payload) {
 			state.theme = payload.theme;
 		},
+		setFilterCriterion(state, payload) {
+			state.filterCriterion = payload.filterCriterion;
+		},
+		setFilterDirection(state, payload) {
+			state.filterDirection = payload.filterDirection;
+		},
 	},
 	actions: {
 		getHistoryOfPainting({ commit }, payload) {
@@ -113,8 +121,7 @@ const store = new Vuex.Store({
 						resolve(snapshot.data());
 					})
 					.catch((error) => {
-						console.error(error);
-						reject();
+						reject(error);
 					});
 			});
 		},

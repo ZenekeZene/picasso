@@ -1,13 +1,19 @@
 <template>
-	<li class="tools__item" v-if="mode === 'edit'">
-		<span class="icon-upload"
-			@click="launchSave"
-			v-mobile-hover:#4992a9
-			:class="{ '--disabled': isDisabled || mode === 'read' }"
-		></span>
-		<span class="label">Upload</span>
-		<modal-painting @sendPainting="save"></modal-painting>
-	</li>
+	<transition name="fade" appear>
+		<div class="button-floated --column --bottom --right">
+			<div
+				@click="launchSave"
+				:class="{ '--disabled': isDisabled || mode === 'read' }"
+				v-mobile-hover:#4992a9
+			>
+				<span class="label">Guardar este dibujo</span>
+				<span
+					class="icon-save"
+				></span>
+			</div>
+			<modal-painting @sendPainting="save"></modal-painting>
+		</div>
+	</transition>
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex';

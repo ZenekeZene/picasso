@@ -7,8 +7,7 @@
 	overflow-y: auto; 
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 	grid-gap: $gutter-1-2;
-	margin-top: $gutter;
-	padding: 0.8rem;
+	padding: 1px;
 	font-size: $font-size-xxs;
 
 	&__item {
@@ -21,23 +20,21 @@
 		box-shadow: 0 0 3px rgba(128, 128, 128, 0.32);
 		border-radius: 4px;
 
-		& > div {
-			@include flex(flex, start, center);
-			width: 47px;
-			height: 100%;
-			transition: all 250ms ease-in;
-		}
-
 		& img {
 			width: 47px;
 			height: auto;
 		}
 
-		& span {
+		.spinner {
+			@include absolute(left $gutter);
+		}
+
+		.name {
 			flex-grow: 1;
-			padding: $gutter-1-2;
-			text-align: left;
 			overflow: hidden;
+			padding-left: $gutter;
+			text-align: left;
+			font-weight: $font-bold;
 		}
 
 		&:last-child {
@@ -49,9 +46,10 @@
 			background-color: var(--color-react);
 		}
 
-		.vue-stars {
-			width: 7rem;
-			font-size: $font-size-xs;
+		.rating {
+			@include absolute(right $gutter-1-2);
+			@include flex(flex, center, end);
+			flex-direction: column;
 		}
 	}
 
