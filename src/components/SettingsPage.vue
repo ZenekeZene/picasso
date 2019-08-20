@@ -1,14 +1,17 @@
 <template>
 	<article class="p-settings">
-		<p>Settings</p>
-		<div @click="toggleTheme">
-			Tema:
-			<span class="icon-moon" v-if="theme === 'light'"></span>
-			<span class="icon-sun" v-if="theme === 'dark'"></span>
-		</div>
-		<button margin-top class="btn" @click="clearCache">Borrar caché</button>
-		<p>Creado por <span font-bold>Héctor Villar</span></p>
-		<github-item></github-item>
+		<p class="intro" margin-bottom>Pocas cosas para <span font-bold>configurar</span>, amigo.</p>
+		<ol class="p-settings__list">
+			<section @click="toggleTheme">
+				Tema:
+				<span class="icon-moon" v-if="theme === 'light'"></span>
+				<span class="icon-sun" v-if="theme === 'dark'"></span>
+			</section>
+			<button margin-top class="btn" @click="clearCache">Borrar caché</button>
+			<button margin-top class="btn --hot">Administrar</button>
+		</ol>
+		<p class="credits">Creado por <span font-bold>Héctor Villar</span></p>
+		<github-item href="https://github.com/ZenekeZene/picasso#picasso"></github-item>
 		<transition name="fade">
 			<div class="button-floated --bottom --left" @click="$router.push('gallery')">
 				<span class="icon-forward --left"></span>

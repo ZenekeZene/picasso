@@ -67,22 +67,20 @@ export default {
 		},
 		replay(interval = 10) {
 			if (!this.isPlaying) {
-				if (this.paintingSelected) {
-					this.setPlayingStatus({ status: true });
-					this.clearCanvas();
-					const history = [].concat(...this.history);
-					this.loop(
-						0,
-						history.length,
-						(i) => {
-							this.paintDot(history[i]);
-						},
-						() => {
-							this.setPlayingStatus({ status: false });
-						},
-						interval
-					);
-				}
+				this.setPlayingStatus({ status: true });
+				this.clearCanvas();
+				const history = [].concat(...this.history);
+				this.loop(
+					0,
+					history.length,
+					(i) => {
+						this.paintDot(history[i]);
+					},
+					() => {
+						this.setPlayingStatus({ status: false });
+					},
+					interval
+				);
 			} else {
 				clearTimeout(this.loopTimer);
 				this.setPlayingStatus({ status: false });

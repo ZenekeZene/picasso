@@ -41,3 +41,9 @@ h6 {
 		transition: all $duration $ease;
 	}
 }
+
+.intro {
+	width: 100%;
+	margin: 0;
+	font-size: $font-size-xs;
+}

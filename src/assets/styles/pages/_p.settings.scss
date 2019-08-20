@@ -1,4 +1,21 @@
 article.p-settings {
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
+
+	.p-settings__list {
+		width: 100%;
+		@include flex(flex, center, center);
+		flex-direction: column;
+	}
+
+	.intro {
+		@include absolute(top 4rem);
+	}
+}
+
+.credits {
+	@include absolute(bottom $gutter-3-2);
+	margin: 0;
+	font-size: $font-size-xs;
 }

@@ -4,7 +4,7 @@
 	padding-left: $gutter-1-2 !important;
 
 		.colors {
-			@include absolute(left $gutter-3-2);
+			@include absolute(left $gutter);
 		}
 
 		.range {

@@ -35,19 +35,18 @@
 		</div>
 	</transition>
 	<transition name="fade" appear>
-		<div class="button-floated --column --bottom --right">
-			<div
-				@click.stop.prevent="launchRating"
-				:class="{ '--disabled': isPainting }"
-				v-if="mode === 'read'"
-				v-mobile-hover:#4992a9
-			>
-				<span class="label">Puntuar este dibujo</span>
-				<span class="icon-star-full"></span>
-			</div>
+		<div class="button-floated --bottom --right"
+			v-if="mode === 'read'"
+			@click.stop.prevent="launchRating"
+			:class="{ '--disabled': isPainting }"
+			v-mobile-hover:#4992a9
+		>
+			<span class="label">Puntuar este dibujo</span>
+			<span class="icon-star-full"></span>
 		</div>
 	</transition>
 	<upload-tool @showSpinner="showSpinner = $event.status" v-if="mode === 'edit'"></upload-tool>
+	<modal-painting @showSpinner="showSpinner = $event.status"></modal-painting>
 	<modal-rating @showSpinner="showSpinner = $event.status"></modal-rating>
   </article>
 </template>
@@ -63,6 +62,7 @@ import UploadTool from './tools/UploadTool';
 import ColorsTool from './tools/ColorsTool';
 import StrokeTool from './tools/StrokeTool';
 import SpinnerItem from './SpinnerItem';
+import ModalPainting from './modals/ModalPainting';
 import ModalRating from './modals/ModalRating';
 
 export default {
@@ -77,6 +77,7 @@ export default {
 		ColorsTool,
 		StrokeTool,
 		SpinnerItem,
+		ModalPainting,
 		ModalRating,
 	},
 	computed: {

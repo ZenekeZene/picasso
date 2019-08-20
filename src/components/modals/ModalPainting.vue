@@ -6,7 +6,7 @@
 			<div padding>
 				<h1>Ponle<br/> nombre a tu dibujo</h1>
 				<input type="text" placeholder="Nombra tu dibujo" v-model="name">
-				<button margin-top class="btn" @click="$emit('sendPainting', { 'name': name })">Enviar dibujo</button>
+				<button margin-top class="btn" @click="save">Enviar dibujo</button>
 			</div>
 		</swiper-slide>
 	</swiper>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
 
 export default {
@@ -32,6 +33,11 @@ export default {
 		};
 	},
 	computed: {
+		...mapState([
+			'mode',
+			'canvas',
+			'history',
+		]),
 		swiper() {
 			return this.$refs.swiper.swiper;
 		},
@@ -39,6 +45,49 @@ export default {
 	methods: {
 		next() {
 			this.swiper.slideNext();
+		},
+		save() {
+			this.getCanvasBlob().then((blob) => {
+				const metadata = {
+					contentType: 'image/png',
+				};
+				this.$emit('showSpinner', { status: true });
+				window.storage.ref().child(`images/${Math.floor(Date.now() / 1000)}`).put(blob, metadata).then((snapshot) => {
+					snapshot.ref.getDownloadURL().then((url) => {
+						window.db
+							.collection('painting')
+							.add({
+								name: this.name,
+								history: JSON.stringify(this.history),
+								url,
+								avgRating: 0,
+								numRatings: 0,
+								timestamp: new Date(),
+							})
+							.then(() => {
+								this.$toasted.show('Dibujo subido con éxito!');
+								this.$emit('showSpinner', { status: false });
+							})
+							.catch(() => {
+								this.$toasted.show('Ha surgido un error!');
+								this.$emit('showSpinner', { status: false });
+							});
+					});
+				})
+				.catch(() => {
+					this.$toasted.show('Ha surgido un error!');
+					this.$emit('showSpinner', { status: false });
+				});
+			});
+
+			this.$modal.hide('modal-painting');
+		},
+		getCanvasBlob() {
+			return new Promise((resolve) => {
+				this.canvas.toBlob((blob) => {
+					resolve(blob);
+				});
+			});
 		},
 	},
 };

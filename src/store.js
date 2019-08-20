@@ -82,6 +82,9 @@ const store = new Vuex.Store({
 		},
 		setPlayingStatus(state, payload) {
 			state.isPlaying = payload.status;
+			if (payload.status) {
+				state.isPainting = false;
+			}
 		},
 		setPaintingStatus(state, payload) {
 			state.isPainting = payload.status;
