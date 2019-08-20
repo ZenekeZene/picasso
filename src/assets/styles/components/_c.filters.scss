@@ -1,0 +1,22 @@
+.filters {
+	@include flex(flex, center, center);
+	flex-direction: row;
+	color: rgb(191, 191, 191);
+
+	.label {
+		font-size: $font-size-xs;
+	}
+
+	&__list {
+		@include flex;
+		flex-direction: row;
+
+		li {
+			padding: 0 $gutter;
+
+			&.--active {
+				color: var(--color-text);
+			}
+		}
+	}
+}
