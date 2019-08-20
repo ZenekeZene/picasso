@@ -48,6 +48,11 @@
 			color: var(--color-background);
 			background-color: var(--color-react);
 		}
+
+		.vue-stars {
+			width: 7rem;
+			font-size: $font-size-xs;
+		}
 	}
 
 	&-wrapper {

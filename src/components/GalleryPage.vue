@@ -22,6 +22,8 @@
 								<img :src="paint.url" v-on:load="loaded = true" key="image">
 							</transition-group>
 							<span font-bold>{{ paint.name }}</span>
+							<vue-stars readonly :value="paint.avgRating" v-if="paint.avgRating > 0"></vue-stars>
+							<span v-if="paint.avgRating === 0" text-right>Sin valoraciones</span>
 						</li>
 					</ol>
 				</section>
@@ -55,6 +57,7 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
+import { VueStars } from "vue-stars";
 import SpinnerItem from './SpinnerItem';
 
 export default {
@@ -68,6 +71,7 @@ export default {
 	},
 	components: {
 		SpinnerItem,
+		VueStars,
 	},
 	computed: {
 		...mapState([
@@ -112,12 +116,8 @@ export default {
 				});
 		},
 		goToPainting(paint) {
-			this.setPaintingSelected({
-				paintingSelected: paint.id,
-			});
-			this.setHistory({
-				history: paint.history,
-			});
+			this.setPaintingSelected({ paintingSelected: paint.id });
+			this.setHistory({ history: paint.history });
 			setTimeout(() => {
 				this.$router.push(`paint/${paint.id}`);
 			}, 100);
@@ -140,9 +140,7 @@ export default {
 				this.deleteAllHistory();
 				this.resetIndexLine();
 				this.clearCanvas();
-				this.setPaintingSelected({
-					paintingSelected: null,
-				});
+				this.setPaintingSelected({ paintingSelected: null });
 			}
 		},
 	},
