@@ -78,7 +78,7 @@ export default {
 			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
 				this.setPaintingStatus({ status: false });
 				this.incrementIndexLine();
-				//this.saveToImage();
+				this.$emit('mouseup', false);
 			}
 		},
 		paint(currentPosition) {
