@@ -20,10 +20,11 @@
 			</li>
 			<li
 				@click="setColorStroke({ colorStroke: colorErase })"
-				:class="{ '--selected': colorStroke === colorErase }"
-				class="--erase"
 			>
-				<span :style="{ backgroundColor: colorErase }"></span>
+				<span :style="{ backgroundColor: colorErase }"
+					:class="{ '--selected': colorStroke === colorErase }"
+					class="--erase"
+				></span>
 			</li>
 		</ol>
 	</li>

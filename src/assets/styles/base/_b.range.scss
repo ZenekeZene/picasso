@@ -1,7 +1,7 @@
 .range {
 	position: relative;
 	@include flex(flex, center, center);
-	width: 8rem;
+	width: 12rem;
 	margin-left: $gutter;
 	
 	&__label {
