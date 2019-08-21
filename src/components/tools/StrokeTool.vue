@@ -3,14 +3,17 @@
 		:class="{ '--disabled': isPlaying || isPainting || mode === 'read' }"
 		v-if="mode === 'edit'"
 	>
-		<span font-bold style="text-align: left;">{{ strokeWidth }}</span>
+		<span font-bold style="text-align: left;">{{ strokeWidthLocal }}</span>
 		<div class="range" v-show="toolsVisible">
-		<input class="range__input" type="range" min="1" max="70" value="1" v-model="strokeWidth" />
+		<input class="range__input" type="range" min="1" max="70" value="1"
+			v-model="strokeWidthLocal"
+			@change="changeStrokeWidth"
+		/>
 		<span
 			class="range__label"
 			:style="{
-						minWidth: `${ strokeWidth }px`,
-						minHeight: `${ strokeWidth }px`,
+						minWidth: `${ strokeWidthLocal }px`,
+						minHeight: `${ strokeWidthLocal }px`,
 						backgroundColor: colorStroke,
 					}"
 			:class="{ '--erase': colorStroke === colorErase }"
@@ -30,7 +33,13 @@ export default {
 			'mode',
 			'colorStroke',
 			'colorErase',
+			'strokeWidth',
 		]),
+	},
+	data() {
+		return {
+			strokeWidthLocal: this.$store.state.strokeWidth,
+		};
 	},
 	props: {
 		toolsVisible: {
@@ -38,19 +47,12 @@ export default {
 			type: Boolean,
 		},
 	},
-	data() {
-		return {
-			strokeWidth: 10,
-		};
-	},
 	methods: {
 		...mapMutations([
 			'setStrokeWidth',
 		]),
-	},
-	watch: {
-		strokeWidth() {
-			this.setStrokeWidth({ strokeWidth: this.strokeWidth});
+		changeStrokeWidth() {
+			this.setStrokeWidth({ strokeWidth: this.strokeWidthLocal });
 		},
 	},
 };

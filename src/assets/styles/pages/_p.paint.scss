@@ -15,9 +15,11 @@
 		@include absolute(top left);
 		touch-action: none;
 		transition: filter 250ms ease-in;
-
 	}
 
+	canvas {
+		@include absolute(top left);
+	}
 
 	.lds-ripple {
 		@include absolute(top 50% left 50%);
