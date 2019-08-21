@@ -43,21 +43,10 @@
 		pointer-events: none;
 	}
 	
-	&.--left {
-		left: $gutter-1-2;
-	}
-
-	&.--right {
-		right: $gutter-1-2;
-	}
-
-	&.--top {
-		top: $gutter-1-2;
-	}
-
-	&.--bottom {
-		bottom: $gutter-1-2;
-	}
+	&.--left   { left: 0; }
+	&.--right  { right: 0; }
+	&.--top    { top: 0; }
+	&.--bottom { bottom: 0; }
 
 	&.--column {
 		flex-direction: column;

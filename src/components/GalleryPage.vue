@@ -7,40 +7,42 @@
 			</p>
 			<div v-else style="width: 100%; height: 100%;">
 				<filters-item></filters-item>
-				<spinner-item v-if="isLoading" block margin-auto-horizontal margin-top></spinner-item>
-				<section class="gallery-wrapper">
-					<ol class="gallery">
-						<li
-							class="gallery__item"
-							v-for="paint in filteredPaintings"
-							:key="paint.id"
-							@click="goToPainting(paint)"
-							:class="{ '--selected': paintingSelected === paint.id }"
-						>
-							<spinner-item v-show="!loaded" key="spinner" class="spinner --mini"></spinner-item>
-							<div style="min-width: 47px;">
-								<img :src="paint.url" v-on:load="loaded = true" key="image" />
-							</div>
-							<span class="name">{{ paint.name }}</span>
-							<div class="rating">
-								<star-rating
-									:rating="paint.avgRating"
-									:star-size="15"
-									:padding="3"
-									:glow="0"
-									:rounded-corners="true"
-									:border-width="0"
-									:increment="0.5"
-									:fixed-points="2"
-									:show-rating="false"
-									:round-start-rating="false"
-									:read-only="true"
-								></star-rating>
-								<span>Creado {{ calculateMoment(paint.timestamp) }}</span>
-							</div>
-						</li>
-					</ol>
-				</section>
+				<transition name="fade" mode="out-in">
+					<spinner-item v-if="isLoading" block margin-auto-horizontal margin-top></spinner-item>
+					<section class="gallery-wrapper" v-else>
+						<ol class="gallery">
+							<li
+								class="gallery__item"
+								v-for="paint in filteredPaintings"
+								:key="paint.id"
+								@click="goToPainting(paint)"
+								:class="{ '--selected': paintingSelected === paint.id }"
+							>
+								<spinner-item v-show="!loaded" key="spinner" class="spinner --mini"></spinner-item>
+								<div style="min-width: 47px;">
+									<img :src="paint.url" v-on:load="loaded = true" key="image" />
+								</div>
+								<span class="name">{{ paint.name }}</span>
+								<div class="rating">
+									<star-rating
+										:rating="paint.avgRating"
+										:star-size="15"
+										:padding="3"
+										:glow="0"
+										:rounded-corners="true"
+										:border-width="0"
+										:increment="0.5"
+										:fixed-points="2"
+										:show-rating="false"
+										:round-start-rating="false"
+										:read-only="true"
+									></star-rating>
+									<span>Creado {{ calculateMoment(paint.timestamp) }}</span>
+								</div>
+							</li>
+						</ol>
+					</section>
+				</transition>
 			</div>
 		</transition>
 		<transition name="fade">

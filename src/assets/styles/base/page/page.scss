@@ -62,12 +62,11 @@ aside {
 		max-width: 300px;
 		margin-bottom: $gutter;
 	}
+}
 
-	& > section,
-	& > article {
-		@include flex(flex, start, start);
-		width: 100%;
-		height: 100%;
-		padding: var(--height-header) $gutter $gutter $gutter;
-	}
+
+[class*='p-'] {
+	@include flex(flex, start, start);
+	@include size(100%);
+	padding: var(--height-header) $gutter $gutter $gutter;
 }
