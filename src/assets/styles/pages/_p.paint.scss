@@ -1,15 +1,16 @@
 .p-paint {
 	position: relative;
 	@include size();
-	padding-left: $gutter-1-2 !important;
+	padding-right: 0;
+	padding-left: 0;
 
-		.colors {
-			@include absolute(left $gutter);
-		}
+	.colors {
+		@include absolute(left $gutter);
+	}
 
-		.range {
-			@include absolute(left $gutter-3);
-		}
+	.range {
+		@include absolute(left $gutter-3);
+	}
 
 	&__canvas {
 		@include absolute(top left);

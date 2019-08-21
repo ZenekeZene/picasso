@@ -54,9 +54,12 @@ export default {
 		handleMouseDown(event) {
 			if (this.mode === 'edit') {
 				this.$emit('mouseDown', { status: false });
+			}
+
+			if (!this.isPainting && !this.isPlaying && this.mode === 'edit') {
 				const { offsetX, offsetY } = event;
-				this.setPaintingStatus({ status: true });
 				this.prevPosition = { offsetX, offsetY };
+				this.setPaintingStatus({ status: true });
 				this.createNewStrokeOnHistory();
 				this.paint(this.getCoordinates());
 			}
