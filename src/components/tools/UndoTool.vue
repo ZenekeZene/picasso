@@ -11,7 +11,7 @@
 
 <script>
 	import { mapState, mapGetters, mapMutations } from 'vuex';
-	import PlayerDot from '../PlayerDot.mixin';
+	import PlayerDot from '../../mixins/PlayerDot.mixin';
 
 	export default {
 		name: 'UndoTool',

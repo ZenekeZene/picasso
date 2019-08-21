@@ -39,6 +39,10 @@
 		}
 	}
 
+	& > span {
+		pointer-events: none;
+	}
+	
 	&.--left {
 		left: $gutter-1-2;
 	}
