@@ -58,20 +58,12 @@ export default {
 				this.setPaintingStatus({ status: true });
 				this.prevPosition = { offsetX, offsetY };
 				this.createNewStrokeOnHistory();
+				this.paint(this.getCoordinates());
 			}
 		},
 		handleMouseMove(event) {
 			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
-				let offsetX;
-				let offsetY;
-				if (event.offsetX) {
-					({ offsetX, offsetY } = event);
-				} else {
-					offsetX = event.touches[0].clientX;
-					offsetY = event.touches[0].clientY;
-				}
-				const offSetData = { offsetX, offsetY };
-				this.paint(offSetData);
+				this.paint(this.getCoordinates());
 			}
 		},
 		handleMouseUp() {
@@ -80,6 +72,17 @@ export default {
 				this.incrementIndexLine();
 				this.$emit('mouseup', false);
 			}
+		},
+		getCoordinates() {
+			let offsetX;
+			let offsetY;
+			if (event.offsetX) {
+				({ offsetX, offsetY } = event);
+			} else {
+				offsetX = event.touches[0].clientX;
+				offsetY = event.touches[0].clientY;
+			}
+			return { offsetX, offsetY };
 		},
 		paint(currentPosition) {
 			const { offsetX, offsetY } = currentPosition;

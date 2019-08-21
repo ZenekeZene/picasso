@@ -3,12 +3,11 @@
 	<transition name="fade" appear>
 		<ol
 			class="tools --left"
-			v-on="!isPlaying ? { mouseover } : {}"
 			@mouseleave="toolsVisible = false"
 			:class="{ '--disabled': isPainting || showSpinner }"
 		>
-			<colors-tool :toolsVisible="toolsVisible"></colors-tool>
-			<stroke-tool :toolsVisible="toolsVisible"></stroke-tool>
+			<colors-tool :toolsVisible="toolsVisible" @click.native="toolsVisible = true"></colors-tool>
+			<stroke-tool :toolsVisible="toolsVisible" @click.native="toolsVisible = true"></stroke-tool>
 			<replay-tool
 				@showSpinner="showSpinner = $event.status"
 				@clearCanvas="clearCanvas"
@@ -122,10 +121,6 @@ export default {
 				this.setPaintingSelected({ status: null });
 				this.$router.push('/');
 			}
-		},
-		mouseover(event) {
-			event.preventDefault();
-			this.toolsVisible = true;
 		},
 		saveToImage() {
 			this.dataURI = this.canvas.toDataURL('png');
