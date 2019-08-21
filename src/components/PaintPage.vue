@@ -25,7 +25,7 @@
 	<transition name="fade" appear>
 		<div class="button-floated --bottom --left"
 			@click.stop.prevent="goToGallery"
-			:class="{ '--disabled': isPlaying || isPainting }"
+			:class="{ '--disabled': isPainting }"
 			v-mobile-hover:#4992a9
 		>
 			<span

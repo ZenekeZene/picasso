@@ -1,11 +1,20 @@
 <template>
   <main class="app" :class="`page-${$route.name}`">
-	<h1 class="heading"
-		transition
-		:class="{ '--disabled': isPainting }"
-	>Picass<span class="icon-heart animated"
-		v-mobile-hover:#4992a9="'heartBeat'"
-	></span></h1>
+	  <transition name="fade" mode="out-in">
+		<h1 class="heading"
+			:class="{ '--disabled': isPainting }"
+			v-if="$route.name!='gallery'"
+			key="no-gallery"
+		>Picass<span class="icon-heart animated" v-mobile-hover:#4992a9="'heartBeat'"></span>
+		</h1>
+		<h1 class="heading"
+			:class="{ '--disabled': isPainting }"
+			v-else
+			key="gallery"
+		>Galerí<theme-change></theme-change>
+		</h1>
+	</transition>
+
 	<transition name="fade" mode="out-in">
 		<router-view
 			@isPainting="isPainting = $event"
@@ -17,6 +26,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import ThemeChange from './components/ThemeChange';
 
 export default {
 	name: 'App',
@@ -25,6 +35,12 @@ export default {
 			'isPainting',
 			'theme',
 		]),
+		title() {
+			return this.$route.name === 'gallery' ? 'Galerí': 'Picass';
+		},
+	},
+	components: {
+		ThemeChange,
 	},
 	data() {
 		return {

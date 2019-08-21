@@ -1,9 +1,8 @@
 <template>
 	<div
-		class="button-floated --top --right"
 		@click="toggleTheme"
 		v-mobile-hover:#4992a9
-		style="z-index: 200;"
+		style="display: inline-block;"
 	>
 		<span class="icon-moon" v-if="theme === 'light'"></span>
 		<span class="icon-sun" v-if="theme === 'dark'"></span>

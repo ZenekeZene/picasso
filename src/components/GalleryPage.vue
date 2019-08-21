@@ -59,9 +59,6 @@
 				<span class="icon-write"></span>
 			</div>
 		</transition>
-		<transition name="fade">
-			<theme-change></theme-change>
-		</transition>
 	</article>
 </template>
 <script>
@@ -144,9 +141,7 @@ export default {
 		goToPainting(paint) {
 			this.setPaintingSelected({ paintingSelected: paint.id });
 			this.setHistory({ history: paint.history });
-			setTimeout(() => {
-				this.$router.push(`paint/${paint.id}`);
-			}, 100);
+			this.$router.push(`/paint/${paint.id}`);
 		},
 		goToPaint(event) {
 			if (!event.target.classList.contains('--disabled')) {
