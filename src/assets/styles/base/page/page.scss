@@ -65,7 +65,7 @@ aside {
 }
 
 
-[class*='p-'] {
+[class^='p-'] {
 	@include flex(flex, start, start);
 	@include size(100%);
 	padding: var(--height-header) $gutter $gutter $gutter;
