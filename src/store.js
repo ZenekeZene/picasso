@@ -106,9 +106,6 @@ const store = new Vuex.Store({
 		setFilterCriterion(state, payload) {
 			state.filterCriterion = payload.filterCriterion;
 		},
-		setFilterDirection(state, payload) {
-			state.filterDirection = payload.filterDirection;
-		},
 	},
 	actions: {
 		getHistoryOfPainting({ commit }, payload) {

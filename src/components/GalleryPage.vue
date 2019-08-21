@@ -1,10 +1,5 @@
 <template>
 	<article class="p-gallery">
-		<p class="intro">
-			Dibujos
-			<span font-bold>anónimos</span> de gente
-			<span font-bold>muy loca</span>.
-		</p>
 		<transition name="fade" mode="out-in">
 			<p v-if="!isLoading && paintings.length === 0" block font-size-xs text-center>
 				[ &nbsp;Aún no hay dibujos&nbsp;&nbsp;
@@ -65,14 +60,7 @@
 			</div>
 		</transition>
 		<transition name="fade">
-			<div
-				class="button-floated --top --right"
-				@click="$router.push('settings')"
-				v-mobile-hover:#4992a9
-				style="z-index: 200;"
-			>
-				<span class="icon-cog"></span>
-			</div>
+			<theme-change></theme-change>
 		</transition>
 	</article>
 </template>
@@ -81,6 +69,7 @@ import { mapState, mapMutations } from 'vuex';
 import moment from 'moment';
 import StarRating from 'vue-star-rating';
 import SpinnerItem from './SpinnerItem';
+import ThemeChange from './ThemeChange';
 import FiltersItem from './FiltersItem';
 
 export default {
@@ -96,14 +85,15 @@ export default {
 		SpinnerItem,
 		StarRating,
 		FiltersItem,
+		ThemeChange,
 	},
 	computed: {
-		...mapState(['history', 'mode', 'paintingSelected', 'filterCriterion']),
-		backLiteral() {
-			return this.history.length > 0 && this.mode === 'edit'
-				? 'Seguir con mi dibujo'
-				: 'Crear dibujo nuevo';
-		},
+		...mapState([
+			'history',
+			'mode',
+			'paintingSelected',
+			'filterCriterion',
+		]),
 		filteredPaintings() {
 			const compare = {
 				alphabet: (a, b) => (a.name.localeCompare(b.name)),
@@ -127,7 +117,6 @@ export default {
 			'clearCanvas',
 			'setPaintingSelected',
 			'setFilterCriterion',
-			'setFilterDirection',
 		]),
 		calculateMoment(timestamp) {
 			return moment(new Date(timestamp.seconds * 1000)).fromNow();

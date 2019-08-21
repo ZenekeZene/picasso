@@ -2,11 +2,7 @@
 	<article class="p-settings">
 		<p class="intro" margin-bottom>Pocas cosas para <span font-bold>configurar</span>, amigo.</p>
 		<ol class="p-settings__list">
-			<section @click="toggleTheme">
-				Tema:
-				<span class="icon-moon" v-if="theme === 'light'"></span>
-				<span class="icon-sun" v-if="theme === 'dark'"></span>
-			</section>
+			
 			<button margin-top class="btn" @click="clearCache">Borrar caché</button>
 			<button margin-top class="btn --hot">Administrar</button>
 		</ol>
