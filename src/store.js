@@ -26,12 +26,18 @@ const store = new Vuex.Store({
 		theme: 'light',
 		filterCriterion: 'alphabet',
 		filterDirection: 'asc',
+		brush: 'neighbor',
 	},
 	getters: {
-		isDisabled: state => state.isPlaying || state.isPainting || state.history.length === 0,
-		isPauseDisabled: state => state.isPainting || state.history.length === 0,
+		isDisabled: (state) =>
+			state.isPlaying || state.isPainting || state.history.length === 0,
+		isPauseDisabled: (state) =>
+			state.isPainting || state.history.length === 0,
 	},
 	mutations: {
+		setBrush(state, payload) {
+			state.brush = payload.brush;
+		},
 		setColorStroke(state, payload) {
 			state.colorStroke = payload.colorStroke;
 		},

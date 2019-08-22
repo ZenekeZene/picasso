@@ -27,6 +27,7 @@ export default {
 		...mapState([
 			'isPlaying',
 			'paintingSelected',
+			'brush',
 		]),
 		...mapGetters([
 			'isPauseDisabled',
@@ -74,7 +75,12 @@ export default {
 					0,
 					history.length,
 					(i) => {
-						this.paintPoint(history[i]);
+						if (this.brush === 'neighbor') {
+							console.log(history);
+							this.paintNeighborBrush(history);
+						} else {
+							this.paintPoint(history[i]);
+						}
 					},
 					() => {
 						this.setPlayingStatus({ status: false });

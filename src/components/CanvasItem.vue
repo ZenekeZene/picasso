@@ -31,6 +31,7 @@ export default {
 			'isPainting',
 			'isPlaying',
 			'history',
+			'brush',
 		]),
 	},
 	data() {
@@ -80,6 +81,14 @@ export default {
 					this.ctx.lineTo(this.points[i].x, this.points[i].y);
 					this.prevPosition.offsetX = this.points[i].px;
 					this.prevPosition.offsetY = this.points[i].py;
+
+					if (this.brush === 'neighbor') {
+						var nearPoint = this.points[i-5];
+						if (nearPoint) {
+							this.ctx.moveTo(nearPoint.x, nearPoint.y);
+							this.ctx.lineTo(this.points[i].x, this.points[i].y);
+						}
+					}
 				}
 				this.ctx.stroke();
 			}
@@ -89,19 +98,27 @@ export default {
 				this.setPaintingStatus({ status: false });
 				this.$emit('mouseup', false);
 				const points = [...this.points];
-				this.prevPosition.offsetX = null;
-				this.prevPosition.offsetY = null;
 				this.pushDotOnHistory({ dot: points });
 				this.points.length = 0;
 			} 
 		},
 		getPoint(event) {
-			const currentPosition = {
-				offsetX: event.touches[0].clientX,
-				offsetY: event.touches[0].clientY,
-			};
-			const { offsetX, offsetY } = currentPosition;
-			const { offsetX: x, offsetY: y } = this.prevPosition;
+			let offsetX;
+			let offsetY;
+			if (event.offsetX) {
+				({ offsetX, offsetY } = event);
+			} else {
+				offsetX = event.touches[0].clientX;
+				offsetY = event.touches[0].clientY;
+			}
+			let x, y;
+			if (this.prevPosition.offsetX) {
+				x = this.prevPosition.offsetX;
+				y = this.prevPosition.offsetY;
+			} else {
+				x = offsetX;
+				y = offsetY;
+			}
 			const point = {
 				x: x,
 				y: y,

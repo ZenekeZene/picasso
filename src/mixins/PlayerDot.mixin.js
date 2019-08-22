@@ -6,6 +6,7 @@ var playerDot = {
 			'history',
 			'ctx',
 			'theme',
+			'brush',
 		]),
 	},
 	data() {
@@ -35,12 +36,34 @@ var playerDot = {
 			this.ctx.stroke();
 			this.prevPosition = { offsetX, offsetY };
 		},
+		paintNeighborBrush(points) {
+			this.ctx.beginPath();
+			//this.ctx.lineWidth = points[0].size;
+			//this.ctx.strokeStyle = points[0].color;
+			this.ctx.moveTo(points[0].x, points[0].y);
+			for (var i = 1; i < points.length; i++) {
+				this.ctx.lineTo(points[i].x, points[i].y);
+				this.prevPosition.offsetX = points[i].px;
+				this.prevPosition.offsetY = points[i].py;
+
+				var nearPoint = points[i - 5];
+				if (nearPoint) {
+					this.ctx.moveTo(nearPoint.x, nearPoint.y);
+					this.ctx.lineTo(points[i].x, points[i].y);
+				}
+			}
+			this.ctx.stroke();
+		},
 		player() {
 			for (let i = 0; i < this.history.length; i += 1) {
 				const stroke = this.history[i];
-				for (let j = 0; j < stroke.length; j += 1) {
-					const point = stroke[j];
-					this.paintPoint(point);
+				if (this.brush === 'neighbor') {
+					this.paintNeighborBrush(stroke);
+				} else {
+					for (let j = 0; j < stroke.length; j += 1) {
+						const point = stroke[j];
+						this.paintPoint(point);
+					}
 				}
 			}
 		},
