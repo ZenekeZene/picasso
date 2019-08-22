@@ -33,6 +33,11 @@ export default {
 			'history',
 		]),
 	},
+	data() {
+		return {
+			brush: true,
+		};
+	},
 	methods: {
 		...mapMutations([
 			'setCanvas',
@@ -61,20 +66,37 @@ export default {
 				this.prevPosition = { offsetX, offsetY };
 				this.setPaintingStatus({ status: true });
 				this.createNewStrokeOnHistory();
-				this.paint(this.getCoordinates());
+				if (!this.brush) {
+					this.paint(this.getCoordinates());
+				} else {
+					this.paintDotPencil(event);
+				} 
 			}
 		},
 		handleMouseMove(event) {
 			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
-				this.paint(this.getCoordinates());
+				if (!this.brush) {
+					this.paint(this.getCoordinates());
+				} else {
+					if (!this.isPainting) return;
+					this.paintDotPencil(event, {
+						size: this.strokeWidth,
+						color: this.colorStroke
+					});
+				} 
 			}
 		},
 		handleMouseUp() {
 			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
 				this.setPaintingStatus({ status: false });
+				if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
+				}
 				this.incrementIndexLine();
 				this.$emit('mouseup', false);
 			}
+			if (this.brush) {
+				this.resetPaintDotPencil();
+			} 
 		},
 		getCoordinates() {
 			let offsetX;

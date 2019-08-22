@@ -11,6 +11,7 @@ var playerDot = {
 	data() {
 		return {
 			prevPosition: { offsetX: 0, offsetY: 0 },
+			points: [],
 		};
 	},
 	methods: {
@@ -34,6 +35,34 @@ var playerDot = {
 			this.ctx.lineTo(offsetX, offsetY);
 			this.ctx.stroke();
 			this.prevPosition = { offsetX, offsetY };
+		},
+		paintDotPencil(e, config) {
+			console.log('paintDotPencil');
+			this.points.push({ x: e.clientX, y: e.clientY });
+			this.ctx.beginPath();
+			if (this.points[this.points.length - 2]) {
+				this.ctx.moveTo(this.points[this.points.length - 2].x, this.points[this.points.length - 2].y);
+				this.ctx.lineTo(this.points[this.points.length - 1].x, this.points[this.points.length - 1].y);
+			}
+			this.ctx.lineWidth = config.size;
+			this.ctx.strokeStyle = config.color;
+			this.ctx.stroke();
+			
+			for (var i = 0, len = this.points.length; i < len; i++) {
+				const dx = this.points[i].x - this.points[this.points.length - 1].x;
+				const dy = this.points[i].y - this.points[this.points.length - 1].y;
+				const d = dx * dx + dy * dy;
+
+				if (d < 1000) {
+					this.ctx.beginPath();
+					this.ctx.moveTo( this.points[this.points.length-1].x + (dx * 0.2), this.points[this.points.length-1].y + (dy * 0.2));
+					this.ctx.lineTo( this.points[i].x - (dx * 0.2), this.points[i].y - (dy * 0.2));
+					this.ctx.stroke();
+				}
+			}
+		},
+		resetPaintDotPencil() {
+			this.points.length = 0;
 		},
 		player() {
 			for (let i = 0; i < this.history.length; i += 1) {
