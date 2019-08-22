@@ -69,7 +69,10 @@ export default {
 				if (!this.brush) {
 					this.paint(this.getCoordinates());
 				} else {
-					this.paintDotPencil(event);
+					this.paintDotPencil(event, {
+						size: this.strokeWidth,
+						color: this.colorStroke
+					});
 				} 
 			}
 		},

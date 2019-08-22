@@ -37,7 +37,7 @@ var playerDot = {
 			this.prevPosition = { offsetX, offsetY };
 		},
 		paintDotPencil(e, config) {
-			console.log('paintDotPencil');
+			console.log(e);
 			this.points.push({
 				x: e.touches[0].clientX,
 				y: e.touches[0].clientY,
