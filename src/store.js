@@ -48,7 +48,7 @@ const store = new Vuex.Store({
 			state.history.pop();
 		},
 		pushDotOnHistory(state, payload) {
-			state.history[state.indexLine].push(payload.dot);
+			state.history.push(payload.dot);
 		},
 		deleteAllHistory(state) {
 			state.history = [];

@@ -43,9 +43,8 @@
 				'decreaseIndexLine',
 			]),
 			undo(event) {
-				if (this.indexLine - 1 >= 0 && !this.isPlaying && !event.target.classList.contains('--disabled')) {
+				if (!this.isPlaying && !event.target.classList.contains('--disabled')) {
 					this.removeStrokeOnHistory();
-					this.decreaseIndexLine();
 					this.$emit('clearCanvas');
 					this.player();
 				}

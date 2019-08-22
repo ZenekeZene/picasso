@@ -35,7 +35,7 @@ export default {
 	},
 	data() {
 		return {
-			brush: true,
+			points: [],
 		};
 	},
 	methods: {
@@ -65,66 +65,54 @@ export default {
 				const { offsetX, offsetY } = event;
 				this.prevPosition = { offsetX, offsetY };
 				this.setPaintingStatus({ status: true });
-				this.createNewStrokeOnHistory();
-				if (!this.brush) {
-					this.paint(this.getCoordinates());
-				} else {
-					this.paintDotPencil(event, {
-						size: this.strokeWidth,
-						color: this.colorStroke
-					});
-				} 
+				const point = this.getPoint(event);
+				this.points.push(point);
+				this.paintPoint(point);
 			}
 		},
 		handleMouseMove(event) {
 			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
-				if (!this.brush) {
-					this.paint(this.getCoordinates());
-				} else {
-					if (!this.isPainting) return;
-					this.paintDotPencil(event, {
-						size: this.strokeWidth,
-						color: this.colorStroke
-					});
-				} 
+				const dot = this.getPoint(event);
+				this.points.push(dot);
+				this.ctx.beginPath();
+				this.ctx.moveTo(this.points[0].x, this.points[0].y);
+				for (var i = 1; i < this.points.length; i++) {
+					this.ctx.lineTo(this.points[i].x, this.points[i].y);
+					this.prevPosition.offsetX = this.points[i].px;
+					this.prevPosition.offsetY = this.points[i].py;
+				}
+				this.ctx.stroke();
 			}
 		},
 		handleMouseUp() {
 			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
 				this.setPaintingStatus({ status: false });
-				if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
-				}
-				this.incrementIndexLine();
 				this.$emit('mouseup', false);
-			}
-			if (this.brush) {
-				this.resetPaintDotPencil();
+				const points = [...this.points];
+				this.prevPosition.offsetX = null;
+				this.prevPosition.offsetY = null;
+				this.pushDotOnHistory({ dot: points });
+				this.points.length = 0;
 			} 
 		},
-		getCoordinates() {
-			let offsetX;
-			let offsetY;
-			if (event.offsetX) {
-				({ offsetX, offsetY } = event);
-			} else {
-				offsetX = event.touches[0].clientX;
-				offsetY = event.touches[0].clientY;
-			}
-			return { offsetX, offsetY };
-		},
-		paint(currentPosition) {
+		getPoint(event) {
+			const currentPosition = {
+				offsetX: event.touches[0].clientX,
+				offsetY: event.touches[0].clientY,
+			};
 			const { offsetX, offsetY } = currentPosition;
 			const { offsetX: x, offsetY: y } = this.prevPosition;
-			const dot = {
-				size: this.strokeWidth,
+			const point = {
+				x: x,
+				y: y,
+				px: offsetX,
+				py: offsetY,
+				size: Number(this.strokeWidth),
 				color: this.colorStroke,
-				mousex: x,
-				mousey: y,
-				pmousex: offsetX,
-				pmousey: offsetY,
 			};
-			this.paintDot(dot);
-			this.pushDotOnHistory({ dot });
+			this.ctx.lineWidth = this.strokeWidth;
+			this.ctx.strokeStyle = this.colorStroke;
+			return point;
 		},
 	},
 	mounted() {

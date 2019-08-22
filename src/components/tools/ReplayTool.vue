@@ -74,7 +74,7 @@ export default {
 					0,
 					history.length,
 					(i) => {
-						this.paintDot(history[i]);
+						this.paintPoint(history[i]);
 					},
 					() => {
 						this.setPlayingStatus({ status: false });
