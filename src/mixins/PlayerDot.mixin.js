@@ -38,7 +38,10 @@ var playerDot = {
 		},
 		paintDotPencil(e, config) {
 			console.log('paintDotPencil');
-			this.points.push({ x: e.clientX, y: e.clientY }); 
+			this.points.push({
+				x: e.touches[0].clientX,
+				y: e.touches[0].clientY,
+			}); 
 			this.ctx.beginPath();
 			if (this.points[this.points.length - 2]) {
 				this.ctx.moveTo(this.points[this.points.length - 2].x, this.points[this.points.length - 2].y);
