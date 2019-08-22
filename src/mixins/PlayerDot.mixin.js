@@ -18,7 +18,7 @@ var playerDot = {
 		paintDot(dot) {
 			const x = dot.mousex;
 			const y = dot.mousey;
-			const offsetX = dot.pmousex;
+			const offsetX = dot.pmousex; 
 			const offsetY = dot.pmousey;
 			this.ctx.beginPath();
 			this.ctx.lineWidth = dot.size;
