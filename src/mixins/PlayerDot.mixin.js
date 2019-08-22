@@ -57,7 +57,7 @@ var playerDot = {
 				const d = dx * dx + dy * dy;
 
 				if (d < 1000) {
-					this.ctx.beginPath();
+					this.ctx.beginPath(); 
 					this.ctx.moveTo( this.points[this.points.length-1].x + (dx * 0.2), this.points[this.points.length-1].y + (dy * 0.2));
 					this.ctx.lineTo( this.points[i].x - (dx * 0.2), this.points[i].y - (dy * 0.2));
 					this.ctx.stroke();
