@@ -62,7 +62,9 @@ var playerDot = {
 			}
 		},
 		resetPaintDotPencil() {
+			const points = this.points;
 			this.points.length = 0;
+			return points;
 		},
 		player() {
 			for (let i = 0; i < this.history.length; i += 1) {
