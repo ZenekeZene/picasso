@@ -77,20 +77,20 @@ export default {
 				this.points.push(dot);
 				this.ctx.beginPath();
 				this.ctx.moveTo(this.points[0].x, this.points[0].y);
-				for (var i = 1; i < this.points.length; i++) {
+				for (let i = 0; i < this.points.length; i++) {
 					this.ctx.lineTo(this.points[i].x, this.points[i].y);
 					this.prevPosition.offsetX = this.points[i].px;
 					this.prevPosition.offsetY = this.points[i].py;
 
 					if (this.brush === 'neighbor') {
-						var nearPoint = this.points[i-5];
+						let nearPoint = this.points[i - 5];
 						if (nearPoint) {
 							this.ctx.moveTo(nearPoint.x, nearPoint.y);
 							this.ctx.lineTo(this.points[i].x, this.points[i].y);
 						}
+						this.ctx.stroke();
 					}
 				}
-				this.ctx.stroke();
 			}
 		},
 		handleMouseUp() {

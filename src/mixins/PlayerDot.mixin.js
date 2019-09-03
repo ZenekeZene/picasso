@@ -2,16 +2,12 @@ import { mapState } from 'vuex';
 
 var playerDot = {
 	computed: {
-		...mapState([
-			'history',
-			'ctx',
-			'theme',
-			'brush',
-		]),
+		...mapState(['history', 'ctx', 'theme', 'brush']),
 	},
 	data() {
 		return {
 			prevPosition: { offsetX: 0, offsetY: 0 },
+			loopTimer: null,
 		};
 	},
 	methods: {
@@ -36,35 +32,48 @@ var playerDot = {
 			this.ctx.stroke();
 			this.prevPosition = { offsetX, offsetY };
 		},
-		paintNeighborBrush(points) {
-			this.ctx.beginPath();
-			//this.ctx.lineWidth = points[0].size;
-			//this.ctx.strokeStyle = points[0].color;
-			this.ctx.moveTo(points[0].x, points[0].y);
-			for (var i = 1; i < points.length; i++) {
-				this.ctx.lineTo(points[i].x, points[i].y);
-				this.prevPosition.offsetX = points[i].px;
-				this.prevPosition.offsetY = points[i].py;
-
-				var nearPoint = points[i - 5];
-				if (nearPoint) {
-					this.ctx.moveTo(nearPoint.x, nearPoint.y);
-					this.ctx.lineTo(points[i].x, points[i].y);
-				}
+		paintPointComplex(pointsEntry, i) {
+			this.ctx.lineTo(pointsEntry[i].x, pointsEntry[i].y);
+			let nearPoint = pointsEntry[i - 5];
+			if (nearPoint) {
+				this.ctx.moveTo(nearPoint.x, nearPoint.y);
+				this.ctx.lineTo(pointsEntry[i].x, pointsEntry[i].y);
 			}
 			this.ctx.stroke();
 		},
-		player() {
-			for (let i = 0; i < this.history.length; i += 1) {
-				const stroke = this.history[i];
-				if (this.brush === 'neighbor') {
-					this.paintNeighborBrush(stroke);
-				} else {
-					for (let j = 0; j < stroke.length; j += 1) {
-						const point = stroke[j];
-						this.paintPoint(point);
+		paintNeighborBrush(pointsEntry) {
+			return new Promise((resolve) => {
+				this.ctx.beginPath();
+				this.ctx.moveTo(pointsEntry[0].x, pointsEntry[0].y);
+				this.ctx.lineWidth = pointsEntry[0].size;
+				this.ctx.strokeStyle = pointsEntry[0].color;
+
+				const loop = async () => {
+					for (let i = 0; i < pointsEntry.length; i++) {
+						await new Promise((resolve) => {
+							setTimeout(() => {
+								this.paintPointComplex(pointsEntry, i);
+								resolve();
+							});
+						});
 					}
-				}
+				};
+				loop().then(() => {
+					// Acabado points
+					resolve();
+				});
+			});
+		},
+		player() {
+			for (let i = 0; i < this.history.length; i++) {
+				this.ctx.beginPath();
+				const stroke = this.history[i];
+				this.ctx.moveTo(stroke[0].x, stroke[0].y);
+				this.ctx.lineWidth = stroke[0].size;
+				this.ctx.strokeStyle = stroke[0].color;
+				for (let j = 0; j < this.history[i].length; j++) {
+					this.paintPointComplex(stroke, j);
+				};
 			}
 		},
 	},

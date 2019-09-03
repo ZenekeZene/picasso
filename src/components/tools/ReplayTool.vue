@@ -70,39 +70,21 @@ export default {
 			if (!this.isPlaying) {
 				this.setPlayingStatus({ status: true });
 				this.clearCanvas();
-				const history = [].concat(...this.history);
-				this.loop(
-					0,
-					history.length,
-					(i) => {
-						if (this.brush === 'neighbor') {
-							console.log(history);
-							this.paintNeighborBrush(history);
-						} else {
-							this.paintPoint(history[i]);
-						}
-					},
-					() => {
-						this.setPlayingStatus({ status: false });
-					},
-					interval
-				);
-			} else {
-				clearTimeout(this.loopTimer);
-				this.setPlayingStatus({ status: false });
-				this.player();
-			}
-		},
-		loop(index, howManyTimes, f, callback, ms) {
-			let i = index;
-			f(i);
-			i += 1;
-			if (i < howManyTimes) {
-				this.loopTimer = setTimeout(() => {
-					this.loop(i, howManyTimes, f, callback, ms);
-				}, ms);
-			} else {
-				callback();
+
+				const loop = async () => {
+					for (let i = 0; i < this.history.length; i++) {
+						await new Promise((resolve) => {
+							this.paintNeighborBrush(this.history[i]).then(() => {
+								// Acabado linea
+								resolve();
+							});
+						});
+					}
+				};
+				loop().then(() => {
+					// Acabado history
+					this.setPlayingStatus({ status: false });
+				});
 			}
 		},
 	},
