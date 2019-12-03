@@ -20,7 +20,11 @@
 	<transition name="fade" appear>
 		<spinner-item v-show="showSpinner"></spinner-item>
 	</transition>
-	<canvas-item class="p-paint__canvas" :class="{ '--blur': showSpinner }" @mouseup="handMouseUp"></canvas-item>
+	<canvas-item
+		class="p-paint__canvas"
+		:class="{ '--blur': showSpinner }"
+		@mouseup="handMouseUp"
+	></canvas-item>
 	<transition name="fade" appear>
 		<div class="button-floated --bottom --left"
 			@click.stop.prevent="goToGallery"
@@ -96,6 +100,9 @@ export default {
 			showSpinner: false,
 		};
 	},
+	mounted() {
+		this.saveToImage();
+	},
 	methods: {
 		...mapMutations([
 			'setModeToEditable',
@@ -135,7 +142,7 @@ export default {
 		handMouseUp($event) {
 			this.toolsVisible = $event;
 			this.saveToImage();
-		}
+		},
 	},
 };
 </script>
