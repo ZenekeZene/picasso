@@ -4,6 +4,7 @@
 		v-if="mode === 'edit'"
 	>
 		<span font-bold style="text-align: left;">{{ strokeWidthLocal }}</span>
+		<span class="label" v-show="!toolsVisible">Size</span>
 		<div class="range" v-show="toolsVisible">
 		<input class="range__input" type="range" min="1" max="70" value="1"
 			v-model="strokeWidthLocal"

@@ -6,6 +6,7 @@
 			:class="{ '--disabled': isDisabled || mode === 'read' }"
 		>
 		</span>
+		<span class="label">Clean</span>
 	</li>
 </template>
 

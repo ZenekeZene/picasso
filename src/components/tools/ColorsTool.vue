@@ -9,6 +9,7 @@
 				'--disabled': isPlaying || isPainting || mode === 'read'
 			}"
 		></span>
+		<span class="label" v-show="!toolsVisible">Color</span>
 		<ol class="colors" v-show="toolsVisible">
 			<li
 				v-for="(color, index) in colors"
@@ -32,6 +33,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+
 export default {
 	name: 'ColorsTool',
 	props: {
@@ -66,9 +68,8 @@ export default {
 		this.setColorErase({
 			colorErase: window
 					.getComputedStyle(document.documentElement)
-					.getPropertyValue('--color-background')
-			}
-		);
+					.getPropertyValue('--color-background'),
+			});
 	},
 	methods: {
 		...mapMutations([
@@ -76,5 +77,5 @@ export default {
 			'setColorErase',
 		]),
 	},
-}
+};
 </script>

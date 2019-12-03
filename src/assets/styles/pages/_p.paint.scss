@@ -6,10 +6,13 @@
 
 	.colors {
 		@include absolute(left $gutter);
+		padding: $gutter 0;
 	}
 
 	.range {
 		@include absolute(left $gutter-3);
+		width: 13rem;
+		padding: $gutter $gutter $gutter 0
 	}
 
 	&__canvas {
@@ -32,4 +35,4 @@
 .--blur {
 	filter: blur(22px);
 
-} 
+}
