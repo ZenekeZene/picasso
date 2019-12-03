@@ -23,7 +23,13 @@
 		min-height: 3rem;
 		cursor: pointer;
 		transition: opacity $duration $ease;
-		
+
+		@media (hover: hover) {
+			&:hover {
+				color: $color-tertiary;
+			}
+		}
+
 		.icon {
 			display: inline-block;
 			@include size($gutter);
@@ -33,13 +39,7 @@
 		@include icon {
 			width: 100%;
 			padding: $gutter-1-2 $gutter;
-
-			@media (hover: hover) {
-				&:hover {
-					color: $color-tertiary !important;
-				}
-			}
-		} 
+		}
 
 		.label {
 			@include absolute(left 4rem);
@@ -64,13 +64,18 @@
 }
 
 .--disabled {
-	opacity: 0.2;
+	$opacity: 0.2;
+	opacity: $opacity;
 
 	&:hover {
-		cursor: normal;
+		cursor: pointer;
 
 		@include icon {
-			color: inherit;
+			opacity: $opacity;
+		}
+
+		+ span {
+			opacity: $opacity;
 		}
 	}
 }

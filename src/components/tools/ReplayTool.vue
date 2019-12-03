@@ -1,11 +1,11 @@
 <template>
-	<li class="tools__item">
+	<li class="tools__item" :class="{ '--disabled': isPauseDisabled }">
 		<span
 			:class="{
 				'icon-stop': isPlaying,
 				'icon-play': !isPlaying ,
 				'--playing': isPlaying,
-				'--disabled': isPauseDisabled }"
+			}"
 			v-touch:end="launchReplay"
 			v-mobile-hover:#4992a9
 		></span>
@@ -34,19 +34,19 @@ export default {
 	},
 	mounted() {
 		this.setPaintingSelected({ paintingSelected: this.$route.params.id });
-		
+
 		if (this.paintingSelected) {
-			this.$emit('showSpinner', { status : true });
+			this.$emit('showSpinner', { status: true });
 			this.getHistoryOfPainting({ paintingId: this.paintingSelected })
-			.then((data) => {
-				this.$emit('showSpinner', { status : false });
+			.then(() => {
+				this.$emit('showSpinner', { status: false });
 				this.replay();
 				this.setModeToReadable();
 			})
 			.catch((error) => {
 				console.error(error);
 				this.$toasted.show('Ha surgido un error!');
-				this.$emit('showSpinner', { status : false });
+				this.$emit('showSpinner', { status: false });
 			});
 		}
 	},

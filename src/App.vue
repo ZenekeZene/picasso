@@ -1,11 +1,11 @@
 <template>
-  <main class="app" :class="`page-${$route.name}`">
-	  <transition name="fade" mode="out-in">
+<main class="app" :class="`page-${$route.name}`">
+	<transition name="fade" mode="out-in">
 		<h1 class="heading"
 			:class="{ '--disabled': isPainting }"
 			v-if="$route.name!='gallery'"
 			key="no-gallery"
-		>Picass<span class="icon-heart animated" v-mobile-hover:#4992a9="'heartBeat'"></span>
+		>Picasso
 		</h1>
 		<h1 class="heading"
 			:class="{ '--disabled': isPainting }"
@@ -21,7 +21,7 @@
 			@inputFocused="anyInputFocused = $event"
 		/>
 	</transition>
-  </main>
+</main>
 </template>
 
 <script>
@@ -36,7 +36,7 @@ export default {
 			'theme',
 		]),
 		title() {
-			return this.$route.name === 'gallery' ? 'Galerí': 'Picass';
+			return this.$route.name === 'gallery' ? 'Galería' : 'Picasso';
 		},
 	},
 	components: {

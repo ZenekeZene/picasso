@@ -1,9 +1,10 @@
 <template>
-	<li class="tools__item" v-if="mode === 'edit'">
+	<li class="tools__item" v-if="mode === 'edit'"
+		:class="{ '--disabled': isDisabled || mode === 'read' }"
+	>
 		<span class="icon-trash"
 			v-touch:end="clean"
 			v-mobile-hover:#4992a9
-			:class="{ '--disabled': isDisabled || mode === 'read' }"
 		>
 		</span>
 		<span class="label">Clean</span>

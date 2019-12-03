@@ -11,7 +11,7 @@
 	border-radius: 4px;
 	font-size: $font-size-m;
 	outline: none;
-	-webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+	-webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
 
 	&:active {
 		position: relative;
@@ -29,7 +29,7 @@
 	min-width: var(--width-tools);
 	padding: $gutter;
 	transition: opacity 250ms ease-in;
-	
+
 	& > div:first-child {
 		display: flex;
 		padding: $gutter-1-2 0;
@@ -42,7 +42,7 @@
 	& > span {
 		pointer-events: none;
 	}
-	
+
 	&.--left   { left: 0; }
 	&.--right  { right: 0; }
 	&.--top    { top: 0; }
@@ -61,5 +61,13 @@
 		font-size: $font-size-xxs;
 		font-weight: $font-black;
 		text-align: left;
+	}
+
+	@media (hover: hover) {
+		cursor: pointer;
+
+		&:hover {
+			color: $color-tertiary;
+		}
 	}
 }
