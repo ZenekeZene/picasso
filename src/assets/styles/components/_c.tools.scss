@@ -67,15 +67,15 @@
 	$opacity: 0.2;
 	opacity: $opacity;
 
-	&:hover {
-		cursor: pointer;
+	@media (hover: hover) {
+		&:hover {
+			color: var(--color-text);
+			cursor: pointer;
 
-		@include icon {
-			opacity: $opacity;
-		}
-
-		+ span {
-			opacity: $opacity;
+			+ span {
+				color: red;
+				//opacity: $opacity;
+			}
 		}
 	}
 }

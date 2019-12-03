@@ -17,7 +17,23 @@ h6 {
 	}
 }
 
-.heading {
+.theme-toggle {
+	right: 1rem;
+
+	@include media('<=phablet') {
+		padding: 0;
+	}
+
+	@media (hover: hover) {
+		&:hover {
+			cursor: pointer;
+			color: $color-tertiary;
+		}
+	}
+}
+
+.heading,
+.heading + .theme-toggle {
 	position: absolute;
 	z-index: depth(1);
 	height: var(--height-header);
@@ -27,19 +43,24 @@ h6 {
 	padding-left: 1.2rem;
 	text-align: left;
 
-	@include media('<=phablet') {
-		display: block;
-		width: 100%;
-		padding-top: 0;
-		padding-left: 0;
-		text-align: center;
-	}
-
 	[class^='icon'] {
 		font-size: 0.6em;
 		transform: rotate(0deg);
 		transition: all $duration $ease;
 		pointer-events: none;
+	}
+
+	@include media('<=phablet') {
+		padding-top: 0;
+		padding-left: 0;
+	}
+}
+
+.heading {
+	@include media('<=phablet') {
+		display: block;
+		width: 100%;
+		text-align: center;
 	}
 }
 

@@ -6,8 +6,8 @@
 	min-height: 100px;
 	overflow-y: auto;
 	grid-template-columns: repeat(auto-fill, minmax(320px, 400px));
-	grid-gap: $gutter-1-2;
-	padding: 1px $gutter;
+	grid-gap: $gutter;
+	padding: $gutter;
 	font-size: $font-size-xxs;
 
 	&__item {
@@ -39,14 +39,6 @@
 			font-weight: $font-bold;
 		}
 
-		&:first-child {
-			margin-top: $gutter;
-		}
-
-		&:last-child {
-			margin-bottom: $gutter;
-		}
-
 		&.--selected {
 			color: var(--color-background);
 			background-color: var(--color-react);
@@ -56,6 +48,19 @@
 			@include absolute(right $gutter-1-2 bottom $gutter-1-2);
 			@include flex(flex, center, end);
 			flex-direction: column;
+		}
+
+		@media (hover: hover) {
+			&:hover {
+				cursor: pointer;
+				color: $color-tertiary;
+			}
+		}
+
+		@include media('<=phablet') {
+			&:last-child {
+				margin-bottom: $gutter;
+			}
 		}
 	}
 
@@ -78,6 +83,10 @@
 		}
 
 		&:before { top: 0; }
-		&:after { bottom: 0; }
+		&:after { bottom: 1rem; }
+
+		@include media('<=phablet') {
+			&:after { bottom: 0rem; }
+		}
 	}
 }

@@ -5,15 +5,14 @@
 			:class="{ '--disabled': isPainting }"
 			v-if="$route.name!='gallery'"
 			key="no-gallery"
-		>Picasso
-		</h1>
+		>Picasso</h1>
 		<h1 class="heading"
 			:class="{ '--disabled': isPainting }"
 			v-else
 			key="gallery"
-		>Galerí<theme-change></theme-change>
-		</h1>
+		>Galería</h1>
 	</transition>
+	<theme-change v-if="$route.name == 'gallery'"></theme-change>
 
 	<transition name="fade" mode="out-in">
 		<router-view

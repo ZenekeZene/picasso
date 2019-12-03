@@ -1,5 +1,6 @@
 <template>
 	<div
+		class="theme-toggle"
 		@click="toggleTheme"
 		v-mobile-hover:#4992a9
 		style="display: inline-block;"

@@ -17,6 +17,13 @@
 			&.--active {
 				color: var(--color-text);
 			}
+
+			@media (hover: hover) {
+				&:hover {
+					cursor: pointer;
+					color: $color-tertiary;
+				}
+			}
 		}
 	}
 }
