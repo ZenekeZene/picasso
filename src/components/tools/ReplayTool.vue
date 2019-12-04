@@ -40,6 +40,7 @@ export default {
 
 		if (this.paintingSelected) {
 			this.$emit('showSpinner', { status: true });
+			this.deleteHistory();
 			this.getHistoryOfPainting({ paintingId: this.paintingSelected })
 			.then(() => {
 				console.log(new Date());
@@ -60,6 +61,7 @@ export default {
 			'setModeToReadable',
 			'setPlayingStatus',
 			'clearCanvas',
+			'deleteHistory',
 		]),
 		...mapActions([
 			'getHistoryOfPainting',

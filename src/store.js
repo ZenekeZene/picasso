@@ -1,16 +1,16 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-// import createPersistedState from 'vuex-persistedstate';
+import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
 	strict: process.env.NODE_ENV !== 'production',
-	/* plugins: [
+	plugins: [
 		createPersistedState({
 			key: 'picasso-state',
 		}),
-	], */
+	],
 	state: {
 		history: [[]],
 		indexLine: 0,
@@ -40,6 +40,9 @@ const store = new Vuex.Store({
 		},
 		setHistory(state, payload) {
 			state.history = payload.history;
+		},
+		deleteHistory(state) {
+			state.history = null;
 		},
 		createNewStrokeOnHistory(state) {
 			state.history[state.indexLine] = [];
