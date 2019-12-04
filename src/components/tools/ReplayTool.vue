@@ -42,6 +42,7 @@ export default {
 			this.$emit('showSpinner', { status: true });
 			this.getHistoryOfPainting({ paintingId: this.paintingSelected })
 			.then(() => {
+				console.log(new Date());
 				this.$emit('showSpinner', { status: false });
 				this.replay();
 				this.setModeToReadable();
