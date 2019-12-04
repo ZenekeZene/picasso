@@ -148,9 +148,7 @@ export default {
 		goToPaint(event) {
 			if (!event.target.classList.contains('--disabled')) {
 				if (this.paintingSelected) {
-					setTimeout(() => {
-						this.$router.push(`paint/${this.paintingSelected}`);
-					}, 100);
+					this.$router.push(`paint/${this.paintingSelected}`);
 				} else {
 					this.$router.push('/');
 				}

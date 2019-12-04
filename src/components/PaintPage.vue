@@ -101,6 +101,8 @@ export default {
 		};
 	},
 	mounted() {
+		console.log('Llego');
+		console.log(new Date());
 		this.saveToImage();
 	},
 	methods: {
