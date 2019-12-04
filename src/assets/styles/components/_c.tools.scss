@@ -84,3 +84,9 @@
 	color: $color-primary;
 }
 
+.download {
+	@include absolute(top left);
+	display: block;
+	width: 100%;
+	height: 100%;
+}

@@ -1,13 +1,16 @@
 <template>
-	<li class="tools__item" :class="{ '--disabled': isPauseDisabled }">
+	<li ref="item"
+		class="tools__item"
+		:class="{ '--disabled': isPauseDisabled }"
+		v-touch:end="launchReplay"
+		v-mobile-hover:#4992a9
+	>
 		<span
 			:class="{
 				'icon-stop': isPlaying,
 				'icon-play': !isPlaying ,
 				'--playing': isPlaying,
 			}"
-			v-touch:end="launchReplay"
-			v-mobile-hover:#4992a9
 		></span>
 		<span class="label" v-if="!isPlaying">Replay</span>
 		<span class="label" v-else>Stop</span>
@@ -60,8 +63,8 @@ export default {
 		...mapActions([
 			'getHistoryOfPainting',
 		]),
-		launchReplay(event) {
-			if (!event.target.classList.contains('--disabled')) {
+		launchReplay() {
+			if (!this.$refs.item.classList.contains('--disabled')) {
 				this.replay();
 			}
 		},
