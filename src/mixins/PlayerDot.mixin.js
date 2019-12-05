@@ -15,28 +15,15 @@ const playerDot = {
 	},
 	methods: {
 		paintDot(dot) {
-			const x = dot.mousex;
-			const y = dot.mousey;
-			const offsetX = dot.pmousex;
-			const offsetY = dot.pmousey;
-			this.ctx.beginPath();
-			this.applyStyles(dot);
-			this.ctx.moveTo(x, y);
-			this.ctx.lineTo(offsetX, offsetY);
-			this.ctx.stroke();
-			this.prevPosition = { offsetX, offsetY };
+			this.doStroke(dot);
+			this.prevPosition = { offsetX: dot.px, offsetY: dot.py };
 		},
-		applyStyles(dot) {
-			this.ctx.lineWidth = dot.size;
-			this.ctx.strokeStyle = dot.color;
-			if (this.theme === 'light' && dot.color === 'rgb(39, 39, 39)') {
-				this.ctx.strokeStyle = 'rgb(246, 246, 246)';
-			} else if (
-				this.theme === 'dark' &&
-				dot.color === 'rgb(246, 246, 246)'
-			) {
-				this.ctx.strokeStyle = 'rgb(39, 39, 39)';
-			}
+		doStroke(dot) {
+			this.ctx.beginPath();
+			dot.applyStyles(this.ctx, this.theme);
+			this.ctx.moveTo(dot.x, dot.y);
+			this.ctx.lineTo(dot.px, dot.py);
+			this.ctx.stroke();
 		},
 		player() {
 			this.history.map((stroke) => stroke.map((dot) => this.paintDot(dot)));

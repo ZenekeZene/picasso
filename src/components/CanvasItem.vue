@@ -13,6 +13,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import PlayerDot from '../mixins/PlayerDot.mixin';
+import Dot from '../entities/Dot';
 
 export default {
 	name: 'CanvasItem',
@@ -66,7 +67,7 @@ export default {
 		},
 		handleMouseMove(event) {
 			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
-				this.paint(this.getCoordinates());
+				this.paint(this.getCoordinates(event));
 			}
 		},
 		handleMouseUp() {
@@ -76,7 +77,7 @@ export default {
 				this.$emit('mouseup', false);
 			}
 		},
-		getCoordinates() {
+		getCoordinates(event) {
 			let offsetX;
 			let offsetY;
 			if (event.offsetX) {
@@ -90,14 +91,14 @@ export default {
 		paint(currentPosition) {
 			const { offsetX, offsetY } = currentPosition;
 			const { offsetX: x, offsetY: y } = this.prevPosition;
-			const dot = {
+			const dot = new Dot({
 				size: this.strokeWidth,
 				color: this.colorStroke,
-				mousex: x,
-				mousey: y,
-				pmousex: offsetX,
-				pmousey: offsetY,
-			};
+				x,
+				y,
+				px: offsetX,
+				py: offsetY,
+			});
 			this.paintDot(dot);
 			this.pushDotOnHistory({ dot });
 		},
