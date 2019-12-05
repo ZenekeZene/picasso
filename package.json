@@ -15,7 +15,6 @@
 		"unit": "jest --config test/unit/jest.conf.js --coverage",
 		"test": "npm run unit",
 		"lint": "eslint --ext .js,.vue src test/unit",
-		"precommit": "lint-staged",
 		"build": "node build/build.js"
 	},
 	"husky": {
