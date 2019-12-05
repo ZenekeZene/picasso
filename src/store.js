@@ -111,8 +111,8 @@ const store = new Vuex.Store({
 		},
 	},
 	actions: {
-		getHistoryOfPainting(...payloadEntry) {
-			const [, payload] = payloadEntry;
+		getHistoryOfPainting(...params) {
+			const [, payload] = params;
 			return new Promise((resolve, reject) => {
 				window.db
 					.collection('painting')
