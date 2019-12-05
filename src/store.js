@@ -28,8 +28,8 @@ const store = new Vuex.Store({
 		filterDirection: 'asc',
 	},
 	getters: {
-		isDisabled: state => state.isPlaying || state.isPainting || state.history.length === 0,
-		isPauseDisabled: state => state.isPainting || state.history.length === 0,
+		isDisabled: (state) => state.isPlaying || state.isPainting || state.history.length === 0,
+		isPauseDisabled: (state) => state.isPainting || state.history.length === 0,
 	},
 	mutations: {
 		setColorStroke(state, payload) {
@@ -111,16 +111,14 @@ const store = new Vuex.Store({
 		},
 	},
 	actions: {
-		getHistoryOfPainting({ commit }, payload) {
+		getHistoryOfPainting(...payloadEntry) {
+			const [, payload] = payloadEntry;
 			return new Promise((resolve, reject) => {
 				window.db
 					.collection('painting')
 					.doc(payload.paintingId)
 					.get()
 					.then((snapshot) => {
-						commit('setHistoryOfPainting', {
-							raw: snapshot.data().history,
-						});
 						resolve(snapshot.data());
 					})
 					.catch((error) => {

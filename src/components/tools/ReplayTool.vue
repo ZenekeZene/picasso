@@ -40,10 +40,10 @@ export default {
 
 		if (this.paintingSelected) {
 			this.$emit('showSpinner', { status: true });
-			this.deleteHistory();
+			this.deleteAllHistory();
 			this.getHistoryOfPainting({ paintingId: this.paintingSelected })
-			.then(() => {
-				console.log(new Date());
+			.then(({ history }) => {
+				this.setHistoryOfPainting({ raw: history });
 				this.$emit('showSpinner', { status: false });
 				this.replay();
 				this.setModeToReadable();
@@ -62,6 +62,8 @@ export default {
 			'setPlayingStatus',
 			'clearCanvas',
 			'deleteHistory',
+			'deleteAllHistory',
+			'setHistoryOfPainting',
 		]),
 		...mapActions([
 			'getHistoryOfPainting',
@@ -85,7 +87,7 @@ export default {
 					() => {
 						this.setPlayingStatus({ status: false });
 					},
-					interval
+					interval,
 				);
 			} else {
 				clearTimeout(this.loopTimer);
