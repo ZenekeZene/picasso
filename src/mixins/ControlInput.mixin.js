@@ -5,22 +5,20 @@ const controlInput = {
         ...mapState(['mode', 'isPainting', 'isPlaying']),
     },
     methods: {
-        inputDown(event) {
+        inputDown(event, callback) {
             if (this.mode === 'edit') {
                 this.$emit('mouseDown', { status: false });
             }
 
             if (!this.isPainting && !this.isPlaying && this.mode === 'edit') {
-                const { offsetX, offsetY } = event;
-                this.prevPosition = { offsetX, offsetY };
                 this.setPaintingStatus({ status: true });
                 this.createNewStrokeOnHistory();
-                this.paint(this.getCoordinates(event));
+                callback();
             }
         },
-        inputMove(event) {
+        inputMove(event, callback) {
             if (!this.isEditingMode()) return false;
-            this.paint(this.getCoordinates(event));
+			callback();
             return true;
         },
         inputUp() {

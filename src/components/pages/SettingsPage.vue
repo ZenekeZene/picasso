@@ -17,7 +17,7 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
-import GithubItem from './GithubItem';
+import GithubItem from '../GithubItem';
 
 export default {
 	name: 'SettingsPage',

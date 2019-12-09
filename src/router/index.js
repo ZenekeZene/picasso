@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import PaintPage from '../components/PaintPage';
-import CRUDPage from '../components/CRUDPage';
-import GalleryPage from '../components/GalleryPage';
-import SettingsPage from '../components/SettingsPage';
+import PaintPage from '../components/pages/PaintPage';
+import CRUDPage from '../components/pages/CRUDPage';
+import GalleryPage from '../components/pages/GalleryPage';
+import SettingsPage from '../components/pages/SettingsPage';
 
 Vue.use(Router);
 

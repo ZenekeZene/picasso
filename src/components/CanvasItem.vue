@@ -57,8 +57,18 @@ export default {
 			this.ctx.lineCap = 'round';
 			this.ctx.lineWidth = this.strokeWidth;
 		},
-		handleMouseDown(event) { this.inputDown(event); },
-		handleMouseMove(event) { this.inputMove(event); },
+		handleMouseDown(event) {
+			this.inputDown(event, () => {
+				const { offsetX, offsetY } = event;
+                this.prevPosition = { offsetX, offsetY };
+                this.paint(this.getCoordinates(event));
+			});
+		},
+		handleMouseMove(event) {
+			this.inputMove(event, () => {
+				this.paint(this.getCoordinates(event));
+			});
+		},
 		handleMouseUp() { this.inputUp(); },
 		paint(currentPosition) {
 			const { offsetX, offsetY } = currentPosition;

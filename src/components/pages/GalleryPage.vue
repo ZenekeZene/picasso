@@ -67,9 +67,9 @@
 import { mapState, mapMutations } from 'vuex';
 import moment from 'moment';
 import StarRating from 'vue-star-rating';
-import SpinnerItem from './SpinnerItem';
-import ThemeChange from './ThemeChange';
-import FiltersItem from './FiltersItem';
+import SpinnerItem from '../SpinnerItem';
+import ThemeChange from '../ThemeChange';
+import FiltersItem from '../FiltersItem';
 
 export default {
 	name: 'GalleryPage',
