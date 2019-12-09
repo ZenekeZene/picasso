@@ -20,6 +20,7 @@
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 import PlayerDot from '../../mixins/PlayerDot.mixin';
+import Dot from '../../entities/Dot';
 
 export default {
 	name: 'ReplayTool',
@@ -82,7 +83,8 @@ export default {
 					0,
 					history.length,
 					(i) => {
-						this.paintDot(history[i]);
+						const dot = new Dot(history[i]);
+						this.paintDot(dot);
 					},
 					() => {
 						this.setPlayingStatus({ status: false });

@@ -13,12 +13,14 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import PlayerDot from '../mixins/PlayerDot.mixin';
+import ControlInput from '../mixins/ControlInput.mixin';
 import Dot from '../entities/Dot';
 
 export default {
 	name: 'CanvasItem',
 	mixins: [
 		PlayerDot,
+		ControlInput,
 	],
 	computed: {
 		...mapState([
@@ -47,47 +49,17 @@ export default {
 		configureCanvas() {
 			this.canvas.width = window.screen.width;
 			this.canvas.height = window.screen.height;
+			this.configureStroke();
+			this.setBackgroundCanvas();
+		},
+		configureStroke() {
 			this.ctx.lineJoin = 'round';
 			this.ctx.lineCap = 'round';
 			this.ctx.lineWidth = this.strokeWidth;
-			this.setBackgroundCanvas();
 		},
-		handleMouseDown(event) {
-			if (this.mode === 'edit') {
-				this.$emit('mouseDown', { status: false });
-			}
-
-			if (!this.isPainting && !this.isPlaying && this.mode === 'edit') {
-				const { offsetX, offsetY } = event;
-				this.prevPosition = { offsetX, offsetY };
-				this.setPaintingStatus({ status: true });
-				this.createNewStrokeOnHistory();
-				this.paint(this.getCoordinates());
-			}
-		},
-		handleMouseMove(event) {
-			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
-				this.paint(this.getCoordinates(event));
-			}
-		},
-		handleMouseUp() {
-			if (this.isPainting && !this.isPlaying && this.mode === 'edit') {
-				this.setPaintingStatus({ status: false });
-				this.incrementIndexLine();
-				this.$emit('mouseup', false);
-			}
-		},
-		getCoordinates(event) {
-			let offsetX;
-			let offsetY;
-			if (event.offsetX) {
-				({ offsetX, offsetY } = event);
-			} else {
-				offsetX = event.touches[0].clientX;
-				offsetY = event.touches[0].clientY;
-			}
-			return { offsetX, offsetY };
-		},
+		handleMouseDown(event) { this.inputDown(event); },
+		handleMouseMove(event) { this.inputMove(event); },
+		handleMouseUp() { this.inputUp(); },
 		paint(currentPosition) {
 			const { offsetX, offsetY } = currentPosition;
 			const { offsetX: x, offsetY: y } = this.prevPosition;
