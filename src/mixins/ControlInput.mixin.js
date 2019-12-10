@@ -5,28 +5,29 @@ const controlInput = {
         ...mapState(['mode', 'isPainting', 'isPlaying']),
     },
     methods: {
-        inputDown(event, callback) {
-            if (this.mode === 'edit') {
+        async inputDown() {
+            return new Promise((resolve, reject) => {
+                if (this.mode !== 'edit' || this.isPainting || this.isPlaying) return reject();
                 this.$emit('mouseDown', { status: false });
-            }
-
-            if (!this.isPainting && !this.isPlaying && this.mode === 'edit') {
                 this.setPaintingStatus({ status: true });
                 this.createNewStrokeOnHistory();
-                callback();
-            }
+                return resolve();
+            });
         },
-        inputMove(event, callback) {
-            if (!this.isEditingMode()) return false;
-			callback();
-            return true;
+        async inputMove() {
+            return new Promise((resolve, reject) => {
+                if (!this.isEditingMode()) return reject();
+                return resolve();
+            });
         },
-        inputUp() {
-            if (!this.isEditingMode()) return false;
-            this.setPaintingStatus({ status: false });
-            this.incrementIndexLine();
-            this.$emit('mouseup', false);
-            return true;
+        async inputUp() {
+            return new Promise((resolve, reject) => {
+                if (!this.isEditingMode()) return reject();
+                this.setPaintingStatus({ status: false });
+                this.incrementIndexLine();
+                this.$emit('mouseup', false);
+                return resolve();
+            });
         },
         getCoordinates(event) {
             let offsetX;

@@ -1,4 +1,6 @@
-<template></template>
+<template>
+    <p>{{ brush }}</p>
+</template>
 <script>
 import { mapState, mapMutations } from 'vuex';
 
@@ -8,6 +10,9 @@ export default {
         ...mapState([
 			'brush'
 		]),
+    },
+    methods: {
+
     },
 };
 </script>

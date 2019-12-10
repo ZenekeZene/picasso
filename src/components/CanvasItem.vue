@@ -13,6 +13,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import PlayerDot from '../mixins/PlayerDot.mixin';
+import regularBrush from '../regular.brush';
 import ControlInput from '../mixins/ControlInput.mixin';
 import Dot from '../entities/Dot';
 
@@ -54,39 +55,33 @@ export default {
             this.ctx.lineCap = 'round';
             this.ctx.lineWidth = this.strokeWidth;
         },
-        handleMouseDown(event) {
-            this.inputDown(event, () => {
-                const { offsetX, offsetY } = event;
-                this.prevPosition = { offsetX, offsetY };
-                this.paint(this.getCoordinates(event));
-            });
+        async handleMouseDown(event) {
+            try {
+                await this.inputDown(event)
+                const dot = await regularBrush.down(event, {
+                    strokeWidth: this.strokeWidth,
+                    colorStroke: this.colorStroke
+                });
+                this.pushDotOnHistory({ dot });
+            } catch(error) {}
         },
-        handleMouseMove(event) {
-            this.inputMove(event, () => {
-                this.paint(this.getCoordinates(event));
-            });
+        async handleMouseMove(event) {
+            try {
+                await this.inputMove();
+                const dot = await regularBrush.move(event, this.paint);
+                this.pushDotOnHistory({ dot });
+            } catch(error) {}
         },
-        handleMouseUp() {
-            this.inputUp();
-        },
-        paint(currentPosition) {
-            const { offsetX, offsetY } = currentPosition;
-            const { offsetX: x, offsetY: y } = this.prevPosition;
-            const dot = new Dot({
-                size: this.strokeWidth,
-                color: this.colorStroke,
-                x,
-                y,
-                px: offsetX,
-                py: offsetY,
-            });
-            this.paintDot(dot);
-            this.pushDotOnHistory({ dot });
+        async handleMouseUp() {
+            try {
+                await this.inputUp();
+            } catch(error) {}
         },
     },
     mounted() {
         this.$store.commit('setCanvas', { canvasRef: this.$refs.canvas });
         this.configureCanvas();
+        regularBrush.config({ ctx: this.ctx, theme: this.theme });
         if (this.mode === 'edit') {
             this.player();
         }

@@ -20,7 +20,7 @@
 	</li>
 </template>
 <script>
-import brushes from '../../brushes';
+import brushesUI from '../../brushesUI';
 import { mapState, mapMutations } from 'vuex';
 export default {
 	name: 'BrushTool',

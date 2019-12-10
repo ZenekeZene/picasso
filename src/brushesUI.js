@@ -1,4 +1,4 @@
-const brushes = [
+const brushesUI = [
 	{
 		key: 'normal',
 		iconClassname: 'pencil',
@@ -32,4 +32,4 @@ const brushes = [
 	},
 ];
 
-export default brushes;
+export default brushesUI;
