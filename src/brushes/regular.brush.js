@@ -1,4 +1,4 @@
-import Dot from './entities/Dot';
+import Dot from '../entities/Dot';
 
 const regularBrush = {
     prevPosition: {},

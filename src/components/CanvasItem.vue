@@ -13,7 +13,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import PlayerDot from '../mixins/PlayerDot.mixin';
-import regularBrush from '../regular.brush';
+import regularBrush from '../brushes/regular.brush';
 import ControlInput from '../mixins/ControlInput.mixin';
 import Dot from '../entities/Dot';
 
