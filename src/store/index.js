@@ -20,6 +20,7 @@ const store = new Vuex.Store({
 		isPlaying: false,
 		isPainting: false,
 		colorStroke: '#008f7a',
+		brushSelected: null,
 		colorErase: '',
 		strokeWidth: 10,
 		paintingSelected: null,
@@ -108,6 +109,9 @@ const store = new Vuex.Store({
 		},
 		setFilterCriterion(state, payload) {
 			state.filterCriterion = payload.filterCriterion;
+		},
+		changeBrush(state, payload) {
+			state.brushSelected = payload.brushSelected;
 		},
 	},
 	actions: {

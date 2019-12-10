@@ -13,7 +13,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import PlayerDot from '../mixins/PlayerDot.mixin';
-import RegularBrush from '../brushes/regular.brush';
+import { RegularBrush, NeighbourBrush } from '../brushes/Brushes';
 import ControlInput from '../mixins/ControlInput.mixin';
 import Dot from '../entities/Dot';
 
@@ -32,6 +32,7 @@ export default {
             'isPainting',
             'isPlaying',
             'history',
+            'brushSelected',
         ]),
     },
     data() {
@@ -48,6 +49,7 @@ export default {
             'deleteAllHistory',
             'incrementIndexLine',
             'setPaintingStatus',
+            'changeBrush',
         ]),
         configureCanvas() {
             this.canvas.width = window.screen.width;
@@ -62,36 +64,49 @@ export default {
         },
         async handleMouseDown(event) {
             try {
-                await this.inputDown(event)
+                await this.inputDown(event);
                 const dot = await this.currentBrush.down(event, {
                     strokeWidth: this.strokeWidth,
-                    colorStroke: this.colorStroke
+                    colorStroke: this.colorStroke,
                 });
                 this.pushDotOnHistory({ dot });
-            } catch(error) { this.logError(error); }
+            } catch (error) {
+                this.logError(error);
+            }
         },
         async handleMouseMove(event) {
             try {
                 await this.inputMove();
-                const dot = await this.currentBrush.move(event, this.paint);
+                const dot = await this.currentBrush.move(event);
                 this.pushDotOnHistory({ dot });
-            } catch(error) { this.logError(error); }
+            } catch (error) {
+                this.logError(error);
+            }
         },
         async handleMouseUp() {
             try {
                 await this.inputUp();
-            } catch(error) { this.logError(error); }
+                await this.currentBrush.up();
+            } catch (error) {
+                this.logError(error);
+            }
         },
         logError(error) {
-            if (typeof(error) !== 'undefined') console.error(error);
-        }
+            if (typeof error !== 'undefined') console.error(error);
+        },
     },
     mounted() {
         this.$store.commit('setCanvas', { canvasRef: this.$refs.canvas });
         this.configureCanvas();
-        this.currentBrush = new RegularBrush({ ctx: this.ctx, theme: this.theme });
+        this.changeBrush({ brushSelected: NeighbourBrush.name });
+        if (this.brushSelected === NeighbourBrush.name) {
+            this.currentBrush = new NeighbourBrush({
+                ctx: this.ctx,
+                theme: this.theme,
+            });
+        }
         if (this.mode === 'edit') {
-            this.player();
+            this.currentBrush.player(this.history);
         }
     },
 };

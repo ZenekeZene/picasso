@@ -20,6 +20,7 @@
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 import PlayerDot from '../../mixins/PlayerDot.mixin';
+import { RegularBrush, NeighbourBrush } from '../../brushes/Brushes';
 import Dot from '../../entities/Dot';
 
 export default {
@@ -31,11 +32,17 @@ export default {
 		...mapState([
 			'isPlaying',
 			'paintingSelected',
+			'brushSelected',
 		]),
 		...mapGetters([
 			'isPauseDisabled',
 		]),
 	},
+	data() {
+        return {
+            currentBrush: null,
+        };
+    },
 	mounted() {
 		this.setPaintingSelected({ paintingSelected: this.$route.params.id });
 
@@ -65,6 +72,7 @@ export default {
 			'deleteHistory',
 			'deleteAllHistory',
 			'setHistoryOfPainting',
+			'changeBrush',
 		]),
 		...mapActions([
 			'getHistoryOfPainting',
@@ -79,7 +87,16 @@ export default {
 				this.setPlayingStatus({ status: true });
 				this.clearCanvas();
 				const history = [].concat(...this.history);
-				this.loop(
+				this.changeBrush({ brushSelected: NeighbourBrush.name });
+				if (this.brushSelected === NeighbourBrush.name) {
+					this.currentBrush = new NeighbourBrush({
+						ctx: this.ctx,
+						theme: this.theme,
+					});
+				}
+				this.currentBrush.replay(this.history);
+
+				/*this.loop(
 					0,
 					history.length,
 					(i) => {
@@ -90,7 +107,7 @@ export default {
 						this.setPlayingStatus({ status: false });
 					},
 					interval,
-				);
+				);*/
 			} else {
 				clearTimeout(this.loopTimer);
 				this.setPlayingStatus({ status: false });
