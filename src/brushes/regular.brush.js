@@ -1,72 +1,52 @@
 import Dot from '../entities/Dot';
+import Brush from './brush';
 
-const regularBrush = {
-    prevPosition: {},
-    strokeWidth: null,
-    colorStroke: null,
-    config({ ctx, theme }) {
-        this.ctx = ctx;
-        this.theme = theme;
-    },
-};
+export default class RegularBrush extends Brush  {
+    prevPosition = {};
 
-function $() {
-    return regularBrush;
-}
-
-function getCoordinates(event) {
-    let offsetX;
-    let offsetY;
-    if (event.offsetX) {
-        ({ offsetX, offsetY } = event);
-    } else {
-        offsetX = event.touches[0].clientX;
-        offsetY = event.touches[0].clientY;
+    constructor({ ctx, theme }) {
+        super({ ctx, theme });
     }
-    return { offsetX, offsetY };
-}
 
-function doStroke(dot) {
-    $().ctx.beginPath();
-    dot.applyStyles($().ctx, $().theme);
-    $().ctx.moveTo(dot.x, dot.y);
-    $().ctx.lineTo(dot.px, dot.py);
-    $().ctx.stroke();
-}
+    doStroke(dot) {
+        this.ctx.beginPath();
+        dot.applyStyles(this.ctx, this.theme);
+        this.ctx.moveTo(dot.x, dot.y);
+        this.ctx.lineTo(dot.px, dot.py);
+        this.ctx.stroke();
+    }
 
-function paintDot(dot) {
-    doStroke(dot);
-    $().prevPosition = { offsetX: dot.px, offsetY: dot.py };
-}
+    paintDot(dot) {
+        this.doStroke(dot);
+        this.prevPosition = { offsetX: dot.px, offsetY: dot.py };
+    }
 
-async function paint(currentPosition) {
-    const { offsetX, offsetY } = currentPosition;
-    const { offsetX: x, offsetY: y } = $().prevPosition;
-    const dot = new Dot({
-        size: $().strokeWidth,
-        color: $().colorStroke,
-        x,
-        y,
-        px: offsetX,
-        py: offsetY,
-    });
-    paintDot(dot);
-    return Promise.resolve(dot);
-}
+    paint(currentPosition) {
+        const { offsetX, offsetY } = currentPosition;
+        const { offsetX: x, offsetY: y } = this.prevPosition;
+        const dot = new Dot({
+            size: this.strokeWidth,
+            color: this.colorStroke,
+            x,
+            y,
+            px: offsetX,
+            py: offsetY,
+        });
+        this.paintDot(dot);
+        return dot;
+    }
 
-async function down(event, { strokeWidth, colorStroke }) {
-    $().strokeWidth = strokeWidth;
-    $().colorStroke = colorStroke;
-    const { offsetX, offsetY } = event;
-    $().prevPosition = { offsetX, offsetY };
-    return Promise.resolve(await paint(getCoordinates(event)));
-}
+    async down(event, { strokeWidth, colorStroke }) {
+        this.strokeWidth = strokeWidth;
+        this.colorStroke = colorStroke;
+        const { offsetX, offsetY } = event;
+        this.prevPosition = { offsetX, offsetY };
+        const dot = this.paint(super.getCoordinates(event));
+        return Promise.resolve(dot);
+    }
 
-async function move(event) {
-    return Promise.resolve(await paint(getCoordinates(event)));
+    async move(event) {
+        const dot = this.paint(super.getCoordinates(event));
+        return Promise.resolve(dot);
+    }
 }
-
-// Meter aqui tambien el replay?
-regularBrush.move = move;
-regularBrush.down = down;
-export default regularBrush;
