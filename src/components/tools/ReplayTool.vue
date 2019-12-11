@@ -111,7 +111,7 @@ export default {
 			} else {
 				clearTimeout(this.loopTimer);
 				this.setPlayingStatus({ status: false });
-				this.player();
+				this.player(this.history);
 			}
 		},
 		loop(index, howManyTimes, f, callback, ms) {

@@ -16,6 +16,7 @@ import PlayerDot from '../mixins/PlayerDot.mixin';
 import { RegularBrush, NeighbourBrush } from '../brushes/Brushes';
 import ControlInput from '../mixins/ControlInput.mixin';
 import Dot from '../entities/Dot';
+import brushesUI from '../brushes/brushesUI';
 
 export default {
     name: 'CanvasItem',
@@ -52,20 +53,20 @@ export default {
             'changeBrush',
         ]),
         configureCanvas() {
+            this.$store.dispatch('loadCanvas', { canvasRef: this.$refs.canvas });
+            this.ctx.lineWidth = this.strokeWidth;
             this.canvas.width = window.screen.width;
             this.canvas.height = window.screen.height;
-            this.configureStroke();
             this.setBackgroundCanvas();
         },
-        configureStroke() {
-            this.ctx.lineJoin = 'round';
-            this.ctx.lineCap = 'round';
-            this.ctx.lineWidth = this.strokeWidth;
+        loadBrush() {
+            this.brushes = brushesUI;
+            this.changeBrush({ brushSelected: this.brushes[0] });
         },
         async handleMouseDown(event) {
             try {
                 await this.inputDown(event);
-                const dot = await this.currentBrush.down(event, {
+                const dot = await this.brushSelected.instance.down(event, {
                     strokeWidth: this.strokeWidth,
                     colorStroke: this.colorStroke,
                 });
@@ -77,7 +78,7 @@ export default {
         async handleMouseMove(event) {
             try {
                 await this.inputMove();
-                const dot = await this.currentBrush.move(event);
+                const dot = await this.brushSelected.instance.move(event);
                 this.pushDotOnHistory({ dot });
             } catch (error) {
                 this.logError(error);
@@ -86,7 +87,7 @@ export default {
         async handleMouseUp() {
             try {
                 await this.inputUp();
-                await this.currentBrush.up();
+                await this.brushSelected.instance.up();
             } catch (error) {
                 this.logError(error);
             }
@@ -96,18 +97,9 @@ export default {
         },
     },
     mounted() {
-        this.$store.commit('setCanvas', { canvasRef: this.$refs.canvas });
         this.configureCanvas();
-        this.changeBrush({ brushSelected: RegularBrush.name });
-        if (this.brushSelected === RegularBrush.name) {
-            this.currentBrush = new RegularBrush({
-                ctx: this.ctx,
-                theme: this.theme,
-            });
-        }
-        if (this.mode === 'edit') {
-            this.currentBrush.player(this.history);
-        }
+        this.loadBrush();
+        this.player();
     },
 };
 </script>

@@ -3,13 +3,13 @@
 	<transition name="fade" appear>
 		<ol
 			class="tools --left"
-			@mouseleave="toolsVisible = false"
+			@mouseleave="toolsVisible = true"
 			:class="{ '--disabled': isPainting || showSpinner }"
 		>
 			<colors-tool :toolsVisible="toolsVisible" @click.native="toolsVisible = true"></colors-tool>
 			<stroke-tool :toolsVisible="toolsVisible" @click.native="toolsVisible = true"></stroke-tool>
-			<!--<brush-tool :toolsVisible="toolsVisible" @click.native="toolsVisible = true"></brush-tool>
-			<replay-tool
+			<brush-tool :toolsVisible="toolsVisible" @click.native="toolsVisible = true"></brush-tool>
+			<!--<replay-tool
 				@showSpinner="showSpinner = $event.status"
 				@clearCanvas="clearCanvas"
 			></replay-tool>-->

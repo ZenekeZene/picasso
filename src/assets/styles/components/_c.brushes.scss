@@ -1,0 +1,14 @@
+.brushes {
+    display: flex;
+	flex-direction: row;
+	padding: 0;
+	
+	li {
+		@include flex(flex, center, center);
+		@include share(width, height, 3rem);
+
+		&:hover {
+			cursor: pointer;
+		}
+    }
+}

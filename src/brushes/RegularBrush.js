@@ -51,12 +51,10 @@ export default class RegularBrush extends Brush  {
 
     async up() {}
 
-    player(history) {
-        history.forEach((stroke) => {
-            stroke.forEach((dotData) => {
-                const dot = new Dot(dotData);
-                this.paintDot(dot);
-            });
+    playerStroke(stroke) {
+        stroke.forEach((dotData) => {
+            const dot = new Dot(dotData);
+            this.paintDot(dot);
         });
     }
 

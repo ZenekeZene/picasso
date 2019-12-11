@@ -4,7 +4,8 @@
 	padding-right: 0;
 	padding-left: 0;
 
-	.colors {
+	.colors,
+	.brushes {
 		@include absolute(left $gutter);
 		padding: $gutter 0;
 	}

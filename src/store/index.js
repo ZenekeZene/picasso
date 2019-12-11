@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
+import BrushesUI from '../brushes/brushesUI';
 
 Vue.use(Vuex);
 
@@ -33,6 +34,12 @@ const store = new Vuex.Store({
 		isPauseDisabled: (state) => state.isPainting || state.history.length === 0,
 	},
 	mutations: {
+		setCanvas(state, payload) {
+			state.canvas = payload.canvasRef;
+			state.ctx = payload.canvasRef.getContext('2d');
+			state.ctx.lineJoin = 'round';
+			state.ctx.lineCap = 'round';
+		},
 		setColorStroke(state, payload) {
 			state.colorStroke = payload.colorStroke;
 		},
@@ -52,6 +59,9 @@ const store = new Vuex.Store({
 			state.history.pop();
 		},
 		pushDotOnHistory(state, payload) {
+			if (state.history[state.indexLine].length === 0) {
+				payload.dot.brush = state.brushSelected.key;
+			}
 			state.history[state.indexLine].push(payload.dot);
 		},
 		deleteAllHistory(state) {
@@ -75,10 +85,6 @@ const store = new Vuex.Store({
 		},
 		setModeToReadable(state) {
 			state.mode = 'read';
-		},
-		setCanvas(state, payload) {
-			state.canvas = payload.canvasRef;
-			state.ctx = payload.canvasRef.getContext('2d');
 		},
 		setBackgroundCanvas(state) {
 			state.ctx.fillStyle = state.colorErase;
@@ -112,9 +118,24 @@ const store = new Vuex.Store({
 		},
 		changeBrush(state, payload) {
 			state.brushSelected = payload.brushSelected;
+			const newBrush = new payload.brushSelected.ref({ ctx: state.ctx, theme: state.theme });
+			newBrush.configure({ lineWidth: state.strokeWidth, colorStroke: state.colorStroke });
+			state.brushSelected.instance = newBrush;
 		},
+		loadBrush(state) {
+			if (!state.brushSelected) {
+				const newBrush = new BrushesUI[0].ref({ ctx: state.ctx, theme: state.theme });
+				newBrush.configure({ lineWidth: state.strokeWidth, colorStroke: state.colorStroke });
+				state.brushSelected = BrushesUI[0];
+				state.brushSelected.instance = newBrush;
+			}
+		}
 	},
 	actions: {
+		loadCanvas({ state, commit }, payload) {
+			commit('setCanvas', payload);
+			commit('loadBrush', { brushSelected: state.brushSelected });
+		},
 		getHistoryOfPainting(...params) {
 			const [, payload] = params;
 			return new Promise((resolve, reject) => {
