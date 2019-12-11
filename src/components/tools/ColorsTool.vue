@@ -1,5 +1,5 @@
 <template>
-	<li class="tools__item" v-if="mode === 'edit'">
+	<li class="tools__item" relative v-if="mode === 'edit'">
 		<span
 			class="icon"
 			:style="{ backgroundColor: colorStroke }"

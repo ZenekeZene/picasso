@@ -1,34 +1,18 @@
+import { RegularBrush, NeighbourBrush } from './Brushes';
+
 const brushesUI = [
 	{
 		key: 'normal',
 		iconClassname: 'pencil',
-		type: 'simple',
+		ref: RegularBrush,
 	},
 	{
 		key: 'neighbor',
 		iconClassname: 'pen',
-		type: 'neighbor',
+		ref: NeighbourBrush,
 		config: {
 			numNeighbors: 5,
 		},
-	},
-	{
-		key: 'spray',
-		iconClassname: 'sprayer',
-		type: 'neighbor',
-		config: {
-			numNeighbors: 20,
-		},
-	},
-	{
-		key: 'format',
-		iconClassname: 'paint-format',
-		type: '',
-	},
-	{
-		key: 'quill',
-		iconClassname: 'quill',
-		type: '',
 	},
 ];
 

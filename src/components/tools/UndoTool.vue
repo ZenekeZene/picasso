@@ -48,7 +48,7 @@
 					this.removeStrokeOnHistory();
 					this.decreaseIndexLine();
 					this.$emit('clearCanvas');
-					this.player();
+					this.player(this.history);
 				}
 			},
 		},

@@ -55,15 +55,12 @@ export default class NeightbourBrush extends Brush {
         this.points.length = 0;
     }
 
-    player(history) {
-        history.forEach((stroke) => {
-            this.points = [];
-            stroke.forEach((dotData) => {
-                const dot = new Dot(dotData);
-                dot.applyStyles(this.ctx, this.theme);
-                this.points.push(dot);
-                this.paintDots(dot);
-            });
+    playerStroke(stroke) {
+        stroke.forEach((dotData) => {
+            const dot = new Dot(dotData);
+            dot.applyStyles(this.ctx, this.theme);
+            this.points.push(dot);
+            this.paintDots(dot);
         });
         this.points.length = 0;
     }
