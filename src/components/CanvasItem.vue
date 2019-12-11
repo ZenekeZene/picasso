@@ -98,9 +98,9 @@ export default {
     mounted() {
         this.$store.commit('setCanvas', { canvasRef: this.$refs.canvas });
         this.configureCanvas();
-        this.changeBrush({ brushSelected: NeighbourBrush.name });
-        if (this.brushSelected === NeighbourBrush.name) {
-            this.currentBrush = new NeighbourBrush({
+        this.changeBrush({ brushSelected: RegularBrush.name });
+        if (this.brushSelected === RegularBrush.name) {
+            this.currentBrush = new RegularBrush({
                 ctx: this.ctx,
                 theme: this.theme,
             });

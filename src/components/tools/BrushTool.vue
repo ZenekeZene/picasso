@@ -12,16 +12,17 @@
 				v-for="(brusher, index) in brushes"
 				:key="`brush-${index}`"
 				@click="setBrush({ brush: brusher })"
-				:class="{ '--selected': brush.key === brusher.key }"
 			>
+				<!--:class="{ '--selected': brush.key === brusher.key }"-->
 				<span :class="`icon-${brusher.iconClassname}`" v-mobile-hover:#4992a9></span>
 			</li>
 		</ol>
 	</li>
 </template>
 <script>
-import brushesUI from '../../brushesUI';
 import { mapState, mapMutations } from 'vuex';
+import brushesUI from '../../brushes/brushesUI';
+
 export default {
 	name: 'BrushTool',
 	props: {
@@ -40,8 +41,18 @@ export default {
 	},
 	data() {
 		return {
-			brushes: brushes,
+			brushes: brushesUI,
 		};
+	},
+	props: {
+		toolsVisible: {
+			default: false,
+			type: Boolean,
+		},
+	},
+	mounted() {
+		this.brushes = brushesUI;
+		console.log(this.brushes);
 	},
 	methods: {
 		...mapMutations([
