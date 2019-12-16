@@ -7,6 +7,7 @@
             height="1028"
             :config="configKonva"
             @touchmove="touchmove"
+            @touchend="touchend"
         ></v-stage>
     </section>
 </template>
