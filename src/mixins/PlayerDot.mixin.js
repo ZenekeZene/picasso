@@ -29,7 +29,7 @@ const playerDot = {
                 if (stroke[0]) {
                     const { brushIndex } = stroke[0];
                     const inst = createBrush(brushIndex, this.ctx, this.theme);
-                    inst.playerStroke(stroke);
+                    //inst.playerStroke(stroke);
                 }
             });
         },

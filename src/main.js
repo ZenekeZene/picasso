@@ -6,6 +6,7 @@ import MobileHoverDirective from './directives/mobileHover.directive';
 import App from './App';
 import router from './router';
 import store from './store';
+import VueKonva from 'vue-konva';
 
 import 'swiper/dist/css/swiper.css';
 import './assets/styles/main.scss';
@@ -18,6 +19,7 @@ Vue.use(Toasted, {
 });
 Vue.use(VModal);
 Vue.use(Vue2TouchEvents);
+Vue.use(VueKonva);
 
 Vue.config.productionTip = false;
 

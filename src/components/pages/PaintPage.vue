@@ -17,11 +17,16 @@
 	<transition name="fade" appear>
 		<spinner-item v-show="showSpinner"></spinner-item>
 	</transition>
-	<canvas-item
+	<!--<canvas-item
 		class="p-paint__canvas"
 		:class="{ '--blur': showSpinner }"
 		@mouseup="handMouseUp"
-	></canvas-item>
+	></canvas-item>-->
+	<kanvas-item
+		class="p-paint__canvas"
+		:class="{ '--blur': showSpinner }"
+		@mouseup="handMouseUp"
+	></kanvas-item>
 	<transition name="fade" appear>
 		<div class="button-floated --bottom --left"
 			@click.stop.prevent="goToGallery"
@@ -52,6 +57,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import CanvasItem from '../CanvasItem';
+import KanvasItem from '../KanvasItem';
 import CleanTool from '../tools/CleanTool';
 import UndoTool from '../tools/UndoTool';
 import BrushTool from '../tools/BrushTool';
@@ -66,7 +72,7 @@ import ModalRating from '../modals/ModalRating';
 export default {
 	name: 'PaintPage',
 	components: {
-		CanvasItem,
+		KanvasItem,
 		CleanTool,
 		UndoTool,
 		DownloadTool,
@@ -96,7 +102,7 @@ export default {
 		};
 	},
 	mounted() {
-		this.saveToImage();
+		//this.saveToImage();
 	},
 	methods: {
 		...mapMutations([
