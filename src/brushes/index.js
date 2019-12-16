@@ -1,5 +1,7 @@
 import RegularBrush from './RegularBrush';
-import NeighbourBrush from './NeighbourBrush';
+import AllConnectionsBrush from './AllConnectionsBrush';
+import NeightbourBrush from './NeightbourBrush';
+import ThickBrush from './ThickBrush';
 
 const brushes = [
 	{
@@ -8,12 +10,19 @@ const brushes = [
 		Create: RegularBrush,
 	},
 	{
-		key: 'neighbor',
+		key: 'allconnections',
 		iconClassname: 'pen',
-		Create: NeighbourBrush,
-		config: {
-			numNeighbors: 5,
-		},
+		Create: AllConnectionsBrush,
+	},
+	{
+		key: 'neighbor',
+		iconClassname: 'quill',
+		Create: NeightbourBrush,
+	},
+	{
+		key: 'thick',
+		iconClassname: 'paint-format',
+		Create: ThickBrush,
 	},
 ];
 

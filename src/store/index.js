@@ -118,7 +118,7 @@ const store = new Vuex.Store({
 		changeBrush(state, payload) {
 			if (payload) {
 				state.brushIndex = payload.brushIndex;
-			} else {
+			} else if (!state.brushIndex) {
 				state.brushIndex = 0;
 			}
 		},
