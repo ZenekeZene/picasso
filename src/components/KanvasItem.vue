@@ -91,7 +91,7 @@ export default {
             var layer = new Konva.Layer();
             this.stage.add(layer);
             //this.setCanvas({ canvasRef: this.$refs.canvas });
-            this.ctx.lineWidth = this.strokeWidth;
+            //this.ctx.lineWidth = this.strokeWidth;
             window.addEventListener('resize', this.fitStageIntoParentContainer);
             this.fitStageIntoParentContainer();
             var hexagon = new Konva.RegularPolygon({
