@@ -20,7 +20,6 @@
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 import PlayerDot from '../../mixins/PlayerDot.mixin';
-import { RegularBrush, NeighbourBrush } from '../../brushes/Brushes';
 import Dot from '../../entities/Dot';
 
 export default {
