@@ -1,25 +1,28 @@
 <template>
-  <li class="tools__item" v-if="mode === 'edit' && brushSelected" relative>
-    <span
-      class="icon"
-      v-show="!toolsVisible"
-      :class="getBrushClassname"
-    ></span>
-    <ol class="brushes" v-show="toolsVisible">
-      <li
-        v-for="(brusher, index) in brushes"
-        :key="`brush-${index}`"
-        @click="changeBrush({ brushSelected: brusher })"
-        :class="{ '--selected': brushSelected.key === brusher.key }"
-      >
-        <span :class="`icon-${brusher.iconClassname}`" v-mobile-hover:#4992a9></span>
-      </li>
-    </ol>
-  </li>
+    <li class="tools__item" v-if="mode === 'edit'" relative>
+        <span
+            class="icon"
+            v-show="!toolsVisible"
+            :class="getBrushClassname"
+        ></span>
+        <ol class="brushes" v-show="toolsVisible">
+            <li
+                v-for="(brusher, index) in brushes"
+                :key="`brush-${index}`"
+                @click="changeBrush({ brushIndex: index })"
+                :class="{ '--selected': brushIndex === index }"
+            >
+                <span
+                    :class="`icon-${brusher.iconClassname}`"
+                    v-mobile-hover:#4992a9
+                ></span>
+            </li>
+        </ol>
+    </li>
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
-import brushesUI from '../../brushes/brushesUI';
+import { brushes } from '../../brushes/brushes';
 
 export default {
     name: 'BrushTool',
@@ -30,19 +33,18 @@ export default {
         },
     },
     computed: {
-        ...mapState(['isPainting', 'isPlaying', 'mode', 'brushSelected']),
+        ...mapState(['isPainting', 'isPlaying', 'mode', 'brushIndex']),
         getBrushClassname() {
-			if (!this.brushSelected) return '';
-			let classnames = `icon-${this.brushSelected.iconClassname}`;
+            let classnames = `icon-${this.brushes[this.brushIndex].iconClassname}`;
             if (this.isPlaying || this.isPainting || this.mode === 'read') {
-				classnames += '--disabled';
-			}
-			return classnames;
+                classnames += '--disabled';
+            }
+            return classnames;
         },
     },
     data() {
         return {
-            brushes: brushesUI,
+            brushes: brushes,
         };
     },
     props: {
@@ -50,9 +52,6 @@ export default {
             default: false,
             type: Boolean,
         },
-    },
-    mounted() {
-        this.brushes = brushesUI;
     },
     methods: {
         ...mapMutations(['changeBrush']),

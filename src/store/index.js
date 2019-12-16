@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
-import BrushesUI from '../brushes/brushesUI';
 
 Vue.use(Vuex);
 
@@ -21,7 +20,7 @@ const store = new Vuex.Store({
 		isPlaying: false,
 		isPainting: false,
 		colorStroke: '#008f7a',
-		brushSelected: null,
+		brushIndex: 0,
 		colorErase: '',
 		strokeWidth: 10,
 		paintingSelected: null,
@@ -60,7 +59,7 @@ const store = new Vuex.Store({
 		},
 		pushDotOnHistory(state, payload) {
 			if (state.history[state.indexLine].length === 0) {
-				payload.dot.brush = state.brushSelected.key;
+				payload.dot.brushIndex = state.brushIndex;
 			}
 			state.history[state.indexLine].push(payload.dot);
 		},
@@ -117,25 +116,14 @@ const store = new Vuex.Store({
 			state.filterCriterion = payload.filterCriterion;
 		},
 		changeBrush(state, payload) {
-			state.brushSelected = payload.brushSelected;
-			const newBrush = new payload.brushSelected.ref({ ctx: state.ctx, theme: state.theme });
-			newBrush.configure({ lineWidth: state.strokeWidth, colorStroke: state.colorStroke });
-			state.brushSelected.instance = newBrush;
-		},
-		loadBrush(state) {
-			if (!state.brushSelected) {
-				const newBrush = new BrushesUI[0].ref({ ctx: state.ctx, theme: state.theme });
-				newBrush.configure({ lineWidth: state.strokeWidth, colorStroke: state.colorStroke });
-				state.brushSelected = BrushesUI[0];
-				state.brushSelected.instance = newBrush;
+			if (payload) {
+				state.brushIndex = payload.brushIndex;
+			} else {
+				state.brushIndex = 0;
 			}
-		}
+		},
 	},
 	actions: {
-		loadCanvas({ state, commit }, payload) {
-			commit('setCanvas', payload);
-			commit('loadBrush', { brushSelected: state.brushSelected });
-		},
 		getHistoryOfPainting(...params) {
 			const [, payload] = params;
 			return new Promise((resolve, reject) => {

@@ -1,6 +1,6 @@
 import { mapState } from 'vuex';
 import Dot from '../entities/Dot';
-import brushesUI from '../brushes/brushesUI';
+import { createBrush } from '../brushes/brushes';
 
 const playerDot = {
     computed: {
@@ -24,11 +24,14 @@ const playerDot = {
             this.ctx.stroke();
         },
         player() {
+            this.ctx.lineCap = 'round';
+            this.ctx.lineWidth = 'round';
             this.history.forEach((stroke) => {
-                let typeBrush = stroke[0].brush;
-                let refBrush = brushesUI.find(brushUI => brushUI.key === typeBrush);
-                let inst = new refBrush.ref({ ctx: this.ctx, theme: this.theme });
-                inst.playerStroke(stroke);
+                if (stroke[0]) {
+                    const { brushIndex } = stroke[0];
+                    const inst = createBrush(brushIndex, this.ctx, this.theme);
+                    inst.playerStroke(stroke);
+                }
             });
         },
     },

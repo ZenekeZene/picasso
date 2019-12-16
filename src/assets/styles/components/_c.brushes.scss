@@ -2,13 +2,21 @@
     display: flex;
 	flex-direction: row;
 	padding: 0;
+	color: var(--color-text);
 	
 	li {
 		@include flex(flex, center, center);
 		@include share(width, height, 3rem);
 
-		&:hover {
-			cursor: pointer;
+		@media (hover: hover) {
+			&:hover {
+				cursor: pointer;
+				color: $color-tertiary;
+			}
+		}
+
+		&.--selected {
+			color: $color-tertiary;
 		}
     }
 }

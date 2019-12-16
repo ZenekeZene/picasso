@@ -9,9 +9,9 @@ export default class NeightbourBrush extends Brush {
     }
 
     makeNeighbors() {
-        for (var i = 1; i < this.points.length; i++) {
+        for (let i = 1; i < this.points.length; i += 1) {
             this.ctx.lineTo(this.points[i].x, this.points[i].y);
-            var nearPoint = this.points[i - 5];
+            const nearPoint = this.points[i - 5];
             if (nearPoint) {
                 this.ctx.moveTo(nearPoint.x, nearPoint.y);
                 this.ctx.lineTo(this.points[i].x, this.points[i].y);
@@ -39,13 +39,13 @@ export default class NeightbourBrush extends Brush {
 
     async down(event, { strokeWidth, colorStroke }) {
         super.configure({ strokeWidth, colorStroke });
-        const dot = this.paint(super.getCoordinates(event));
+        const dot = this.paint(Brush.getCoordinates(event));
         this.points.push(dot);
         return Promise.resolve(dot);
     }
 
     async move(event) {
-        const dot = this.paint(super.getCoordinates(event));
+        const dot = this.paint(Brush.getCoordinates(event));
         this.points.push(dot);
         this.paintDots();
         return Promise.resolve(dot);

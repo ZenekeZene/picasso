@@ -13,10 +13,9 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import PlayerDot from '../mixins/PlayerDot.mixin';
-import { RegularBrush, NeighbourBrush } from '../brushes/Brushes';
 import ControlInput from '../mixins/ControlInput.mixin';
 import Dot from '../entities/Dot';
-import brushesUI from '../brushes/brushesUI';
+import { createBrush } from '../brushes/brushes';
 
 export default {
     name: 'CanvasItem',
@@ -33,7 +32,7 @@ export default {
             'isPainting',
             'isPlaying',
             'history',
-            'brushSelected',
+            'brushIndex',
         ]),
     },
     data() {
@@ -53,20 +52,25 @@ export default {
             'changeBrush',
         ]),
         configureCanvas() {
-            this.$store.dispatch('loadCanvas', { canvasRef: this.$refs.canvas });
+            this.setCanvas({ canvasRef: this.$refs.canvas });
             this.ctx.lineWidth = this.strokeWidth;
             this.canvas.width = window.screen.width;
             this.canvas.height = window.screen.height;
             this.setBackgroundCanvas();
         },
         loadBrush() {
-            this.brushes = brushesUI;
-            this.changeBrush({ brushSelected: this.brushes[0] });
+            this.changeBrush();
+            this.currentBrush = createBrush(this.brushIndex, this.ctx, this.theme);
+            this.$store.subscribe((mutation, state) => {
+                if (mutation.type === 'changeBrush') {
+                    this.currentBrush = createBrush(this.brushIndex, this.ctx, this.theme);
+                }
+            });
         },
         async handleMouseDown(event) {
             try {
                 await this.inputDown(event);
-                const dot = await this.brushSelected.instance.down(event, {
+                const dot = await this.currentBrush.down(event, {
                     strokeWidth: this.strokeWidth,
                     colorStroke: this.colorStroke,
                 });
@@ -78,7 +82,7 @@ export default {
         async handleMouseMove(event) {
             try {
                 await this.inputMove();
-                const dot = await this.brushSelected.instance.move(event);
+                const dot = await this.currentBrush.move(event);
                 this.pushDotOnHistory({ dot });
             } catch (error) {
                 this.logError(error);
@@ -87,7 +91,7 @@ export default {
         async handleMouseUp() {
             try {
                 await this.inputUp();
-                await this.brushSelected.instance.up();
+                await this.currentBrush.up();
             } catch (error) {
                 this.logError(error);
             }

@@ -1,7 +1,7 @@
 import Dot from '../entities/Dot';
 import Brush from './Brush';
 
-export default class RegularBrush extends Brush  {
+export default class RegularBrush extends Brush {
     prevPosition = {};
 
     constructor({ ctx, theme }) {
@@ -40,12 +40,12 @@ export default class RegularBrush extends Brush  {
         super.configure({ strokeWidth, colorStroke });
         const { offsetX, offsetY } = event;
         this.prevPosition = { offsetX, offsetY };
-        const dot = this.paint(super.getCoordinates(event));
+        const dot = this.paint(Brush.getCoordinates(event));
         return Promise.resolve(dot);
     }
 
     async move(event) {
-        const dot = this.paint(super.getCoordinates(event));
+        const dot = this.paint(Brush.getCoordinates(event));
         return Promise.resolve(dot);
     }
 
@@ -66,13 +66,11 @@ export default class RegularBrush extends Brush  {
                 const dot = new Dot(history[i]);
                 this.paintDot(dot);
             },
-            () => {
-                return Promise.resolve(dot);
-            },
-            interval
+            () => Promise.resolve(),
+            Brush.interval
         );
     }
-    
+
     loop(index, howManyTimes, f, callback, ms) {
         let i = index;
         f(i);
