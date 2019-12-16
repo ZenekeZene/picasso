@@ -9,10 +9,6 @@
 			<colors-tool :toolsVisible="toolsVisible" @click.native="toolsVisible = true"></colors-tool>
 			<stroke-tool :toolsVisible="toolsVisible" @click.native="toolsVisible = true"></stroke-tool>
 			<brush-tool :toolsVisible="toolsVisible" @click.native="toolsVisible = true"></brush-tool>
-			<!--<replay-tool
-				@showSpinner="showSpinner = $event.status"
-				@clearCanvas="clearCanvas"
-			></replay-tool>-->
 			<undo-tool @clearCanvas="clearCanvas"></undo-tool>
 			<download-tool :downloadURI="dataURI"></download-tool>
 			<clean-tool @clearCanvas="clearCanvas"></clean-tool>
@@ -59,7 +55,6 @@ import CanvasItem from '../CanvasItem';
 import CleanTool from '../tools/CleanTool';
 import UndoTool from '../tools/UndoTool';
 import BrushTool from '../tools/BrushTool';
-import ReplayTool from '../tools/ReplayTool';
 import DownloadTool from '../tools/DownloadTool';
 import UploadTool from '../tools/UploadTool';
 import ColorsTool from '../tools/ColorsTool';
@@ -74,7 +69,6 @@ export default {
 		CanvasItem,
 		CleanTool,
 		UndoTool,
-		ReplayTool,
 		DownloadTool,
 		UploadTool,
 		BrushTool,

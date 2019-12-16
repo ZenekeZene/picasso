@@ -15,7 +15,7 @@ import { mapState, mapMutations } from 'vuex';
 import PlayerDot from '../mixins/PlayerDot.mixin';
 import ControlInput from '../mixins/ControlInput.mixin';
 import Dot from '../entities/Dot';
-import { createBrush } from '../brushes/brushes';
+import { createBrush } from '../brushes';
 
 export default {
     name: 'CanvasItem',
