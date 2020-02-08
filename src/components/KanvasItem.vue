@@ -92,7 +92,6 @@ export default {
                 (event) => {
                     const t1 = event.touches[0];
                     const t2 = event.touches[1];
-                    alert(t1, t2);
 
                     if (t1 && t2) {
                         event.preventDefault();
@@ -139,7 +138,6 @@ export default {
                 'touchend',
                 () => {
                     this.lastDist = 0;
-                    alert('touchend');
                     this.point = undefined;
                 },
                 false
