@@ -23,8 +23,8 @@ export default {
                 draggable: true,
             },
             // For mobile
-            lastDist,
-            point,
+            lastDist: 0,
+            point: null,
         };
     },
     methods: {
