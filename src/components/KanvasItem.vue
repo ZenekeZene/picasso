@@ -120,7 +120,7 @@ export default {
                         const scaleBy = 1.01 + Math.abs(delta) / 100;
                         const newScale =
                             delta < 0 ? oldScale / scaleBy : oldScale * scaleBy;
-                        this.stage.scale({ x: newScal, y: newScale });
+                        this.stage.scale({ x: newScale, y: newScale });
 
                         const newPosition = {
                             x: (pointer.x / newScale - startPos.x) * newScale,
