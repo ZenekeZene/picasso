@@ -111,7 +111,7 @@ function pinchZoomTouchEvent(stage) {
       }
     }, false);
 
-    stage.getContent().addEventListener('touchend', () => {
+    this.stage.getContent().addEventListener('touchend', () => {
       lastDist = 0;
       point = undefined;
     }, false);

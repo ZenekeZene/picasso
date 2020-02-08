@@ -23,8 +23,8 @@ export default {
                 draggable: true,
             },
             // For mobile
-            lastDist: 0,
-            point: null,
+            lastDist,
+            point,
         };
     },
     methods: {
@@ -137,8 +137,8 @@ export default {
             this.stage.getContent().addEventListener(
                 'touchend',
                 () => {
-                    lastDist = 0;
-                    point = undefined;
+                    this.lastDist = 0;
+                    this.point = undefined;
                 },
                 false
             );
