@@ -28,6 +28,9 @@ export default {
                 height: window.innerHeight,
                 draggable: true,
             },
+            // For mobile
+            lastDist: 0,
+            point: null,
         };
     },
     methods: {
@@ -80,8 +83,59 @@ export default {
                 Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2)
             );
         },
-        clientPointerRelativeToStage(clientX, clientY) {},
-        pinchZoomTouchEvent() {},
+        clientPointerRelativeToStage(clientX, clientY) {
+            return {
+                x: clientX - this.stage.getContent().offsetLeft,
+                y: clientY - this.stage.getContent().offsetTop, 
+            };
+        },
+        pinchZoomTouchEvent() {
+            this.stage.getContent().addEventListener('touchmove', (event) => {
+                const t1 = event.touches[0];
+                const t2 = event.touches[1];
+
+                if (t1 && t2) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const oldScale = this.stage.scaleX();
+
+                    const dist = getDistance(
+                        { x: t1.clientX, y: t1.clientY },
+                        { x: t2.clientX, y: t2.clientY }
+                    );
+                    if (!lastDist) lastDist = dist;
+                    const delta = dist - lastDist;
+
+                    const px = (t1.clientX + t2.clientX) / 2;
+                    const py = (t1.clientY + t2.clientY) / 2;
+                    const pointer = point || this.clientPointerRelativeToStage(px, py);
+                    if (!point) point = pointer;
+
+                    const startPos = {
+                        x: pointer.x / oldScale - this.stage.x() / oldScale,
+                        y: pointer.y / oldScale - this.stage.y() / oldScale,
+                    };
+
+                    const scaleBy = 1.01 + Math.abs(delta) / 100;
+                    const newScale = delta < 0 ? oldScale / scaleBy : oldScale * scaleBy;
+                    this.stage.scale({ x: newScal, y: newScale });
+
+                    const newPosition = {
+                        x: (pointer.x / newScale - startPos.x) * newScale,
+                        y: (pointer.y / newScale - startPos.y) * newScale,
+                    }
+
+                    this.stage.position(newPosition);
+                    this.stage.batchDraw();
+                    lastDist = dist;
+                }
+            }, false);
+
+            this.stage.getContent().addEventListener('touchend', () => {
+                lastDist = 0;
+                point = undefined;
+            }, false);
+        },
     },
     mounted() {
         this.configureCanvas();
