@@ -98,7 +98,7 @@ export default {
                         event.stopPropagation();
                         const oldScale = this.stage.scaleX();
 
-                        const dist = getDistance(
+                        const dist = this.getDistance(
                             { x: t1.clientX, y: t1.clientY },
                             { x: t2.clientX, y: t2.clientY }
                         );
