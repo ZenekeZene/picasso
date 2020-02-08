@@ -45,6 +45,11 @@ export default {
             this.stage.add(layer);
             this.pinchZoomWheelEvent();
             this.pinchZoomTouchEvent();
+            this.stage.on('dragstart', (e) => {
+                if (!e.evt.shiftKey) {
+                    this.stage.stopDrag();
+                }
+            });
         },
         pinchZoomWheelEvent() {
             this.stage.getContent().addEventListener('wheel', (wheelEvent) => {
@@ -65,14 +70,17 @@ export default {
                     wheelEvent.deltaY > 0
                         ? oldScale / scaleBy
                         : oldScale * scaleBy;
-                this.stage.scale({ x: newScale, y: newScale });
+                // Limits of zoom:
+                if (newScale > 0.3 && newScale < 2) {
+                    this.stage.scale({ x: newScale, y: newScale });
 
-                const newPosition = {
-                    x: (pointer.x / newScale - startPos.x) * newScale,
-                    y: (pointer.y / newScale - startPos.y) * newScale,
-                };
-                this.stage.position(newPosition);
-                this.stage.batchDraw();
+                    const newPosition = {
+                        x: (pointer.x / newScale - startPos.x) * newScale,
+                        y: (pointer.y / newScale - startPos.y) * newScale,
+                    };
+                    this.stage.position(newPosition);
+                    this.stage.batchDraw();
+                }
             });
         },
         getDistance(p1, p2) {
