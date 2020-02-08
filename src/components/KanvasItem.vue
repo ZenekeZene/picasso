@@ -1,12 +1,6 @@
 <template>
     <section ref="canvasParent" style="width: 100%;">
-        <v-stage
-            id="canvas"
-            ref="canvas"
-            width="1698"
-            height="1028"
-            :config="configKonva"
-        ></v-stage>
+        <v-stage id="canvas" ref="canvas" width="1698" height="1028" :config="configKonva"></v-stage>
     </section>
 </template>
 <script>
@@ -67,13 +61,16 @@ export default {
                     ? Math.abs(Math.min(-10, Math.max(10, wheelEvent.deltaY)))
                     : Math.abs(wheelEvent.deltaY);
                 const scaleBy = 1.01 + deltaYBounded / 70;
-                const newScale = wheelEvent.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy;
+                const newScale =
+                    wheelEvent.deltaY > 0
+                        ? oldScale / scaleBy
+                        : oldScale * scaleBy;
                 this.stage.scale({ x: newScale, y: newScale });
 
                 const newPosition = {
                     x: (pointer.x / newScale - startPos.x) * newScale,
                     y: (pointer.y / newScale - startPos.y) * newScale,
-                }
+                };
                 this.stage.position(newPosition);
                 this.stage.batchDraw();
             });
@@ -86,55 +83,65 @@ export default {
         clientPointerRelativeToStage(clientX, clientY) {
             return {
                 x: clientX - this.stage.getContent().offsetLeft,
-                y: clientY - this.stage.getContent().offsetTop, 
+                y: clientY - this.stage.getContent().offsetTop,
             };
         },
         pinchZoomTouchEvent() {
-            this.stage.getContent().addEventListener('touchmove', (event) => {
-                const t1 = event.touches[0];
-                const t2 = event.touches[1];
+            this.stage.getContent().addEventListener(
+                'touchmove',
+                (event) => {
+                    const t1 = event.touches[0];
+                    const t2 = event.touches[1];
 
-                if (t1 && t2) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    const oldScale = this.stage.scaleX();
+                    if (t1 && t2) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        const oldScale = this.stage.scaleX();
 
-                    const dist = getDistance(
-                        { x: t1.clientX, y: t1.clientY },
-                        { x: t2.clientX, y: t2.clientY }
-                    );
-                    if (!lastDist) lastDist = dist;
-                    const delta = dist - lastDist;
+                        const dist = getDistance(
+                            { x: t1.clientX, y: t1.clientY },
+                            { x: t2.clientX, y: t2.clientY }
+                        );
+                        if (!this.lastDist) this.lastDist = dist;
+                        const delta = dist - this.lastDist;
 
-                    const px = (t1.clientX + t2.clientX) / 2;
-                    const py = (t1.clientY + t2.clientY) / 2;
-                    const pointer = point || this.clientPointerRelativeToStage(px, py);
-                    if (!point) point = pointer;
+                        const px = (t1.clientX + t2.clientX) / 2;
+                        const py = (t1.clientY + t2.clientY) / 2;
+                        const pointer =
+                            this.point || this.clientPointerRelativeToStage(px, py);
+                        if (!this.point) this.point = pointer;
 
-                    const startPos = {
-                        x: pointer.x / oldScale - this.stage.x() / oldScale,
-                        y: pointer.y / oldScale - this.stage.y() / oldScale,
-                    };
+                        const startPos = {
+                            x: pointer.x / oldScale - this.stage.x() / oldScale,
+                            y: pointer.y / oldScale - this.stage.y() / oldScale,
+                        };
 
-                    const scaleBy = 1.01 + Math.abs(delta) / 100;
-                    const newScale = delta < 0 ? oldScale / scaleBy : oldScale * scaleBy;
-                    this.stage.scale({ x: newScal, y: newScale });
+                        const scaleBy = 1.01 + Math.abs(delta) / 100;
+                        const newScale =
+                            delta < 0 ? oldScale / scaleBy : oldScale * scaleBy;
+                        this.stage.scale({ x: newScal, y: newScale });
 
-                    const newPosition = {
-                        x: (pointer.x / newScale - startPos.x) * newScale,
-                        y: (pointer.y / newScale - startPos.y) * newScale,
+                        const newPosition = {
+                            x: (pointer.x / newScale - startPos.x) * newScale,
+                            y: (pointer.y / newScale - startPos.y) * newScale,
+                        };
+
+                        this.stage.position(newPosition);
+                        this.stage.batchDraw();
+                        this.lastDist = dist;
                     }
+                },
+                false
+            );
 
-                    this.stage.position(newPosition);
-                    this.stage.batchDraw();
-                    lastDist = dist;
-                }
-            }, false);
-
-            this.stage.getContent().addEventListener('touchend', () => {
-                lastDist = 0;
-                point = undefined;
-            }, false);
+            this.stage.getContent().addEventListener(
+                'touchend',
+                () => {
+                    lastDist = 0;
+                    point = undefined;
+                },
+                false
+            );
         },
     },
     mounted() {
