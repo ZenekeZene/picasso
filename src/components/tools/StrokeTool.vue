@@ -32,14 +32,16 @@ export default {
 			'isPlaying',
 			'isPainting',
 			'mode',
+		]),
+		...mapState('brush', [
 			'colorStroke',
 			'colorErase',
 			'strokeWidth',
-		]),
+		])
 	},
 	data() {
 		return {
-			strokeWidthLocal: this.$store.state.strokeWidth,
+			strokeWidthLocal: this.$store.state.brush.strokeWidth,
 		};
 	},
 	props: {
@@ -49,7 +51,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapMutations([
+		...mapMutations('brush', [
 			'setStrokeWidth',
 		]),
 		changeStrokeWidth() {

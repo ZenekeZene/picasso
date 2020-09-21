@@ -23,13 +23,13 @@
 			...mapState([
 				'isPlaying',
 				'mode',
-				'indexLine',
 				'canvas',
 				'ctx',
 			]),
 			...mapGetters([
 				'isDisabled',
 			]),
+			...mapState('strokes', ['history', 'indexLine']),
 		},
 		mounted() {
 			document.addEventListener('keydown', (event) => {
@@ -39,7 +39,7 @@
 			});
 		},
 		methods: {
-			...mapMutations([
+			...mapMutations('strokes', [
 				'removeStrokeOnHistory',
 				'decreaseIndexLine',
 			]),

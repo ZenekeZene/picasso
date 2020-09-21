@@ -25,10 +25,8 @@ export default {
 		};
 	},
 	methods: {
-		...mapMutations([
-			'changeTheme',
-			'setColorErase',
-		]),
+		...mapMutations(['changeTheme']),
+		...mapMutations('brush', ['setColorErase']),
 		toggleTheme() {
 			if (this.theme === 'light') {
 				this.documentStyle.setProperty('--color-text', 'white');

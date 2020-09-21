@@ -5,7 +5,7 @@
 	<p>¿De verdad quieres borrar el siguiente usuario?</p>
 	<p font-bold margin-zero padding-left>{{ user.name }}</p>
 	<p font-bold padding-left>{{ user.email }}</p>
-	<button margin-top-2 class="btn --hot" @click="$emit('deleteUser', user)">Borrar usuario</button>
+	<button margin-top-2 class="btn --hot" @click="$emit('delete-user', user)">Borrar usuario</button>
 </modal>
 </template>
 

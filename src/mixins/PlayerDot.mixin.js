@@ -3,7 +3,8 @@ import { createBrush } from '../brushes';
 
 const playerDot = {
     computed: {
-        ...mapState(['history', 'ctx', 'theme']),
+        ...mapState(['ctx', 'theme']),
+        ...mapState('strokes', ['history']),
     },
     data() {
         return {
@@ -25,13 +26,15 @@ const playerDot = {
         player() {
             this.ctx.lineCap = 'round';
             this.ctx.lineWidth = 'round';
-            this.history.forEach((stroke) => {
-                if (stroke[0]) {
-                    const { brushIndex } = stroke[0];
-                    const inst = createBrush(brushIndex, this.ctx, this.theme);
-                    inst.playerStroke(stroke);
-                }
-            });
+            if (this.history && this.history.length > 0) {
+                this.history.forEach((stroke) => {
+                    if (stroke[0]) {
+                        const { brushIndex } = stroke[0];
+                        const inst = createBrush(brushIndex, this.ctx, this.theme);
+                        inst.playerStroke(stroke);
+                    }
+                });
+            }
         },
     },
 };

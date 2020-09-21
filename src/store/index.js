@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
+import brush from './brush.store';
+import strokes from './history.store';
 
 Vue.use(Vuex);
 
@@ -11,18 +13,17 @@ const store = new Vuex.Store({
 			key: 'picasso-state'
 		}),
 	],
+	modules: {
+		strokes,
+		brush
+	},
 	state: {
-		history: [[]],
-		indexLine: 0,
 		mode: 'edit',
 		canvas: null,
 		ctx: null,
 		isPlaying: false,
 		isPainting: false,
-		colorStroke: '#008f7a',
 		brushIndex: 0,
-		colorErase: '',
-		strokeWidth: 10,
 		paintingSelected: null,
 		theme: 'light',
 		filterCriterion: 'alphabet',
@@ -39,46 +40,6 @@ const store = new Vuex.Store({
 			state.ctx.lineJoin = 'round';
 			state.ctx.lineCap = 'round';
 		},
-		setColorStroke(state, payload) {
-			state.colorStroke = payload.colorStroke;
-		},
-		setColorErase(state, payload) {
-			state.colorErase = payload.colorErase;
-		},
-		setHistory(state, payload) {
-			state.history = JSON.parse(payload.history);
-		},
-		deleteHistory(state) {
-			state.history = null;
-		},
-		createNewStrokeOnHistory(state) {
-			state.history[state.indexLine] = [];
-		},
-		removeStrokeOnHistory(state) {
-			state.history.pop();
-		},
-		pushDotOnHistory(state, payload) {
-			if (state.history[state.indexLine].length === 0) {
-				payload.dot.brushIndex = state.brushIndex;
-			}
-			state.history[state.indexLine].push(payload.dot);
-		},
-		deleteAllHistory(state) {
-			state.history = [];
-			state.indexLine = 0;
-		},
-		incrementIndexLine(state) {
-			state.indexLine += 1;
-		},
-		decreaseIndexLine(state) {
-			state.indexLine -= 1;
-		},
-		resetIndexLine(state) {
-			state.indexLine = 0;
-		},
-		setHistoryOfPainting(state, payload) {
-			state.history = JSON.parse(payload.raw);
-		},
 		setModeToEditable(state) {
 			state.mode = 'edit';
 		},
@@ -86,7 +47,7 @@ const store = new Vuex.Store({
 			state.mode = 'read';
 		},
 		setBackgroundCanvas(state) {
-			state.ctx.fillStyle = state.colorErase;
+			state.ctx.fillStyle = state.brush.colorErase;
 			state.ctx.fillRect(0, 0, state.canvas.width, state.canvas.height);
 		},
 		setPlayingStatus(state, payload) {
@@ -98,12 +59,9 @@ const store = new Vuex.Store({
 		setPaintingStatus(state, payload) {
 			state.isPainting = payload.status;
 		},
-		setStrokeWidth(state, payload) {
-			state.strokeWidth = payload.strokeWidth;
-		},
 		clearCanvas(state) {
 			state.ctx.clearRect(0, 0, state.canvas.width, state.canvas.height);
-			state.ctx.fillStyle = state.colorErase;
+			state.ctx.fillStyle = state.brush.colorErase;
 			state.ctx.fillRect(0, 0, state.canvas.width, state.canvas.height);
 		},
 		setPaintingSelected(state, payload) {
@@ -121,23 +79,6 @@ const store = new Vuex.Store({
 			} else if (!state.brushIndex) {
 				state.brushIndex = 0;
 			}
-		},
-	},
-	actions: {
-		getHistoryOfPainting(...params) {
-			const [, payload] = params;
-			return new Promise((resolve, reject) => {
-				window.db
-					.collection('painting')
-					.doc(payload.paintingId)
-					.get()
-					.then((snapshot) => {
-						resolve(snapshot.data());
-					})
-					.catch((error) => {
-						reject(error);
-					});
-			});
 		},
 	},
 });

@@ -1,0 +1,66 @@
+<template>
+  <section @click="$emit('drawing-clicked', true)">
+    <spinner-item v-show="!loaded" key="spinner" class="spinner --mini"></spinner-item>
+    <div style="min-width: 47px;">
+      <img :src="url" @load="loaded = true" key="image" />
+    </div>
+    <span class="name">{{ name }}</span>
+    <div class="rating">
+      <StarRating
+        :rating="avgRating"
+        :star-size="15"
+        :padding="3"
+        :glow="0"
+        :rounded-corners="true"
+        :border-width="0"
+        :increment="0.5"
+        :fixed-points="2"
+        :show-rating="false"
+        :round-start-rating="false"
+        :read-only="true"
+      />
+      <span>Creado {{ calculateMoment(timestamp) }}</span>
+    </div>
+  </section>
+</template>
+<script>
+import moment from 'moment';
+import StarRating from 'vue-star-rating';
+import SpinnerItem from './SpinnerItem';
+
+export default {
+  name: 'drawing',
+  components: {
+    SpinnerItem,
+    StarRating,
+  },
+  props: {
+    url: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    avgRating: {
+      type: Number,
+      default: 0
+    },
+    timestamp: {
+      type: Object,
+      required: true
+    }
+  },
+  data () {
+    return {
+      loaded: false,
+    }
+  },
+  methods: {
+    calculateMoment(timestamp) {
+      return moment(new Date(timestamp.seconds * 1000)).fromNow();
+    },
+  },
+}
+</script>

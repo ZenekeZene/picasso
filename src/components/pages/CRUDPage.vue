@@ -58,13 +58,13 @@
 		</transition>
 		<modal-delete
 			:user="userSelected"
-			@deleteUser="deleteUser"
+			@delete-user="deleteUser"
 		></modal-delete>
 		<modal-edit
 			:user="userSelected"
 			:action="action"
-			@saveUser="saveUser"
-			@updateUser="updateUser"
+			@save-user="saveUser"
+			@update-user="updateUser"
 		></modal-edit>
 	</section>
 </template>

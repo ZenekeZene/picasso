@@ -1,51 +1,51 @@
 <template>
   <article class="p-paint">
-	<transition name="fade" appear>
-		<ol
-			class="tools --left"
-			@mouseleave="toolsVisible = true"
-			:class="{ '--disabled': isPainting || showSpinner }"
-		>
-			<colors-tool :toolsVisible="toolsVisible" @click.native="toolsVisible = true"></colors-tool>
-			<stroke-tool :toolsVisible="toolsVisible" @click.native="toolsVisible = true"></stroke-tool>
-			<brush-tool :toolsVisible="toolsVisible" @click.native="toolsVisible = true"></brush-tool>
-			<undo-tool @clearCanvas="clearCanvas"></undo-tool>
-			<download-tool :downloadURI="dataURI"></download-tool>
-			<clean-tool @clearCanvas="clearCanvas"></clean-tool>
-		</ol>
-	</transition>
-	<transition name="fade" appear>
-		<spinner-item v-show="showSpinner"></spinner-item>
-	</transition>
-	<canvas-item
-		class="p-paint__canvas"
-		:class="{ '--blur': showSpinner }"
-		@mouseup="handMouseUp"
-	></canvas-item>
-	<transition name="fade" appear>
-		<div class="button-floated --bottom --left"
-			@click.stop.prevent="goToGallery"
-			:class="{ '--disabled': isPainting }"
-			v-mobile-hover:#4992a9
-		>
-			<span class="icon-book"></span>
-			<span class="label">Galería</span>
-		</div>
-	</transition>
-	<transition name="fade" appear>
-		<div class="button-floated --bottom --right"
-			v-if="mode === 'read'"
-			@click.stop.prevent="launchRating"
-			:class="{ '--disabled': isPainting }"
-			v-mobile-hover:#4992a9
-		>
-			<span class="label">Puntuar este dibujo</span>
-			<span class="icon-star-full"></span>
-		</div>
-	</transition>
-	<upload-tool @showSpinner="showSpinner = $event.status" v-if="mode === 'edit'"></upload-tool>
-	<modal-painting @showSpinner="showSpinner = $event.status"></modal-painting>
-	<modal-rating @showSpinner="showSpinner = $event.status"></modal-rating>
+		<transition name="fade" appear>
+			<ol
+				class="tools --left"
+				@mouseleave="toolsVisible = true"
+				:class="{ '--disabled': isPainting || showSpinner }"
+			>
+				<ColorsTool :toolsVisible="toolsVisible" @click.native="toolsVisible = true" />
+				<StrokeTool :toolsVisible="toolsVisible" @click.native="toolsVisible = true" />
+				<BrushTool :toolsVisible="toolsVisible" @click.native="toolsVisible = true" />
+				<UndoTool @clearCanvas="clearCanvas" />
+				<DownloadTool :downloadURI="dataURI" />
+				<CleanTool @clearCanvas="clearCanvas" />
+			</ol>
+		</transition>
+		<transition name="fade" appear>
+			<SpinnerItem v-show="showSpinner" />
+		</transition>
+		<CanvasItem
+			class="p-paint__canvas"
+			:class="{ '--blur': showSpinner }"
+			@mouseup="handMouseUp"
+		/>
+		<transition name="fade" appear>
+			<div class="button-floated --bottom --left"
+				:class="{ '--disabled': isPainting }"
+				v-mobile-hover:#4992a9
+				@click.stop.prevent="goToGallery"
+			>
+				<span class="icon-book"></span>
+				<span class="label">Galería</span>
+			</div>
+		</transition>
+		<transition name="fade" appear>
+			<div class="button-floated --bottom --right"
+				v-if="mode === 'read'"
+				:class="{ '--disabled': isPainting }"
+				v-mobile-hover:#4992a9
+				@click.stop.prevent="launchRating"
+			>
+				<span class="label">Puntuar este dibujo</span>
+				<span class="icon-star-full"></span>
+			</div>
+		</transition>
+		<UploadTool @showSpinner="showSpinner = $event.status" v-if="mode === 'edit' && history.length > 0" />
+		<ModalPainting @showSpinner="showSpinner = $event.status" />
+		<ModalRating @showSpinner="showSpinner = $event.status" />
   </article>
 </template>
 
@@ -80,13 +80,13 @@ export default {
 	},
 	computed: {
 		...mapState([
-			'history',
 			'mode',
 			'isPainting',
 			'isPlaying',
 			'theme',
 			'canvas',
 		]),
+		...mapState('strokes', ['history']),
 	},
 	data() {
 		return {
@@ -101,11 +101,13 @@ export default {
 	methods: {
 		...mapMutations([
 			'setModeToEditable',
-			'deleteAllHistory',
-			'resetIndexLine',
 			'clearCanvas',
 			'setPaintingSelected',
 			'setPlayingStatus',
+		]),
+		...mapMutations('strokes', [
+			'deleteAllHistory',
+			'resetIndexLine',
 		]),
 		isOptionEnabled(event) {
 			return !event.target.classList.contains('--disabled');

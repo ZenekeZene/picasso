@@ -22,17 +22,22 @@ export default {
     mixins: [PlayerDot, ControlInput],
     computed: {
         ...mapState([
-            'colorStroke',
-            'colorErase',
-            'strokeWidth',
             'canvas',
             'ctx',
             'indexLine',
             'mode',
             'isPainting',
             'isPlaying',
-            'history',
             'brushIndex',
+        ]),
+        ...mapState('brush', [
+            'colorStroke',
+            'colorErase',
+            'strokeWidth'
+        ]),
+        ...mapState('strokes', [
+            'history',
+            'indexLine',
         ]),
     },
     data() {
@@ -44,12 +49,14 @@ export default {
         ...mapMutations([
             'setCanvas',
             'setBackgroundCanvas',
+            'setPaintingStatus',
+            'changeBrush',
+        ]),
+        ...mapMutations('strokes', [
             'pushDotOnHistory',
             'createNewStrokeOnHistory',
             'deleteAllHistory',
             'incrementIndexLine',
-            'setPaintingStatus',
-            'changeBrush',
         ]),
         configureCanvas() {
             this.setCanvas({ canvasRef: this.$refs.canvas });

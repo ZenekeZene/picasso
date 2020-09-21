@@ -28,7 +28,7 @@ export default {
 		]),
 	},
 	methods: {
-		...mapMutations([
+		...mapMutations('strokes', [
 			'deleteAllHistory',
 			'resetIndexLine',
 		]),

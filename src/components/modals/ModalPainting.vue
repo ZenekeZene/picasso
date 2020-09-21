@@ -36,8 +36,8 @@ export default {
 		...mapState([
 			'mode',
 			'canvas',
-			'history',
 		]),
+		...mapState('strokes', ['history']),
 		swiper() {
 			return this.$refs.swiper.swiper;
 		},

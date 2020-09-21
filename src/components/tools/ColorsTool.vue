@@ -46,10 +46,9 @@ export default {
 		...mapState([
 			'isPainting',
 			'isPlaying',
-			'mode',
-			'colorStroke',
-			'colorErase',
+			'mode'
 		]),
+		...mapState('brush', [ 'colorStroke', 'colorErase' ]),
 	},
 	data() {
 		return {
@@ -72,10 +71,7 @@ export default {
 			});
 	},
 	methods: {
-		...mapMutations([
-			'setColorStroke',
-			'setColorErase',
-		]),
+		...mapMutations('brush', ['setColorStroke', 'setColorErase']),
 	},
 };
 </script>
