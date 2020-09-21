@@ -18,12 +18,7 @@ const brushes = [
 		key: 'neighbor',
 		iconClassname: 'quill',
 		Create: NeightbourBrush,
-	},
-	{
-		key: 'thick',
-		iconClassname: 'paint-format',
-		Create: ThickBrush,
-	},
+	}
 ];
 
 function createBrush(indexOfBrush = 0, ctx, theme) {

@@ -5,7 +5,7 @@
 	max-height: 100%;
 	min-height: 100px;
 	overflow-y: auto;
-	grid-template-columns: repeat(auto-fill, minmax(320px, 400px));
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
 	grid-gap: $gutter;
 	padding: $gutter;
 	font-size: $font-size-xxs;
