@@ -8,7 +8,7 @@ const store = new Vuex.Store({
 	strict: process.env.NODE_ENV !== 'production',
 	plugins: [
 		createPersistedState({
-			key: 'picasso-state',
+			key: 'picasso-state'
 		}),
 	],
 	state: {
@@ -46,7 +46,7 @@ const store = new Vuex.Store({
 			state.colorErase = payload.colorErase;
 		},
 		setHistory(state, payload) {
-			state.history = payload.history;
+			state.history = JSON.parse(payload.history);
 		},
 		deleteHistory(state) {
 			state.history = null;

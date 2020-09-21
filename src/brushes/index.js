@@ -26,7 +26,10 @@ const brushes = [
 	},
 ];
 
-function createBrush(indexOfBrush, ctx, theme) {
+function createBrush(indexOfBrush = 0, ctx, theme) {
+	if (!brushes[indexOfBrush]) {
+		indexOfBrush = 0
+	}
 	return new brushes[indexOfBrush].Create({ ctx, theme });
 }
 
