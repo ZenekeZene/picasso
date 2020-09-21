@@ -11,17 +11,20 @@
 					<SpinnerItem v-if="isLoading" block margin-auto-horizontal margin-top />
 					<section class="gallery-wrapper" v-else>
 						<ol class="gallery">
-							<Drawing
+							<li
 								v-for="paint in filteredPaintings"
-    						:key="paint.id"
-								:class="{ '--selected': paintingSelected === paint.id }"
-								:url="paint.url"
-								:name="paint.name"
-								:avgRating="paint.avgRating"
-								:timestamp="paint.timestamp"
-								class="gallery__item"
-								@drawing-clicked="goToPainting(paint)"
-							/>
+								:key="paint.id"
+							>
+								<Drawing
+									class="gallery__item"
+									:class="{ '--selected': paintingSelected === paint.id }"
+									:url="paint.url"
+									:name="paint.name"
+									:avgRating="paint.avgRating"
+									:timestamp="paint.timestamp"
+									@drawing-clicked="goToPainting(paint)"
+								/>
+							</li>
 						</ol>
 					</section>
 				</transition>

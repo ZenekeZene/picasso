@@ -18,7 +18,7 @@ export default {
 		},
 		pushDotOnHistory(state, payload) {
 			if (state.history[state.indexLine].length === 0) {
-				payload.dot.brushIndex = state.brushIndex;
+				payload.dot.brushIndex = payload.brushIndex;
 			}
 			state.history[state.indexLine].push(payload.dot);
 		},

@@ -30,8 +30,8 @@ const store = new Vuex.Store({
 		filterDirection: 'asc',
 	},
 	getters: {
-		isDisabled: (state) => state.isPlaying || state.isPainting || state.history.length === 0,
-		isPauseDisabled: (state) => state.isPainting || state.history.length === 0,
+		isDisabled: (state) => state.isPlaying || state.isPainting || state.strokes.history.length === 0,
+		isPauseDisabled: (state) => state.isPainting || state.strokes.history.length === 0,
 	},
 	mutations: {
 		setCanvas(state, payload) {
@@ -73,12 +73,11 @@ const store = new Vuex.Store({
 		setFilterCriterion(state, payload) {
 			state.filterCriterion = payload.filterCriterion;
 		},
-		changeBrush(state, payload) {
-			if (payload) {
-				state.brushIndex = payload.brushIndex;
-			} else if (!state.brushIndex) {
-				state.brushIndex = 0;
+		changeBrush(state, brushIndex) {
+			if (!brushIndex) {
+				brushIndex = 0;
 			}
+			state.brushIndex = brushIndex;
 		},
 	},
 });

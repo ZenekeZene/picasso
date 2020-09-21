@@ -30,7 +30,7 @@ const playerDot = {
                 this.history.forEach((stroke) => {
                     if (stroke[0]) {
                         const { brushIndex } = stroke[0];
-                        const inst = createBrush(brushIndex, this.ctx, this.theme);
+                        const inst = createBrush(brushIndex || 0, this.ctx, this.theme);
                         inst.playerStroke(stroke);
                     }
                 });

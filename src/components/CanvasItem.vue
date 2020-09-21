@@ -81,7 +81,7 @@ export default {
                     strokeWidth: this.strokeWidth,
                     colorStroke: this.colorStroke,
                 });
-                this.pushDotOnHistory({ dot });
+                this.pushDotOnHistory({ dot, brushIndex: this.brushIndex });
             } catch (error) {
                 this.logError(error);
             }

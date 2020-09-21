@@ -9,7 +9,7 @@
             <li
                 v-for="(brusher, index) in brushes"
                 :key="`brush-${index}`"
-                @click="changeBrush({ brushIndex: index })"
+                @click="changeBrush(index)"
                 :class="{ '--selected': brushIndex === index }"
             >
                 <span
@@ -44,14 +44,8 @@ export default {
     },
     data() {
         return {
-            brushes: brushes,
+            brushes,
         };
-    },
-    props: {
-        toolsVisible: {
-            default: false,
-            type: Boolean,
-        },
     },
     methods: {
         ...mapMutations(['changeBrush']),
