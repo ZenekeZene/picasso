@@ -60,6 +60,14 @@
 				color: var(--color-text);
 			}
 		}
+
+	}
+	& > li {
+		@include media('<=phablet') {
+			&:last-child {
+				margin-bottom: $gutter;
+			}
+		}
 	}
 
 	&-wrapper {
