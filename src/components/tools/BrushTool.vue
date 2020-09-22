@@ -33,7 +33,8 @@ export default {
         },
     },
     computed: {
-        ...mapState(['isPainting', 'isPlaying', 'mode', 'brushIndex']),
+        ...mapState(['isPainting', 'isPlaying', 'mode', ]),
+        ...mapState('brush', [ 'brushIndex', ]),
         getBrushClassname() {
             let classnames = `icon-${this.brushes[this.brushIndex].iconClassname}`;
             if (this.isPlaying || this.isPainting || this.mode === 'read') {
@@ -48,7 +49,7 @@ export default {
         };
     },
     methods: {
-        ...mapMutations(['changeBrush']),
+        ...mapMutations('brush', ['changeBrush']),
     },
 };
 </script>

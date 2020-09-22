@@ -50,13 +50,15 @@ export default {
             'setCanvas',
             'setBackgroundCanvas',
             'setPaintingStatus',
-            'changeBrush',
         ]),
         ...mapMutations('strokes', [
             'pushDotOnHistory',
             'createNewStrokeOnHistory',
             'deleteAllHistory',
             'incrementIndexLine',
+        ]),
+        ...mapMutations('brush', [
+            'changeBrush',
         ]),
         configureCanvas() {
             this.setCanvas({ canvasRef: this.$refs.canvas });
