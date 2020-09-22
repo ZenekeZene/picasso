@@ -28,12 +28,13 @@ export default {
             'mode',
             'isPainting',
             'isPlaying',
-            'brushIndex',
+            'toolsVisible',
         ]),
         ...mapState('brush', [
             'colorStroke',
             'colorErase',
-            'strokeWidth'
+            'strokeWidth',
+            'brushIndex',
         ]),
         ...mapState('strokes', [
             'history',
@@ -50,6 +51,7 @@ export default {
             'setCanvas',
             'setBackgroundCanvas',
             'setPaintingStatus',
+            'setToolsVisible',
         ]),
         ...mapMutations('strokes', [
             'pushDotOnHistory',
@@ -77,6 +79,10 @@ export default {
             });
         },
         async handleMouseDown(event) {
+            if (this.toolsVisible) {
+                this.setToolsVisible({ toolsVisible: false });
+                return false;
+            }
             try {
                 await this.inputDown(event);
                 const dot = await this.currentBrush.down(event, {

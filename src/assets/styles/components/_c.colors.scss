@@ -23,7 +23,7 @@
 		content: $icon-target;
 		@include absolute(top left);
 		@include share(width, height, 1rem);
-		margin-top: -1px;
+		margin-top: 3px;
 		font-family: $font-icons;
 		font-size: $font-size-xxs;
 	}

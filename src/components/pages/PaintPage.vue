@@ -3,12 +3,21 @@
 		<transition name="fade" appear>
 			<ol
 				class="tools --left"
-				@mouseleave="toolsVisible = true"
 				:class="{ '--disabled': isPainting || showSpinner }"
+				@mouseleave="setToolsVisible({ toolsVisible: true })"
 			>
-				<ColorsTool :toolsVisible="toolsVisible" @click.native="toolsVisible = true" />
-				<StrokeTool :toolsVisible="toolsVisible" @click.native="toolsVisible = true" />
-				<BrushTool :toolsVisible="toolsVisible" @click.native="toolsVisible = true" />
+				<ColorsTool
+					:toolsVisible="toolsVisible"
+					@click.native="setToolsVisible({ toolsVisible: true })"
+				/>
+				<StrokeTool
+					:toolsVisible="toolsVisible"
+					@click.native="setToolsVisible({ toolsVisible: true })"
+				/>
+				<BrushTool
+					:toolsVisible="toolsVisible"
+					@click.native="setToolsVisible({ toolsVisible: true })"
+				/>
 				<UndoTool @clearCanvas="clearCanvas" />
 				<DownloadTool :downloadURI="dataURI" />
 				<CleanTool @clearCanvas="clearCanvas" />
@@ -84,13 +93,13 @@ export default {
 			'isPainting',
 			'isPlaying',
 			'canvas',
+			'toolsVisible',
 		]),
 		...mapState('strokes', ['history']),
 		...mapState('gallery', ['theme']),
 	},
 	data() {
 		return {
-			toolsVisible: false,
 			dataURI: '',
 			showSpinner: false,
 		};
@@ -103,6 +112,7 @@ export default {
 			'setModeToEditable',
 			'clearCanvas',
 			'setPlayingStatus',
+			'setToolsVisible',
 		]),
 		...mapMutations('strokes', [
 			'deleteAllHistory',
@@ -127,7 +137,7 @@ export default {
 			}
 		},
 		handMouseUp($event) {
-			this.toolsVisible = $event;
+			this.setToolsVisible({ toolsVisible: $event });
 			this.saveToImage();
 		},
 	},

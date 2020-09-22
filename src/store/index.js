@@ -31,6 +31,7 @@ const store = new Vuex.Store({
 		ctx: null,
 		isPlaying: false,
 		isPainting: false,
+		toolsVisible: false,
 	},
 	getters: {
 		isDisabled: (state) => state.isPlaying || state.isPainting || state.strokes.history.length === 0,
@@ -66,6 +67,9 @@ const store = new Vuex.Store({
 			state.ctx.clearRect(0, 0, state.canvas.width, state.canvas.height);
 			state.ctx.fillStyle = state.brush.colorErase;
 			state.ctx.fillRect(0, 0, state.canvas.width, state.canvas.height);
+		},
+		setToolsVisible(state, payload) {
+			state.toolsVisible = payload.toolsVisible;
 		},
 	},
 });
