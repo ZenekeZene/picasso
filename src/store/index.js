@@ -10,7 +10,13 @@ const store = new Vuex.Store({
 	strict: process.env.NODE_ENV !== 'production',
 	plugins: [
 		createPersistedState({
-			key: 'picasso-state'
+			key: 'picasso-state',
+			paths: [
+				'brush.colorErase',
+				'brush.colorStroke',
+				'brush.strokeWidth',
+				'strokes.history',
+			]
 		}),
 	],
 	modules: {
