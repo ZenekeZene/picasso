@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import brush from './brush.store';
 import strokes from './history.store';
+import gallery from './gallery.store';
 
 Vue.use(Vuex);
 
@@ -21,7 +22,8 @@ const store = new Vuex.Store({
 	],
 	modules: {
 		strokes,
-		brush
+		brush,
+		gallery,
 	},
 	state: {
 		mode: 'edit',
@@ -29,11 +31,6 @@ const store = new Vuex.Store({
 		ctx: null,
 		isPlaying: false,
 		isPainting: false,
-		brushIndex: 0,
-		paintingSelected: null,
-		theme: 'light',
-		filterCriterion: 'alphabet',
-		filterDirection: 'asc',
 	},
 	getters: {
 		isDisabled: (state) => state.isPlaying || state.isPainting || state.strokes.history.length === 0,
@@ -69,21 +66,6 @@ const store = new Vuex.Store({
 			state.ctx.clearRect(0, 0, state.canvas.width, state.canvas.height);
 			state.ctx.fillStyle = state.brush.colorErase;
 			state.ctx.fillRect(0, 0, state.canvas.width, state.canvas.height);
-		},
-		setPaintingSelected(state, payload) {
-			state.paintingSelected = payload.paintingSelected;
-		},
-		changeTheme(state, payload) {
-			state.theme = payload.theme;
-		},
-		setFilterCriterion(state, payload) {
-			state.filterCriterion = payload.filterCriterion;
-		},
-		changeBrush(state, brushIndex) {
-			if (!brushIndex) {
-				brushIndex = 0;
-			}
-			state.brushIndex = brushIndex;
 		},
 	},
 });

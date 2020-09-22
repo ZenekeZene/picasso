@@ -71,12 +71,12 @@ export default {
 		};
 	},
 	computed: {
-		...mapState([
-			'mode',
+		...mapState(['mode']),
+		...mapState('strokes', ['history']),
+		...mapState('gallery', [
 			'paintingSelected',
 			'filterCriterion',
 		]),
-		...mapState('strokes', ['history']),
 		filteredPaintings() {
 			const compare = {
 				alphabet: (a, b) => (a.name.localeCompare(b.name)),
@@ -96,13 +96,15 @@ export default {
 			'setModeToEditable',
 			'setModeToReadable',
 			'clearCanvas',
-			'setPaintingSelected',
-			'setFilterCriterion',
 		]),
 		...mapMutations('strokes', [
 			'setHistory',
 			'deleteAllHistory',
 			'resetIndexLine',
+		]),
+		...mapMutations('gallery', [
+			'setPaintingSelected',
+			'setFilterCriterion',
 		]),
 		getAllPaintings() {
 			this.paintings = [];

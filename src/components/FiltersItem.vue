@@ -23,10 +23,10 @@ import { mapState, mapMutations } from 'vuex';
 export default {
 	name: 'FiltersItem',
 	computed: {
-		...mapState(['filterCriterion']),
+		...mapState('gallery', ['filterCriterion']),
 	},
 	methods: {
-		...mapMutations(['setFilterCriterion']),
+		...mapMutations('gallery', ['setFilterCriterion']),
 		setFilter(criterion = 'date') {
 			this.setFilterCriterion({ filterCriterion: criterion });
 		},

@@ -83,10 +83,10 @@ export default {
 			'mode',
 			'isPainting',
 			'isPlaying',
-			'theme',
 			'canvas',
 		]),
 		...mapState('strokes', ['history']),
+		...mapState('gallery', ['theme']),
 	},
 	data() {
 		return {
@@ -102,20 +102,20 @@ export default {
 		...mapMutations([
 			'setModeToEditable',
 			'clearCanvas',
-			'setPaintingSelected',
 			'setPlayingStatus',
 		]),
 		...mapMutations('strokes', [
 			'deleteAllHistory',
 			'resetIndexLine',
 		]),
+		...mapMutations('gallery', ['setPaintingSelected']),
 		isOptionEnabled(event) {
 			return !event.target.classList.contains('--disabled');
 		},
 		goToGallery(event) {
 			if (this.isOptionEnabled(event)) {
 				this.setPlayingStatus({ status: false });
-				this.$router.push('/gallery');
+				this.$router.push({ name: 'gallery' });
 			}
 		},
 		saveToImage() {

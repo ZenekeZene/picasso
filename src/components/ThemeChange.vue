@@ -15,9 +15,7 @@ import { mapState, mapMutations } from 'vuex';
 export default {
 	name: 'ThemeChange',
 	computed: {
-		...mapState([
-			'theme',
-		]),
+		...mapState('gallery', ['theme']),
 	},
 	data() {
 		return {
@@ -25,7 +23,7 @@ export default {
 		};
 	},
 	methods: {
-		...mapMutations(['changeTheme']),
+		...mapMutations('gallery', ['changeTheme']),
 		...mapMutations('brush', ['setColorErase']),
 		toggleTheme() {
 			if (this.theme === 'light') {

@@ -25,12 +25,10 @@ export default {
 		GithubItem,
 	},
 	computed: {
-		...mapState([
-			'theme',
-		]),
+		...mapState('gallery', ['theme']),
 	},
 	methods: {
-		...mapMutations(['changeTheme']),
+		...mapMutations('gallery', ['changeTheme']),
 		...mapMutations('strokes', ['deleteAllHistory']),
 		...mapMutations('brush', ['setColorErase']),
 		toggleTheme() {

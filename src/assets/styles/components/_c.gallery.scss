@@ -60,12 +60,6 @@
 				color: var(--color-text);
 			}
 		}
-
-		@include media('<=phablet') {
-			&:last-child {
-				margin-bottom: $gutter;
-			}
-		}
 	}
 
 	&-wrapper {

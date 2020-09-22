@@ -48,9 +48,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapState([
-			'paintingSelected',
-		]),
+		...mapState('gallery', ['paintingSelected',]),
 		swiper() {
 			return this.$refs.swiper.swiper;
 		},
