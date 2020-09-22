@@ -10,7 +10,7 @@
 			:class="{ '--disabled': isPainting }"
 			v-else
 			key="gallery"
-		>Galería</h1>
+		>Libro de firmas</h1>
 	</transition>
 	<theme-change v-if="$route.name == 'gallery'"></theme-change>
 

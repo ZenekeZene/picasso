@@ -4,7 +4,8 @@
     <div style="min-width: 47px;">
       <img :src="url" @load="loaded = true" key="image" />
     </div>
-    <span class="name">{{ name }}</span>
+    <span class="name" v-if="name.length > 0">{{ name }}</span>
+    <span class="name" v-else>Anónimo</span>
     <div class="rating">
       <StarRating
         :rating="avgRating"

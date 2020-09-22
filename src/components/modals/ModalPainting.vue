@@ -4,9 +4,10 @@
 	<swiper :options="swiperOptionMini" ref="swiper">
 		<swiper-slide>
 			<div padding>
-				<h1>Ponle<br/> nombre a tu dibujo</h1>
-				<input type="text" placeholder="Nombra tu dibujo" v-model="name">
-				<button margin-top class="btn" @click="save">Enviar dibujo</button>
+				<h1>¿Cómo te llamas ?</h1>
+				<input type="text" placeholder="Me llamo..." v-model="name">
+				<p class="note">O bien envía la firma de forma anónima</p>
+				<button margin-top class="btn" @click="save">Enviar firma</button>
 			</div>
 		</swiper-slide>
 	</swiper>
@@ -92,3 +93,8 @@ export default {
 	},
 };
 </script>
+<style scoped lang="scss">
+.note {
+	font-size: 14px;
+}
+</style>

@@ -2,8 +2,8 @@
 	<article class="p-gallery">
 		<transition name="fade" mode="out-in">
 			<p v-if="!isLoading && paintings.length === 0" block font-size-xs text-center>
-				[ &nbsp;Aún no hay dibujos&nbsp;&nbsp;
-				<span font-size-l>🥺</span>&nbsp; ]
+				&nbsp;Aún no ha firmado nadie. ¿Quieres ser el primero?&nbsp;&nbsp;
+				<span font-size-l>🥺</span>&nbsp;
 			</p>
 			<div v-else style="width: 100%; height: 100%;">
 				<FiltersItem />
@@ -33,7 +33,7 @@
 		<transition name="fade">
 			<div class="button-floated --bottom --left" @click="backToPaint" v-if="mode === 'edit'">
 				<span class="icon-forward --left"></span>
-				<span class="label">Seguir dibujando</span>
+				<span class="label">Seguir firmando</span>
 			</div>
 		</transition>
 		<transition name="fade">
@@ -42,7 +42,7 @@
 				@click="goToCreateNewPaint"
 				v-mobile-hover:#4992a9
 			>
-				<span class="label">Crear nuevo dibujo</span>
+				<span class="label">Crear nueva firma</span>
 				<span class="icon-write"></span>
 			</div>
 		</transition>

@@ -29,7 +29,7 @@
 				@click.stop.prevent="goToGallery"
 			>
 				<span class="icon-book"></span>
-				<span class="label">Galería</span>
+				<span class="label">Libro de firmas</span>
 			</div>
 		</transition>
 		<transition name="fade" appear>

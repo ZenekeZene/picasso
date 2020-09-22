@@ -5,7 +5,7 @@
 			:class="{ '--disabled': isDisabled || mode === 'read' }"
 			v-mobile-hover:#4992a9
 		>
-			<span class="label">Guardar este dibujo</span>
+			<span class="label">Enviar la firma</span>
 			<span class="icon-save"></span>
 		</div>
 	</transition>
