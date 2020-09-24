@@ -17,21 +17,12 @@ import { mapState, mapGetters, mapMutations } from 'vuex';
 export default {
 	name: 'CleanTool',
 	computed: {
-		...mapState([
-			'canvas',
-			'ctx',
-			'isPlaying',
-			'mode',
-		]),
-		...mapGetters([
-			'isDisabled',
-		]),
+		...mapState(['canvas', 'ctx']),
+		...mapState('status', ['isPlaying', 'mode']),
+		...mapGetters('status', ['isDisabled']),
 	},
 	methods: {
-		...mapMutations('strokes', [
-			'deleteAllHistory',
-			'resetIndexLine',
-		]),
+		...mapMutations('strokes', ['deleteAllHistory', 'resetIndexLine']),
 		clean(event) {
 			if (!this.isPlaying && !event.target.classList.contains('--disabled')) {
 				this.deleteAllHistory();

@@ -92,10 +92,10 @@ export default {
 		this.getAllPaintings();
 	},
 	methods: {
-		...mapMutations([
+		...mapMutations(['clearCanvas']),
+		...mapMutations('status', [
 			'setModeToEditable',
 			'setModeToReadable',
-			'clearCanvas',
 		]),
 		...mapMutations('strokes', [
 			'setHistory',

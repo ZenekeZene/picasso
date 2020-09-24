@@ -13,26 +13,23 @@
 		<span
 			class="range__label"
 			:style="{
-						minWidth: `${ strokeWidthLocal }px`,
-						minHeight: `${ strokeWidthLocal }px`,
-						backgroundColor: colorStroke,
-					}"
+				minWidth: `${ strokeWidthLocal }px`,
+				minHeight: `${ strokeWidthLocal }px`,
+				backgroundColor: colorStroke,
+			}"
 			:class="{ '--erase': colorStroke === colorErase }"
 		></span>
 		</div>
 	</li>
 </template>
+
 <script>
 import { mapState, mapMutations } from 'vuex';
 
 export default {
 	name: 'StrokeTool',
 	computed: {
-		...mapState([
-			'isPlaying',
-			'isPainting',
-			'mode',
-		]),
+		...mapState('status', ['isPlaying', 'isPainting', 'mode']),
 		...mapState('brush', [
 			'colorStroke',
 			'colorErase',
@@ -51,9 +48,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapMutations('brush', [
-			'setStrokeWidth',
-		]),
+		...mapMutations('brush', ['setStrokeWidth']),
 		changeStrokeWidth() {
 			this.setStrokeWidth({ strokeWidth: this.strokeWidthLocal });
 		},

@@ -24,7 +24,8 @@ export default {
         ...mapState([
             'canvas',
             'ctx',
-            'indexLine',
+        ]),
+        ...mapState('status', [
             'mode',
             'isPainting',
             'isPlaying',
@@ -50,6 +51,8 @@ export default {
         ...mapMutations([
             'setCanvas',
             'setBackgroundCanvas',
+        ]),
+        ...mapMutations('status', [
             'setPaintingStatus',
             'setToolsVisible',
         ]),
@@ -59,9 +62,7 @@ export default {
             'deleteAllHistory',
             'incrementIndexLine',
         ]),
-        ...mapMutations('brush', [
-            'changeBrush',
-        ]),
+        ...mapMutations('brush', ['changeBrush']),
         configureCanvas() {
             this.setCanvas({ canvasRef: this.$refs.canvas });
             this.ctx.lineWidth = this.strokeWidth;
@@ -73,7 +74,7 @@ export default {
             this.changeBrush();
             this.currentBrush = createBrush(this.brushIndex, this.ctx, this.theme);
             this.$store.subscribe((mutation, state) => {
-                if (mutation.type === 'changeBrush') {
+                if (mutation.type === 'brush/changeBrush') {
                     this.currentBrush = createBrush(this.brushIndex, this.ctx, this.theme);
                 }
             });

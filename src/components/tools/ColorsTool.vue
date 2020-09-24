@@ -43,12 +43,8 @@ export default {
 		},
 	},
 	computed: {
-		...mapState([
-			'isPainting',
-			'isPlaying',
-			'mode'
-		]),
-		...mapState('brush', [ 'colorStroke', 'colorErase' ]),
+		...mapState('status', ['isPainting', 'isPlaying', 'mode']),
+		...mapState('brush', ['colorStroke', 'colorErase']),
 	},
 	data() {
 		return {

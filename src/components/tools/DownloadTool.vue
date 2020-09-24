@@ -15,9 +15,7 @@ import { mapGetters } from 'vuex';
 export default {
 	name: 'DownloadTool',
 	computed: {
-		...mapGetters([
-			'isDisabled',
-		]),
+		...mapGetters('status', ['isDisabled']),
 	},
 	props: {
 		downloadURI: {

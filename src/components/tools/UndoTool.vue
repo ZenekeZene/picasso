@@ -20,16 +20,10 @@
 			PlayerDot,
 		],
 		computed: {
-			...mapState([
-				'isPlaying',
-				'mode',
-				'canvas',
-				'ctx',
-			]),
-			...mapGetters([
-				'isDisabled',
-			]),
+			...mapState(['canvas', 'ctx']),
+			...mapState('status', ['isPlaying', 'mode']),
 			...mapState('strokes', ['history', 'indexLine']),
+			...mapGetters('status', ['isDisabled']),
 		},
 		mounted() {
 			document.addEventListener('keydown', (event) => {
@@ -39,10 +33,7 @@
 			});
 		},
 		methods: {
-			...mapMutations('strokes', [
-				'removeStrokeOnHistory',
-				'decreaseIndexLine',
-			]),
+			...mapMutations('strokes', ['removeStrokeOnHistory', 'decreaseIndexLine']),
 			undo(event) {
 				if (this.indexLine - 1 >= 0 && !this.isPlaying && !event.target.classList.contains('--disabled')) {
 					this.removeStrokeOnHistory();

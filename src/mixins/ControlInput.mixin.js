@@ -2,7 +2,7 @@ import { mapState } from 'vuex';
 
 const controlInput = {
     computed: {
-        ...mapState(['mode', 'isPainting', 'isPlaying']),
+        ...mapState('status', ['mode', 'isPainting', 'isPlaying']),
     },
     methods: {
         async inputDown() {

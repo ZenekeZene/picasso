@@ -29,17 +29,15 @@ import ThemeChange from './components/ThemeChange';
 
 export default {
 	name: 'App',
+	components: {
+		ThemeChange,
+	},
 	computed: {
-		...mapState([
-			'isPainting',
-			'theme',
-		]),
+		...mapState('status', ['isPainting']),
+		...mapState('gallery', ['theme']),
 		title() {
 			return this.$route.name === 'gallery' ? 'Galería' : 'Picasso';
 		},
-	},
-	components: {
-		ThemeChange,
 	},
 	data() {
 		return {

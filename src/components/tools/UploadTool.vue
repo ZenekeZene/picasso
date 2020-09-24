@@ -16,12 +16,8 @@ import { mapState, mapGetters } from 'vuex';
 export default {
 	name: 'UploadTool',
 	computed: {
-		...mapState([
-			'mode',
-		]),
-		...mapGetters([
-			'isDisabled',
-		]),
+		...mapState('status', ['mode']),
+		...mapGetters('status', ['isDisabled']),
 	},
 	methods: {
 		launchSave(event) {

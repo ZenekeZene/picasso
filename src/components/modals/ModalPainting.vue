@@ -34,10 +34,8 @@ export default {
 		};
 	},
 	computed: {
-		...mapState([
-			'mode',
-			'canvas',
-		]),
+		...mapState(['canvas']),
+		...mapState('status', ['mode']),
 		...mapState('strokes', ['history']),
 		swiper() {
 			return this.$refs.swiper.swiper;
@@ -93,6 +91,7 @@ export default {
 	},
 };
 </script>
+
 <style scoped lang="scss">
 .note {
 	font-size: 14px;

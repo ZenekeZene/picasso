@@ -33,8 +33,8 @@ export default {
         },
     },
     computed: {
-        ...mapState(['isPainting', 'isPlaying', 'mode', ]),
-        ...mapState('brush', [ 'brushIndex', ]),
+        ...mapState('status', ['isPainting', 'isPlaying', 'mode']),
+        ...mapState('brush', ['brushIndex']),
         getBrushClassname() {
             let classnames = `icon-${this.brushes[this.brushIndex].iconClassname}`;
             if (this.isPlaying || this.isPainting || this.mode === 'read') {

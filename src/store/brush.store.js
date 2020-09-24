@@ -18,7 +18,7 @@ export default {
     changeBrush(state, brushIndex) {
 			if (!brushIndex) {
 				brushIndex = 0;
-			}
+      }
 			state.brushIndex = brushIndex;
 		},
   },

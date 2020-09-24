@@ -88,11 +88,11 @@ export default {
 		ModalRating,
 	},
 	computed: {
-		...mapState([
+		...mapState(['canvas']),
+		...mapState('status', [
 			'mode',
 			'isPainting',
 			'isPlaying',
-			'canvas',
 			'toolsVisible',
 		]),
 		...mapState('strokes', ['history']),
@@ -108,9 +108,9 @@ export default {
 		this.saveToImage();
 	},
 	methods: {
-		...mapMutations([
+		...mapMutations(['clearCanvas']),
+		...mapMutations('status', [
 			'setModeToEditable',
-			'clearCanvas',
 			'setPlayingStatus',
 			'setToolsVisible',
 		]),
