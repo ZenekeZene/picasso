@@ -48,7 +48,7 @@
 				v-mobile-hover:#4992a9
 				@click.stop.prevent="launchRating"
 			>
-				<span class="label">Puntuar este dibujo</span>
+				<span class="label">Puntuar esta firma</span>
 				<span class="icon-star-full"></span>
 			</div>
 		</transition>

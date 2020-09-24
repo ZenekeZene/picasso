@@ -64,7 +64,7 @@ export default {
 								timestamp: new Date(),
 							})
 							.then(() => {
-								this.$toasted.show('Dibujo subido con éxito!');
+								this.$toasted.show('Firma subida con éxito!');
 								this.$emit('showSpinner', { status: false });
 							})
 							.catch(() => {

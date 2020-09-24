@@ -4,7 +4,7 @@
 	<swiper :options="swiperOptionMini" ref="swiper">
 		<swiper-slide>
 			<div padding>
-				<h1>Puntúa este dibujo</h1>
+				<h1>Puntúa esta firma</h1>
 				<star-rating
 					v-model="rating"
 					:star-size="60"
