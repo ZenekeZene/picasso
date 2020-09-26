@@ -20,6 +20,7 @@ const store = new Vuex.Store({
 				'strokes.history',
 				'canvas',
 				'ctx',
+				'gallery.paintingSelected',
 			]
 		}),
 	],

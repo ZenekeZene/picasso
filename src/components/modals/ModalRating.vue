@@ -29,6 +29,7 @@ import { mapState } from 'vuex';
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
 import StarRating from 'vue-star-rating';
 import axios from 'axios';
+import { getRating, sendRating } from '../../infra/PaintingRepository';
 
 export default {
 	name: 'ModalRating',
@@ -48,60 +49,21 @@ export default {
 		};
 	},
 	computed: {
-		...mapState('gallery', ['paintingSelected',]),
+		...mapState('gallery', ['paintingSelected']),
 		swiper() {
 			return this.$refs.swiper.swiper;
 		},
 	},
-	mounted() {
-		axios.get('https://api.ipify.org?format=json', {})
-				.then((response) => {
-					this.ip = response.data.ip;
-				}).then(() => {
-					this.rating = window.db.collection('rating')
-						.doc(`${this.ip}-${this.paintingSelected}`)
-						.get()
-						.then((doc) => {
-							if (doc.exists) {
-								this.rating = doc.data().value;
-							} else {
-								this.rating = 1;
-							}
-						})
-						.catch((error) => {
-							console.error(error);
-						});
-				})
-				.catch((error) => {
-					console.error(error);
-				});
+	async mounted() {
+		this.rating = await getRating(this.paintingSelected);
 	},
 	methods: {
-		sendRating() {
+		async sendRating() {
 			this.$emit('showSpinner', { status: true });
-			const document = window.db.collection('painting').doc(this.paintingSelected);
-			window.db.runTransaction(transaction => transaction.get(document)
-				.then((doc) => {
-					const data = doc.data();
-
-					const newAverage =
-						(data.numRatings * data.avgRating + this.rating) /
-						(data.numRatings + 1);
-
-					transaction.update(document, {
-						numRatings: data.numRatings + 1,
-						avgRating: newAverage,
-					});
-				}))
-			.then(() => {
-				this.$toasted.show('¡Valoración enviada!');
-				this.$emit('showSpinner', { status: false });
-				this.$modal.hide('modal-rating');
-			}).catch((error) => {
-				console.error(error);
-				this.$emit('showSpinner', { status: false });
-				this.$modal.hide('modal-rating');
-			});
+			await sendRating(this.paintingSelected, this.rating);
+			this.$toasted.show('¡Valoración enviada!');
+			this.$emit('showSpinner', { status: false });
+			this.$modal.hide('modal-rating');
 		},
 	},
 };
