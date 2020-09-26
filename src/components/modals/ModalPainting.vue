@@ -17,6 +17,7 @@
 <script>
 import { mapState } from 'vuex';
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { savePainting } from '@/infra/PaintingRepository';
 
 export default {
 	name: 'ModalEdit',
@@ -45,41 +46,19 @@ export default {
 		next() {
 			this.swiper.slideNext();
 		},
-		save() {
-			this.getCanvasBlob().then((blob) => {
-				const metadata = {
-					contentType: 'image/png',
-				};
-				this.$emit('showSpinner', { status: true });
-				window.storage.ref().child(`images/${Math.floor(Date.now() / 1000)}`).put(blob, metadata).then((snapshot) => {
-					snapshot.ref.getDownloadURL().then((url) => {
-						window.db
-							.collection('painting')
-							.add({
-								name: this.name,
-								history: JSON.stringify(this.history),
-								url,
-								avgRating: 0,
-								numRatings: 0,
-								timestamp: new Date(),
-							})
-							.then(() => {
-								this.$toasted.show('Firma subida con éxito!');
-								this.$emit('showSpinner', { status: false });
-							})
-							.catch(() => {
-								this.$toasted.show('Ha surgido un error!');
-								this.$emit('showSpinner', { status: false });
-							});
-					});
-				})
-				.catch(() => {
-					this.$toasted.show('Ha surgido un error!');
-					this.$emit('showSpinner', { status: false });
-				});
-			});
-
-			this.$modal.hide('modal-painting');
+		async save() {
+			this.$emit('showSpinner', { status: true });
+			try {
+				const blob = await this.getCanvasBlob();
+				const response = await savePainting(this.name, blob, this.history);
+				this.$toasted.show('Firma subida con éxito!');
+			} catch (error) {
+				console.error(error);
+				this.$toasted.show('Ha surgido un error!');
+			} finally {
+				this.$emit('showSpinner', { status: false });
+				this.$modal.hide('modal-painting');
+			}
 		},
 		getCanvasBlob() {
 			return new Promise((resolve) => {
