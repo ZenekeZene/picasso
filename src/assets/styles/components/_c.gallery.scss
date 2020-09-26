@@ -30,7 +30,7 @@
 		}
 
 		.name {
-			@include absolute(top $gutter left $gutter-4);
+			@include absolute(top $gutter left $gutter-3);
 			flex-grow: 1;
 			overflow: hidden;
 			padding-left: $gutter;

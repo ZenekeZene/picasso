@@ -15,14 +15,14 @@
 								v-for="paint in filteredPaintings"
 								:key="paint.id"
 							>
-								<Drawing
+								<Painting
 									class="gallery__item"
 									:class="{ '--selected': paintingSelected === paint.id }"
 									:url="paint.url"
 									:name="paint.name"
 									:avgRating="paint.avgRating"
 									:timestamp="paint.timestamp"
-									@drawing-clicked="goToPainting(paint)"
+									@painting-clicked="goToPainting(paint)"
 								/>
 							</li>
 						</ol>
@@ -39,7 +39,7 @@
 		<transition name="fade">
 			<div
 				class="button-floated --bottom --right"
-				@click="goToCreateNewPaint"
+				@click="goToCreateNewPainting"
 				v-mobile-hover:#4992a9
 			>
 				<span class="label">Crear nueva firma</span>
@@ -51,7 +51,7 @@
 <script>
 import moment from 'moment';
 import { mapState, mapMutations } from 'vuex';
-import Drawing from '../Drawing';
+import Painting from '../Painting';
 import SpinnerItem from '../SpinnerItem';
 import ThemeChange from '../ThemeChange';
 import FiltersItem from '../FiltersItem';
@@ -59,7 +59,7 @@ import FiltersItem from '../FiltersItem';
 export default {
 	name: 'GalleryPage',
 	components: {
-		Drawing,
+		Painting,
 		SpinnerItem,
 		FiltersItem,
 		ThemeChange,
@@ -141,7 +141,7 @@ export default {
 				}
 			}
 		},
-		goToCreateNewPaint(event) {
+		goToCreateNewPainting(event) {
 			if (!event.target.classList.contains('--disabled')) {
 				this.$router.push('/');
 				this.setModeToEditable();

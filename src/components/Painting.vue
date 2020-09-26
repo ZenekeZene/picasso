@@ -1,5 +1,5 @@
 <template>
-  <section @click="$emit('drawing-clicked', true)">
+  <section @click="$emit('painting-clicked', true)">
     <spinner-item v-show="!loaded" key="spinner" class="spinner --mini"></spinner-item>
     <div style="min-width: 47px;">
       <img :src="url" @load="loaded = true" key="image" />
@@ -30,7 +30,7 @@ import StarRating from 'vue-star-rating';
 import SpinnerItem from './SpinnerItem';
 
 export default {
-  name: 'drawing',
+  name: 'painting',
   components: {
     SpinnerItem,
     StarRating,
@@ -65,3 +65,8 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.vue-star-rating {
+  margin-bottom: 0.2rem;
+}
+</style>
