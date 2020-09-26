@@ -1,5 +1,11 @@
 <template>
-	<modal name="modal-rating" :adaptive="true" :pivotY="0" height="auto" transition="fadeInDown">
+	<modal
+		name="modal-rating"
+		:adaptive="true"
+		:pivotY="0"
+		height="auto"
+		transition="fadeInDown"
+	>
 	<span @click="$modal.hide('modal-rating')" class="icon-cross"></span>
 	<swiper :options="swiperOptionMini" ref="swiper">
 		<swiper-slide>
@@ -18,7 +24,11 @@
 					:round-start-rating="false"
 					margin-vertical-2
 				></star-rating>
-				<button margin-top class="btn" @click="sendRating">Enviar puntuación</button>
+				<button
+					margin-top
+					class="btn"
+					@click="sendRating"
+				>Enviar puntuación</button>
 			</div>
 		</swiper-slide>
 	</swiper>
@@ -28,8 +38,7 @@
 import { mapState } from 'vuex';
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
 import StarRating from 'vue-star-rating';
-import axios from 'axios';
-import { getRating, sendRating } from '../../infra/PaintingRepository';
+import { getRating, sendRating } from '@/infra/RatingRepository';
 
 export default {
 	name: 'ModalRating',
@@ -45,7 +54,6 @@ export default {
 				slidesPerView: 1,
 			},
 			rating: 1,
-			ip: '',
 		};
 	},
 	computed: {
@@ -60,10 +68,15 @@ export default {
 	methods: {
 		async sendRating() {
 			this.$emit('showSpinner', { status: true });
-			await sendRating(this.paintingSelected, this.rating);
-			this.$toasted.show('¡Valoración enviada!');
-			this.$emit('showSpinner', { status: false });
-			this.$modal.hide('modal-rating');
+			try {
+				await sendRating(this.paintingSelected, this.rating);
+				this.$toasted.show('¡Valoración enviada!');
+			} catch (error) {
+				console.error(`Error: ${error}`);
+			} finally {
+				this.$emit('showSpinner', { status: false });
+				this.$modal.hide('modal-rating');
+			}
 		},
 	},
 };
