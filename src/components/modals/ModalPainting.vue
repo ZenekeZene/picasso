@@ -4,10 +4,10 @@
 	<swiper :options="swiperOptionMini" ref="swiper">
 		<swiper-slide>
 			<div padding>
-				<h1>¿Cómo te llamas ?</h1>
-				<input type="text" placeholder="Me llamo..." v-model="name">
-				<p class="note">O bien envía la firma de forma anónima</p>
-				<button margin-top class="btn" @click="save">Enviar firma</button>
+				<h1>{{ $t('painting.save.name') }}h1>
+				<input type="text" placeholder="{{ $t('painting.save.placeholder') }}" v-model="name">
+				<p class="note">{{ $('painting.save.optional') }}</p>
+				<button margin-top class="btn" @click="save">{{ $t('painting.') }}</button>
 			</div>
 		</swiper-slide>
 	</swiper>
@@ -51,10 +51,10 @@ export default {
 			try {
 				const blob = await this.getCanvasBlob();
 				const response = await savePainting(this.name, blob, this.history);
-				this.$toasted.show('Firma subida con éxito!');
+				this.$toasted.show(this.$t('painting.sent'));
 			} catch (error) {
 				console.error(error);
-				this.$toasted.show('Ha surgido un error!');
+				this.$toasted.show(this.$t('error.general'));
 			} finally {
 				this.$emit('showSpinner', { status: false });
 				this.$modal.hide('modal-painting');

@@ -38,7 +38,7 @@
 				@click.stop.prevent="goToGallery"
 			>
 				<span class="icon-book"></span>
-				<span class="label">Libro de firmas</span>
+				<span class="label">{{ $t('gallery.title') }}</span>
 			</div>
 		</transition>
 		<transition name="fade" appear>
@@ -48,7 +48,7 @@
 				v-mobile-hover:#4992a9
 				@click.stop.prevent="launchRating"
 			>
-				<span class="label">Puntuar esta firma</span>
+				<span class="label">{{ $t('painting.rating') }}</span>
 				<span class="icon-star-full"></span>
 			</div>
 		</transition>

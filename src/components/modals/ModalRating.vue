@@ -10,7 +10,7 @@
 	<swiper :options="swiperOptionMini" ref="swiper">
 		<swiper-slide>
 			<div padding>
-				<h1>Puntúa esta firma</h1>
+				<h1>{{ $t('painting.rating.title') }}</h1>
 				<star-rating
 					v-model="rating"
 					:star-size="60"
@@ -28,7 +28,7 @@
 					margin-top
 					class="btn"
 					@click="sendRating"
-				>Enviar puntuación</button>
+				>{{ $t('painting.rating.cta') }}</button>
 			</div>
 		</swiper-slide>
 	</swiper>
@@ -70,7 +70,7 @@ export default {
 			this.$emit('showSpinner', { status: true });
 			try {
 				await sendRating(this.paintingSelected, this.rating);
-				this.$toasted.show('¡Valoración enviada!');
+				this.$toasted.show(this.$t('painting.rating.sent'));
 			} catch (error) {
 				console.error(`Error: ${error}`);
 			} finally {
