@@ -3,6 +3,7 @@ import Vue from 'vue';
 import Vue2TouchEvents from 'vue2-touch-events';
 import VModal from 'vue-js-modal';
 import Toasted from 'vue-toasted';
+import 'swiper/dist/css/swiper.css';
 
 Vue.use(Toasted, {
   theme: 'bubble',

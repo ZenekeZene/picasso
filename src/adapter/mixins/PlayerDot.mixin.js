@@ -1,5 +1,5 @@
 import { mapState } from 'vuex';
-import { createBrush } from '@/entities/brushes';
+import { createBrush } from '@/domain/brushes';
 
 const playerDot = {
   computed: {

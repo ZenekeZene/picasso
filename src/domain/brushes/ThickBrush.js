@@ -1,4 +1,4 @@
-const imageSrc = require('@/assets/brushes/thick.png');
+const imageSrc = require('@/ui/assets/brushes/thick.png');
 import Dot from '../Dot';
 import Brush from './Brush';
 

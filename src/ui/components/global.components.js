@@ -6,7 +6,7 @@ import ModalPainting from '@/ui/components/modals/ModalPainting';
 import ModalRating from '@/ui/components/modals/ModalRating';
 
 const requireComponent = require.context(
-  './ui/components/tools',
+  './tools',
   false,
   /[A-Z]\w+\.(vue|js)$/
 )

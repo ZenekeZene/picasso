@@ -1,17 +1,9 @@
 import Vue from 'vue';
 
-import components from './global.components';
-import directives from './directives';
-import vendor from './vendor';
-
 import App from './App';
-import router from './router';
-import store from './store';
-import i18n from './i18n';
-
-import 'swiper/dist/css/swiper.css';
-import './assets/styles/main.scss';
-
+import vendor from './vendor';
+import { router, store } from '@/adapter';
+import { i18n } from '@/ui';
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
@@ -22,7 +14,6 @@ const vm = new Vue({
   store,
   render: (h) => h(App),
 });
-
 
 vm.showError = (error) => {
   console.error(error);
