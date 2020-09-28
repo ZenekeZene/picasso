@@ -60,33 +60,9 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import CanvasItem from '../CanvasItem';
-import CleanTool from '../tools/CleanTool';
-import UndoTool from '../tools/UndoTool';
-import BrushTool from '../tools/BrushTool';
-import DownloadTool from '../tools/DownloadTool';
-import UploadTool from '../tools/UploadTool';
-import ColorsTool from '../tools/ColorsTool';
-import StrokeTool from '../tools/StrokeTool';
-import SpinnerItem from '../SpinnerItem';
-import ModalPainting from '../modals/ModalPainting';
-import ModalRating from '../modals/ModalRating';
 
 export default {
 	name: 'PaintPage',
-	components: {
-		CanvasItem,
-		CleanTool,
-		UndoTool,
-		DownloadTool,
-		UploadTool,
-		BrushTool,
-		ColorsTool,
-		StrokeTool,
-		SpinnerItem,
-		ModalPainting,
-		ModalRating,
-	},
 	computed: {
 		...mapState(['canvas']),
 		...mapState('status', [
