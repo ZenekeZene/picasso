@@ -29,7 +29,7 @@ import moment from 'moment';
 import StarRating from 'vue-star-rating';
 
 export default {
-  name: 'painting',
+  name: 'painting-item',
   components: {
     StarRating,
   },

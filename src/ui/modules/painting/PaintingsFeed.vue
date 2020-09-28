@@ -4,7 +4,7 @@
       v-for="(paint, index) in paintings"
       :key="index"
     >
-      <Painting
+      <PaintingItem
         class="gallery__item"
         :class="{ '--selected': paintingSelected === paint.id }"
         :url="paint.url"
@@ -18,12 +18,12 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
-import Painting from './Painting';
+import PaintingItem from './PaintingItem';
 
 export default {
   name: 'PaintingsFeed',
   components: {
-    Painting,
+    PaintingItem,
   },
   props: {
     paintings: {

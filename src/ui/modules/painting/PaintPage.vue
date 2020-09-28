@@ -1,27 +1,7 @@
 <template>
   <article class="p-paint">
 		<transition name="fade" appear>
-			<ol
-				class="tools --left"
-				:class="{ '--disabled': isPainting || showSpinner }"
-				@mouseleave="setToolsVisible({ toolsVisible: true })"
-			>
-				<ColorsTool
-					:toolsVisible="toolsVisible"
-					@click.native="setToolsVisible({ toolsVisible: true })"
-				/>
-				<StrokeTool
-					:toolsVisible="toolsVisible"
-					@click.native="setToolsVisible({ toolsVisible: true })"
-				/>
-				<BrushTool
-					:toolsVisible="toolsVisible"
-					@click.native="setToolsVisible({ toolsVisible: true })"
-				/>
-				<UndoTool @clearCanvas="clearCanvas" />
-				<DownloadTool :downloadURI="dataURI" />
-				<CleanTool @clearCanvas="clearCanvas" />
-			</ol>
+			<PaintingTools :class="{ '--disabled': isPainting || showSpinner }" />
 		</transition>
 		<transition name="fade" appear>
 			<SpinnerItem v-show="showSpinner" />
@@ -60,11 +40,13 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import PaintingTools from './tools/PaintingTools';
 import CanvasItem from './CanvasItem';
 
 export default {
 	name: 'PaintPage',
 	components: {
+		PaintingTools,
 		CanvasItem,
 	},
 	computed: {
@@ -72,15 +54,12 @@ export default {
 		...mapState('status', [
 			'mode',
 			'isPainting',
-			'isPlaying',
-			'toolsVisible',
 		]),
 		...mapState('strokes', ['history']),
 		...mapState('gallery', ['theme']),
 	},
 	data() {
 		return {
-			dataURI: '',
 			showSpinner: false,
 		};
 	},
