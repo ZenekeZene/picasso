@@ -23,6 +23,9 @@ export default new Router({
 			path: '/crud',
 			name: 'crud',
 			component: CRUDPage,
+			meta: {
+				withBackArrow: true,
+			}
 		},
 		{
 			path: '/gallery',

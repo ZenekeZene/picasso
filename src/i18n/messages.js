@@ -39,7 +39,23 @@ export default {
       empty: 'Aún no tienes usuarios. Prueba a crear uno.'
     },
     settings: {
+      cache: 'Limpiar caché',
+      admin: 'Administrar',
       info: 'Pocas cosas para <span font-bold>configurar</span>, amigo.'
+    },
+    credits: {
+      created: 'Creado por',
+      author: 'ZenekeZene',
+      admin: 'Administrar',
+      cache: 'Borrar caché'
+    },
+    crud: {
+      'create-user': 'Crear usuario',
+      'edit-user': 'Editar usuario',
+      update: 'Actualizar',
+      create: 'Crear',
+      question: '¿De verdad quieres borrar el siguiente usuario?',
+      'delete-user': 'Borrar usuario'
     }
   }
 };

@@ -5,37 +5,37 @@
 				<span class="icon-search" @click="goToSearch" v-mobile-hover:#4992a9></span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': haveUserSelected }">
-				<span class="icon-plus" @click="launchCreateUser" v-mobile-hover:#4992a9></span>
+				<span class="icon-plus" @click="handlerLaunchCreateUser" v-mobile-hover:#4992a9></span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': haveNotUserSelected }">
-				<span class="icon-write" @click="launchEditUser" v-mobile-hover:#4992a9></span>
+				<span class="icon-write" @click="handlerLaunchEditUser" v-mobile-hover:#4992a9></span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': haveNotUserSelected }">
-				<span class="icon-cross" @click="launchDeleteUser" v-mobile-hover:#4992a9></span>
+				<span class="icon-cross" @click="handlerLaunchDeleteUser" v-mobile-hover:#4992a9></span>
 			</li>
 			<li class="tools__item" :class="{ '--disabled': haveUserSelected || users.length === 0 }">
-				<span class="icon-forward --down" @click="orderBy" :class="{ '--up': orderDirection === 'asc' }" v-mobile-hover:#4992a9></span>
+				<span class="icon-forward --down" @click="hanlderOrderBy" :class="{ '--up': orderDirection === 'asc' }" v-mobile-hover:#4992a9></span>
 			</li>
 			<li class="tools__item --disabled" @click="mockData" v-mobile-hover:#4992a9>
 				<span class="icon-rain"></span>
 			</li>
 		</ul>
 		<transition name="fade" mode="out-in">
-			<SpinnerItem class="loading" v-if="loading" />
+			<SpinnerItem class="loading" v-if="isLoading" />
 			<div class="users-wrapper" v-else>
 				<transition name="fade" mode="out-in">
-					<p class="empty" v-if="users.length === 0">{{ $t('users.empty') }}</p>
+					<p class="empty" v-if="users.length === 0 && !isLoading">{{ $t('users.empty') }}</p>
 					<div class="users-search" v-else>
 						<input type="text"
 							class="search"
 							:class="{ '--disabled': userSelected.name.length > 0 }"
 							v-model="search"
-							@focus="handSearchFocus"
+							@focus="handlerSearchFocus"
 							ref="search"
 						/>
 						<transition-group ref="usersList"
 							name="fade" tag="ol"
-							class="list"
+							class="list list-users"
 							:class="{ '--height-force': searchFocused }"
 						>
 							<li class="list__item"
@@ -43,7 +43,7 @@
 								:key="user.id"
 								:data-id="user.id"
 								:class="{ '--selected': userSelected && userSelected.id == user.id }"
-								@click.stop="handSelectUser(user)"
+								@click.stop="handlerSelectUser(user)"
 							>
 								<span font-bold margin-right>{{ user.name }}</span>
 								<span>{{ user.email }}</span>
@@ -52,9 +52,6 @@
 					</div>
 				</transition>
 			</div>
-		</transition>
-		<transition name="fade">
-			<span v-if="!searchFocused" class="button-bottom icon-forward --left" @click="$router.push('/')"></span>
 		</transition>
 		<ModalDelete
 			:user="userSelected"
@@ -73,9 +70,16 @@
 import Vue from 'vue';
 import scrollTo from '../../scrollTo';
 import { mock } from '../../mock.users.js';
+import ModalDelete from '@/components/modals/ModalDelete';
+import ModalEdit from '@/components/modals/ModalEdit';
+import { orderByUser, updateUser, createUser, removeUser, onChangeUsers } from '@/infra/UserRepository';
 
 export default {
 	name: 'CRUDPage',
+	components: {
+		ModalDelete,
+		ModalEdit,
+	},
 	data() {
 		return {
 			users: [],
@@ -83,7 +87,7 @@ export default {
 				name: '',
 				email: '',
 			},
-			loading: false,
+			isLoading: true,
 			action: 'create',
 			search: '',
 			orderDirection: 'desc',
@@ -93,8 +97,8 @@ export default {
 	},
 	computed: {
 		filteredUsers() {
-			return this.users.filter((user) => {
-				return user.name.toLowerCase().includes(this.search.toLowerCase());
+			return this.users.filter(({ name }) => {
+				return name.toLowerCase().includes(this.search.toLowerCase());
 			});
 		},
 		haveNotUserSelected() {
@@ -105,24 +109,16 @@ export default {
 		},
 	},
 	mounted() {
-		window.db.collection('user').onSnapshot((snapshot) => {
-			const changes = snapshot.docChanges();
-			changes.forEach((change) => {
-				if (change.type === 'added') {
-					const user = change.doc;
-					this.users.push({
-						id: user.id,
-						name: user.data().name,
-						email: user.data().email,
-					});
-				} else if (change.type === 'removed') {
-					this.users = this.users.filter(user => user.id !== change.doc.id);
-				}
-			});
-		});
+		try {
+			onChangeUsers(this.users);
+		} catch (error) {
+			showError(error);
+		} finally {
+			this.isLoading = false;
+		}
 	},
 	methods: {
-		handSearchFocus() {
+		handlerSearchFocus() {
 			this.searchFocused = true;
 			this.resetUserSelected();
 			this.$emit('inputFocused', true);
@@ -140,74 +136,71 @@ export default {
 				this.$emit('inputFocused', false);
 			}
 		},
-		handSelectUser(user) {
+		handlerSelectUser(user) {
 			if (this.haveNotUserSelected || this.userSelected.id !== user.id) {
 				this.userSelected = user;
 			} else {
 				this.handSearchFocus();
 			}
 		},
-		launchCreateUser(event) {
+		handlerLaunchCreateUser(event) {
 			if (this.haveNotUserSelected) {
 				this.action = 'create';
 				this.$modal.show('modal-edit');
 			}
 		},
-		saveUser(newUser) {
-			const result = window.db.collection('user').add(newUser).then((snapshot) => {
-				this.userSelected = {
-					name: newUser.name,
-					email: newUser.email,
-					id: snapshot.id,
-				};
+		saveUser({ name, email }) {
+			try {
+				createUser(name, email);
 				this.$nextTick(() => this.scrollToEnd());
-			});
-			this.$modal.hide('modal-edit');
-			this.$nextTick(() => this.scrollToEnd());
+			} catch (error) {
+				showError(error);
+			} finally {
+				this.$modal.hide('modal-edit');
+			}
 		},
-		launchDeleteUser(event) {
+		handlerLaunchDeleteUser(event) {
 			if (this.haveUserSelected) {
 				this.$modal.show('modal-delete');
 			}
 		},
-		deleteUser() {
-			const idUserToDelete = this.userSelected.id;
-			window.db.collection('user').doc(idUserToDelete).delete().then(() => {
+		async deleteUser() {
+			try {
+				await removeUser(this.userSelected.id);
 				this.userSelected = this.users[this.users.length - 1];
 				this.scrollToEnd();
-			});
-			this.$modal.hide('modal-delete');
+			} catch (error) {
+				showError(error);
+			} finally {
+				this.$modal.hide('modal-delete');
+			}
 		},
-		launchEditUser(event) {
+		handlerLaunchEditUser(event) {
 			if (this.haveUserSelected) {
 				this.action = 'update';
 				this.$modal.show('modal-edit');
 			}
 		},
 		updateUser(user) {
-			if (this.haveUserSelected) {
+			try {
+				if (!this.haveUserSelected) return;
+				updateUser(this.userSelected.id, { name: user.name, email: user.email });
+			} catch (error) {
+				showError(error);
+			} finally {
 				this.$modal.hide('modal-edit');
-				window.db.collection('user').doc(this.userSelected.id).update({
-					name: user.name,
-					email: user.email,
-				});
 			}
 		},
-		orderBy(event) {
-			if (this.haveNotUserSelected && this.users.length > 0) {
-				this.loading = true;
-				this.users = [];
-				this.orderDirection = this.orderDirection === 'asc' ? 'desc' : 'asc';
-				window.db.collection('user').orderBy('name', this.orderDirection).get().then((snapshot) => {
-					snapshot.docs.forEach((user) => {
-						this.users.push({
-							id: user.id,
-							name: user.data().name,
-							email: user.data().email,
-						});
-					});
-					this.loading = false;
-				});
+		async hanlderOrderBy(event) {
+			if (this.haveUserSelected || !this.users.length > 0) return;
+			this.isLoading = true;
+			this.orderDirection = this.orderDirection === 'asc' ? 'desc' : 'asc';
+			try {
+				this.users = await orderByUser(this.orderDirection);
+			} catch (error) {
+				showError(error);
+			} finally {
+				this.isLoading = false;
 			}
 		},
 		mockData() {
@@ -223,3 +216,9 @@ export default {
 	},
 };
 </script>
+<style lang="scss" scoped>
+.list-users {
+	max-height: 93%;
+	overflow-y: auto;
+}
+</style>

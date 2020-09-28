@@ -12,8 +12,19 @@
 			key="gallery"
 		>{{ $t('gallery.title') }}</h1>
 	</transition>
-	<ThemeChange v-if="$route.name == 'gallery'" />
-
+	<transition name="fade">
+		<span
+			v-if="$route.meta.withBackArrow"
+			class="back-arrow icon-forward --left"
+			@click="$router.go(-1)"
+		></span>
+	</transition>
+	<div class="options">
+		<span class="settings icon-cog"
+			v-if="$route.name == 'gallery'"
+			@click="$router.push({ name: 'settings' })"
+		></span>
+	</div>
 	<transition name="fade" mode="out-in">
 		<router-view
 			@isPainting="isPainting = $event"
@@ -25,13 +36,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import ThemeChange from './components/ThemeChange';
 
 export default {
 	name: 'App',
-	components: {
-		ThemeChange,
-	},
 	computed: {
 		...mapState('status', ['isPainting']),
 		...mapState('gallery', ['theme']),
@@ -55,3 +62,18 @@ export default {
 	},
 };
 </script>
+<style lang="scss" scoped>
+.options,
+.back-arrow {
+	position: absolute;
+	top: 1.5rem;
+	right: 1rem;
+	z-index: 101;
+	display: inline-flex;
+}
+
+.back-arrow {
+	bottom: 1rem;
+	left: 1rem;
+}
+</style>

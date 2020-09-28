@@ -111,8 +111,7 @@ export default {
 			try {
 				this.paintings = await getPaintings();
 			} catch (error) {
-				console.error(error);
-				this.$toasted.show(this.$t('error.general'));
+				showError(error);
 			} finally {
 				this.isLoading = false;
 			}

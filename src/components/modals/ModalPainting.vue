@@ -53,8 +53,7 @@ export default {
 				const response = await savePainting(this.name, blob, this.history);
 				this.$toasted.show(this.$t('painting.sent'));
 			} catch (error) {
-				console.error(error);
-				this.$toasted.show(this.$t('error.general'));
+				showError(error);
 			} finally {
 				this.$emit('showSpinner', { status: false });
 				this.$modal.hide('modal-painting');

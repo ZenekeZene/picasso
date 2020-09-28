@@ -18,8 +18,6 @@ h6 {
 }
 
 .theme-toggle {
-	right: 1rem;
-
 	@include media('<=phablet') {
 		padding: 0;
 	}
@@ -32,8 +30,7 @@ h6 {
 	}
 }
 
-.heading,
-.heading + .theme-toggle {
+.heading {
 	position: absolute;
 	z-index: depth(1);
 	height: var(--height-header);

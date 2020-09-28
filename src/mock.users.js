@@ -1,5 +1,7 @@
+import { collectionUsers } from '@/infra/UserRepository';
+
 function launch() {
-	let users = db.collection('user');
+	let users = collectionUsers;
 	
 	users.add({
 		name: 'Héctor Villar Mozo',

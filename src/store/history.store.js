@@ -39,22 +39,5 @@ export default {
 			state.history = JSON.parse(payload.raw);
 		},
   },
-  actions: {
-    getHistoryOfPainting(...params) {
-      const [, payload] = params;
-      return new Promise((resolve, reject) => {
-        window.db
-          .collection('painting')
-          .doc(payload.paintingId)
-          .get()
-          .then((snapshot) => {
-            resolve(snapshot.data());
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
-    },
-  },
   namespaced: true,
 };

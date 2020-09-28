@@ -1,15 +1,16 @@
 <template>
 	<article class="p-settings">
-		<p class="intro" margin-bottom v-html="$t(settings.info)"></p>
+		<ThemeChange />
+		<p class="intro" margin-bottom v-html="$t('settings.info')"></p>
 		<ol class="p-settings__list">
 			
-			<button margin-top class="btn" @click="clearCache">Borrar caché</button>
-			<button margin-top class="btn --hot">Administrar</button>
+			<button margin-top class="btn" @click="clearCache">{{ $t('settings.cache') }}</button>
+			<button margin-top class="btn --hot" @click="$router.push({ name: 'crud' })">{{ $t('settings.admin') }}</button>
 		</ol>
-		<p class="credits">Creado por <span font-bold>Héctor Villar</span></p>
-		<github-item href="https://github.com/ZenekeZene/picasso#picasso"></github-item>
+		<p class="credits">{{ $t('credits.created') }} <a href="https://twitter.com/zenekezene"><span font-bold>{{ $t('credits.author') }}</span></a></p>
+		<GithubItem href="https://github.com/ZenekeZene/picasso#picasso" />
 		<transition name="fade">
-			<div class="button-floated --bottom --left" @click="$router.push('gallery')">
+			<div class="button-floated --bottom --left" @click="$router.push({ name: 'gallery' })">
 				<span class="icon-forward --left"></span>
 			</div>
 		</transition>
@@ -17,12 +18,14 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
-import GithubItem from '../GithubItem';
+import GithubItem from '@/components/GithubItem';
+import ThemeChange from '@/components/ThemeChange';
 
 export default {
 	name: 'SettingsPage',
 	components: {
 		GithubItem,
+		ThemeChange,
 	},
 	computed: {
 		...mapState('gallery', ['theme']),
@@ -52,3 +55,11 @@ export default {
 	},
 };
 </script>
+<style lang="scss" scoped>
+.theme-toggle {
+	position: absolute;
+	top: 1.5rem;
+	right: 1rem;
+	z-index: 101;
+}
+</style>
