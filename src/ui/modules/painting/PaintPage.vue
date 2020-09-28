@@ -9,29 +9,9 @@
 		<CanvasItem
 			class="p-paint__canvas"
 			:class="{ '--blur': showSpinner }"
-			@mouseup="handMouseUp"
+			@mouseup="handlerMouseUp"
 		/>
-		<transition name="fade" appear>
-			<div class="button-floated --bottom --left"
-				:class="{ '--disabled': isPainting }"
-				v-mobile-hover:#4992a9
-				@click.stop.prevent="goToGallery"
-			>
-				<span class="icon-book"></span>
-				<span class="label">{{ $t('gallery.title') }}</span>
-			</div>
-		</transition>
-		<transition name="fade" appear>
-			<div class="button-floated --bottom --right"
-				v-if="mode === 'read'"
-				:class="{ '--disabled': isPainting }"
-				v-mobile-hover:#4992a9
-				@click.stop.prevent="launchRating"
-			>
-				<span class="label">{{ $t('painting.rating.cta') }}</span>
-				<span class="icon-star-full"></span>
-			</div>
-		</transition>
+		<PaintingActions :class="{ '--disabled': isPainting }" />
 		<UploadTool @showSpinner="showSpinner = $event.status" v-if="mode === 'edit' && history.length > 0" />
 		<ModalPainting @showSpinner="showSpinner = $event.status" />
 		<ModalRating @showSpinner="showSpinner = $event.status" />
@@ -42,12 +22,16 @@
 import { mapState, mapMutations } from 'vuex';
 import PaintingTools from './tools/PaintingTools';
 import CanvasItem from './CanvasItem';
+import PaintingActions from './PaintingActions';
+import UploadTool from './tools/UploadTool';
 
 export default {
 	name: 'PaintPage',
 	components: {
 		PaintingTools,
 		CanvasItem,
+		PaintingActions,
+		UploadTool,
 	},
 	computed: {
 		...mapState(['canvas']),
@@ -63,14 +47,10 @@ export default {
 			showSpinner: false,
 		};
 	},
-	mounted() {
-		this.saveToImage();
-	},
 	methods: {
 		...mapMutations(['clearCanvas']),
 		...mapMutations('status', [
 			'setModeToEditable',
-			'setPlayingStatus',
 			'setToolsVisible',
 		]),
 		...mapMutations('strokes', [
@@ -78,26 +58,8 @@ export default {
 			'resetIndexLine',
 		]),
 		...mapMutations('gallery', ['setPaintingSelected']),
-		isOptionEnabled(event) {
-			return !event.target.classList.contains('--disabled');
-		},
-		goToGallery(event) {
-			if (this.isOptionEnabled(event)) {
-				this.setPlayingStatus({ status: false });
-				this.$router.push({ name: 'gallery' });
-			}
-		},
-		saveToImage() {
-			this.dataURI = this.canvas.toDataURL('png');
-		},
-		launchRating(event) {
-			if (this.isOptionEnabled(event)) {
-				this.$modal.show('modal-rating');
-			}
-		},
-		handMouseUp($event) {
+		handlerMouseUp($event) {
 			this.setToolsVisible({ toolsVisible: $event });
-			this.saveToImage();
 		},
 	},
 };

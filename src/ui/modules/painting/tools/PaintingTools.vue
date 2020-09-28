@@ -47,7 +47,11 @@ export default {
     };
   },
   computed: {
+    ...mapState(['canvas']),
     ...mapState('status', ['toolsVisible']),
+  },
+  mounted() {
+    // this.dataURI = this.canvas.toDataUrl('png');
   },
   methods: {
     ...mapMutations(['clearCanvas']),
