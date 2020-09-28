@@ -1,13 +1,12 @@
 import Vue from 'vue'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import SpinnerItem from '@/components/SpinnerItem';
-import ModalPainting from '@/components/modals/ModalPainting';
-import ModalRating from '@/components/modals/ModalRating';
-import CanvasItem from '@/components/CanvasItem';
+import SpinnerItem from '@/ui/components/SpinnerItem';
+import ModalPainting from '@/ui/components/modals/ModalPainting';
+import ModalRating from '@/ui/components/modals/ModalRating';
 
 const requireComponent = require.context(
-  './components/tools',
+  './ui/components/tools',
   false,
   /[A-Z]\w+\.(vue|js)$/
 )
@@ -27,7 +26,6 @@ requireComponent.keys().forEach(fileName => {
   )
 })
 
-Vue.component('CanvasItem', CanvasItem);
 Vue.component('ModalRating', ModalRating);
 Vue.component('ModalPainting', ModalPainting);
 Vue.component('SpinnerItem', SpinnerItem);

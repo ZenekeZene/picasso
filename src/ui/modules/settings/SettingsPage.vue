@@ -18,8 +18,8 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
-import GithubItem from '@/components/GithubItem';
-import ThemeChange from '@/components/ThemeChange';
+import GithubItem from './GithubItem';
+import ThemeChange from './ThemeChange';
 
 export default {
 	name: 'SettingsPage',

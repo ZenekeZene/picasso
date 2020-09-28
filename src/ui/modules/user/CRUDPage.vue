@@ -75,10 +75,10 @@
 
 <script>
 import Vue from 'vue';
-import scrollTo from '../../scrollTo';
-import { mock } from '../../mock.users.js';
-import ModalDelete from '@/components/modals/ModalDelete';
-import ModalEdit from '@/components/modals/ModalEdit';
+import scrollTo from '@/scrollTo';
+import { mock } from './mock.users.js';
+import ModalDelete from '@/ui/components/modals/ModalDelete';
+import ModalEdit from '@/ui/components/modals/ModalEdit';
 import { orderByUser, updateUser, createUser, removeUser, onChangeUsers } from '@/infra/UserRepository';
 
 export default {

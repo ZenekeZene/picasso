@@ -60,9 +60,13 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import CanvasItem from './CanvasItem';
 
 export default {
 	name: 'PaintPage',
+	components: {
+		CanvasItem,
+	},
 	computed: {
 		...mapState(['canvas']),
 		...mapState('status', [
