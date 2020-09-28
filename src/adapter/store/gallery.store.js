@@ -2,8 +2,7 @@ export default {
   state: {
     paintingSelected: null,
 		theme: 'light',
-		filterCriterion: 'alphabet',
-		filterDirection: 'asc',
+		filterCriterion: 'alphabet'
   },
   mutations: {
     setPaintingSelected(state, payload) {

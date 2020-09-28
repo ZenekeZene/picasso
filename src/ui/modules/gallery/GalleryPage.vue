@@ -23,7 +23,7 @@ import { mapState } from 'vuex';
 import { getPaintings } from '@/infra/PaintingRepository';
 import PaintingsFeed from '@/ui/modules/painting//PaintingsFeed';
 import GalleryActions from './GalleryActions';
-import FiltersBar from './FiltersBar';
+import FiltersBar, { sort } from './FiltersBar';
 
 export default {
 	name: 'GalleryPage',
@@ -40,15 +40,9 @@ export default {
 	},
 	computed: {
 		...mapState('strokes', ['history']),
-		...mapState('gallery', ['paintingSelected']),
+		...mapState('gallery', ['paintingSelected', 'filterCriterion']),
 		filteredPaintings() {
-			const compare = {
-				alphabet: (a, b) => (a.name.localeCompare(b.name)),
-				rating: (a, b) => (a.avgRating > b.avgRating ? -1 : 0),
-				date: (a, b) => (a.timestamp > b.timestamp ? -1 : 0),
-			};
-
-			return Array.prototype.slice.call(this.paintings).sort(compare[this.filterCriterion]);
+			return sort(this.paintings, this.filterCriterion);
 		},
 	},
 	mounted() {

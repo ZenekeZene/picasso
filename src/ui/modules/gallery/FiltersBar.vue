@@ -26,6 +26,15 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 
+export function sort(paintings, criterion) {
+	const compare = {
+		alphabet: (a, b) => (a.name.localeCompare(b.name)),
+		rating: (a, b) => (a.avgRating > b.avgRating ? -1 : 0),
+		date: (a, b) => (a.timestamp > b.timestamp ? -1 : 0),
+	};
+	return paintings.sort(compare[criterion]);
+}
+
 export default {
 	name: 'FiltersItem',
 	computed: {
