@@ -53,6 +53,7 @@
 <script>
 import moment from 'moment';
 import { mapState, mapMutations } from 'vuex';
+import { getPaintings } from '@/infra/PaintingRepository';
 import Painting from '../Painting';
 import SpinnerItem from '../SpinnerItem';
 import ThemeChange from '../ThemeChange';
@@ -108,44 +109,34 @@ export default {
 			'setPaintingSelected',
 			'setFilterCriterion',
 		]),
-		getAllPaintings() {
-			this.paintings = [];
-			window.db
-				.collection('painting')
-				.get()
-				.then((snapshot) => {
-					snapshot.docs.forEach((doc) => {
-						const data = doc.data();
-						this.paintings.push({
-							id: doc.id,
-							name: data.name,
-							history: data.history,
-							url: data.url,
-							avgRating: data.avgRating,
-							timestamp: data.timestamp,
-						});
-					});
-					this.isLoading = false;
-				});
+		async getAllPaintings() {
+			try {
+				this.paintings = await getPaintings();
+			} catch (error) {
+				console.error(error);
+				this.$toasted.show(this.$t('error.general'));
+			} finally {
+				this.isLoading = false;
+			}
 		},
 		goToPainting(paint) {
 			this.setModeToReadable();
 			this.setPaintingSelected({ paintingSelected: paint.id });
 			this.setHistory({ history: paint.history });
-			this.$router.push(`/paint/${paint.id}`);
+			this.$router.push({ name: 'paintById', params: { paintId: paint.id }});
 		},
 		backToPaint(event) {
 			if (!event.target.classList.contains('--disabled')) {
 				if (this.paintingSelected) {
-					this.$router.push(`paint/${this.paintingSelected}`);
+					this.$router.push({ name: 'paintById', params: { paintId: this.paintingSelected }});
 				} else {
-					this.$router.push('/');
+					this.$router.push({ name: 'paint' });
 				}
 			}
 		},
 		goToCreateNewPainting(event) {
 			if (!event.target.classList.contains('--disabled')) {
-				this.$router.push('/');
+				this.$router.push({ name: 'paint' });
 				this.setModeToEditable();
 				this.deleteAllHistory();
 				this.resetIndexLine();

@@ -5,6 +5,13 @@ function getTimestamp() {
   return Math.floor(Date.now() / 1000);
 }
 
+async function getPaintings() {
+  const paintings = [];
+  const snapshot = await collectionPainting.get();
+  snapshot.docs.map((doc) => paintings.push({ id: doc.id, ...doc.data() }));
+  return paintings;
+}
+
 async function savePainting(paintingName, blob, history) {
   const metadata = { contentType: 'image/png' };
   const snapshot = await STORAGE.ref().child(`images/${getTimestamp()}`).put(blob, metadata);
@@ -20,5 +27,6 @@ async function savePainting(paintingName, blob, history) {
 }
 
 export {
+  getPaintings,
   savePainting,
 }
