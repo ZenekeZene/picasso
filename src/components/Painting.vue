@@ -27,12 +27,10 @@
 <script>
 import moment from 'moment';
 import StarRating from 'vue-star-rating';
-import SpinnerItem from './SpinnerItem';
 
 export default {
   name: 'painting',
   components: {
-    SpinnerItem,
     StarRating,
   },
   props: {

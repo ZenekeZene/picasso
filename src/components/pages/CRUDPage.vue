@@ -73,17 +73,9 @@
 import Vue from 'vue';
 import scrollTo from '../../scrollTo';
 import { mock } from '../../mock.users.js';
-import ModalDelete from '../modals/ModalDelete';
-import ModalEdit from '../modals/ModalEdit';
-import SpinnerItem from '../SpinnerItem';
 
 export default {
 	name: 'CRUDPage',
-	components: {
-		ModalEdit,
-		ModalDelete,
-		SpinnerItem,
-	},
 	data() {
 		return {
 			users: [],

@@ -22,7 +22,7 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
-import { brushes } from '../../brushes';
+import { brushes } from '@/entities/brushes';
 
 export default {
   name: 'BrushTool',

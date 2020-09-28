@@ -55,7 +55,6 @@ import moment from 'moment';
 import { mapState, mapMutations } from 'vuex';
 import { getPaintings } from '@/infra/PaintingRepository';
 import Painting from '../Painting';
-import SpinnerItem from '../SpinnerItem';
 import ThemeChange from '../ThemeChange';
 import FiltersItem from '../FiltersItem';
 
@@ -63,7 +62,6 @@ export default {
 	name: 'GalleryPage',
 	components: {
 		Painting,
-		SpinnerItem,
 		FiltersItem,
 		ThemeChange,
 	},

@@ -1,4 +1,4 @@
-import Dot from '../entities/Dot';
+import Dot from '../Dot';
 import Brush from './Brush';
 
 export default class AllConnectionsBrush extends Brush {

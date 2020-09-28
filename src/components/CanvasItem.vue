@@ -12,10 +12,10 @@
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
-import PlayerDot from '../mixins/PlayerDot.mixin';
-import ControlInput from '../mixins/ControlInput.mixin';
-import Dot from '../entities/Dot';
-import { createBrush } from '../brushes';
+import PlayerDot from '@/mixins/PlayerDot.mixin';
+import ControlInput from '@/mixins/ControlInput.mixin';
+import Dot from '@/entities/Dot';
+import { createBrush } from '@/entities/brushes';
 
 export default {
   name: 'CanvasItem',
