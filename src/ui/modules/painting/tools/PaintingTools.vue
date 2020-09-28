@@ -41,17 +41,15 @@ export default {
     UndoTool,
     UploadTool,
   },
-  data() {
-    return {
-      dataURI: '',
-    };
+  props: {
+    dataURI: {
+      type: String,
+      default: ''
+    },
   },
   computed: {
     ...mapState(['canvas']),
     ...mapState('status', ['toolsVisible']),
-  },
-  mounted() {
-    // this.dataURI = this.canvas.toDataUrl('png');
   },
   methods: {
     ...mapMutations(['clearCanvas']),

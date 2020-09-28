@@ -1,7 +1,10 @@
 <template>
   <article class="p-paint">
 		<transition name="fade" appear>
-			<PaintingTools :class="{ '--disabled': isPainting || showSpinner }" />
+			<PaintingTools
+				:class="{ '--disabled': isPainting || showSpinner }"
+				:dataURI="dataURI"
+			/>
 		</transition>
 		<transition name="fade" appear>
 			<SpinnerItem v-show="showSpinner" />
@@ -45,7 +48,11 @@ export default {
 	data() {
 		return {
 			showSpinner: false,
+			dataURI: '',
 		};
+	},
+	mounted() {
+		this.saveToImage();
 	},
 	methods: {
 		...mapMutations(['clearCanvas']),
@@ -60,7 +67,11 @@ export default {
 		...mapMutations('gallery', ['setPaintingSelected']),
 		handlerMouseUp($event) {
 			this.setToolsVisible({ toolsVisible: $event });
+			this.saveToImage();	
 		},
+		saveToImage() {
+			this.dataURI = this.canvas.toDataURL('png');
+		}
 	},
 };
 </script>
