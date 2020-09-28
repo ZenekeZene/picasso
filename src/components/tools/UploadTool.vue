@@ -5,7 +5,7 @@
 			:class="{ '--disabled': isDisabled || mode === 'read' }"
 			v-mobile-hover:#4992a9
 		>
-			<span class="label">Enviar la firma</span>
+			<span class="label">{{ $t('painting.save.label') }}</span>
 			<span class="icon-save"></span>
 		</div>
 	</transition>

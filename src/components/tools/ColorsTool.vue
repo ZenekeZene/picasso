@@ -14,8 +14,8 @@
 			<li
 				v-for="(color, index) in colors"
 				:key="`color-${index}`"
-				@click="setColorStroke({ colorStroke: color })"
 				:class="{ '--selected': colorStroke === color }"
+				@click="setColorStroke({ colorStroke: color })"
 			>
 				<span :style="{ backgroundColor: color }"></span>
 			</li>

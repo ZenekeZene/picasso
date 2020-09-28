@@ -6,7 +6,7 @@
 			v-touch:end="undo"
 			v-mobile-hover:#4992a9
 		></span>
-		<span class="label">Undo</span>
+		<span class="label">{{ $t('tools.undo') }}</span>
 	</li>
 </template>
 

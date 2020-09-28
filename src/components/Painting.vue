@@ -1,11 +1,11 @@
 <template>
   <section @click="$emit('painting-clicked', true)">
-    <spinner-item v-show="!loaded" key="spinner" class="spinner --mini"></spinner-item>
+    <SpinnerItem v-show="!loaded" key="spinner" class="spinner --mini" />
     <div style="min-width: 47px;">
       <img :src="url" @load="loaded = true" key="image" />
     </div>
     <span class="name" v-if="name.length > 0">{{ name }}</span>
-    <span class="name" v-else>Anónimo</span>
+    <span class="name" v-else>{{ $t('anonymous') }}</span>
     <div class="rating">
       <StarRating
         :rating="avgRating"
@@ -20,7 +20,7 @@
         :round-start-rating="false"
         :read-only="true"
       />
-      <span>Creado {{ calculateMoment(timestamp) }}</span>
+      <span>{{ $t('painting.created') }} {{ calculateMoment(timestamp) }}</span>
     </div>
   </section>
 </template>

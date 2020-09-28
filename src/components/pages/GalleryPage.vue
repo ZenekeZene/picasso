@@ -1,10 +1,9 @@
 <template>
 	<article class="p-gallery">
 		<transition name="fade" mode="out-in">
-			<p v-if="!isLoading && paintings.length === 0" block font-size-xs text-center>
-				&nbsp;Aún no ha firmado nadie. ¿Quieres ser el primero?&nbsp;&nbsp;
-				<span font-size-l>🥺</span>&nbsp;
-			</p>
+			<p v-if="!isLoading && paintings.length === 0"
+				block font-size-xs text-center
+			>{{ $t('gallery.empty')}}</p>
 			<div v-else style="width: 100%; height: 100%;">
 				<FiltersItem />
 				<transition name="fade" mode="out-in">
@@ -12,8 +11,8 @@
 					<section class="gallery-wrapper" v-else>
 						<ol class="gallery">
 							<li
-								v-for="paint in filteredPaintings"
-								:key="paint.id"
+								v-for="(paint, index) in filteredPaintings"
+								:key="index"
 							>
 								<Painting
 									class="gallery__item"
@@ -31,9 +30,12 @@
 			</div>
 		</transition>
 		<transition name="fade">
-			<div class="button-floated --bottom --left" @click="backToPaint" v-if="mode === 'edit'">
+			<div class="button-floated --bottom --left"
+				v-if="mode === 'edit'"
+				@click="backToPaint"
+			>
 				<span class="icon-forward --left"></span>
-				<span class="label">Seguir firmando</span>
+				<span class="label">{{ $t('gallery.back') }}</span>
 			</div>
 		</transition>
 		<transition name="fade">
@@ -42,7 +44,7 @@
 				@click="goToCreateNewPainting"
 				v-mobile-hover:#4992a9
 			>
-				<span class="label">Crear nueva firma</span>
+				<span class="label">{{ $t('gallery.create') }}</span>
 				<span class="icon-write"></span>
 			</div>
 		</transition>

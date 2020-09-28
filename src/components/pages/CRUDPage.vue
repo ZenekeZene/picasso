@@ -21,10 +21,10 @@
 			</li>
 		</ul>
 		<transition name="fade" mode="out-in">
-			<spinner-item class="loading" v-if="loading"></spinner-item>
+			<SpinnerItem class="loading" v-if="loading" />
 			<div class="users-wrapper" v-else>
 				<transition name="fade" mode="out-in">
-					<p class="empty" v-if="users.length === 0">Aún no tienes usuarios. Prueba a crear uno.</p>
+					<p class="empty" v-if="users.length === 0">{{ $t('users.empty') }}</p>
 					<div class="users-search" v-else>
 						<input type="text"
 							class="search"
@@ -36,7 +36,7 @@
 						<transition-group ref="usersList"
 							name="fade" tag="ol"
 							class="list"
-							:class="{'--height-force': searchFocused}"
+							:class="{ '--height-force': searchFocused }"
 						>
 							<li class="list__item"
 								v-for="(user) in filteredUsers"
@@ -56,16 +56,16 @@
 		<transition name="fade">
 			<span v-if="!searchFocused" class="button-bottom icon-forward --left" @click="$router.push('/')"></span>
 		</transition>
-		<modal-delete
+		<ModalDelete
 			:user="userSelected"
 			@delete-user="deleteUser"
-		></modal-delete>
-		<modal-edit
+		/>
+		<ModalEdit
 			:user="userSelected"
 			:action="action"
 			@save-user="saveUser"
 			@update-user="updateUser"
-		></modal-edit>
+		/>
 	</section>
 </template>
 

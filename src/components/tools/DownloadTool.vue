@@ -4,9 +4,9 @@
 		<a v-if="!isDisabled"
 			class="download"
 			:href="downloadURI"
-			download="my-awesome-drawing-of-painter"
+			:download="$t('download')"
 		></a>
-		<span class="label">Download</span>
+		<span class="label">{{ $t('tools.download') }}</span>
 	</li>
 </template>
 <script>

@@ -1,6 +1,6 @@
 <template>
 	<article class="p-settings">
-		<p class="intro" margin-bottom>Pocas cosas para <span font-bold>configurar</span>, amigo.</p>
+		<p class="intro" margin-bottom v-html="$t(settings.info)"></p>
 		<ol class="p-settings__list">
 			
 			<button margin-top class="btn" @click="clearCache">Borrar caché</button>

@@ -7,7 +7,7 @@
 			v-mobile-hover:#4992a9
 		>
 		</span>
-		<span class="label">Clean</span>
+		<span class="label">{{ $t('tools.clean') }}</span>
 	</li>
 </template>
 

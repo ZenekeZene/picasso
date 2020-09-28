@@ -1,6 +1,6 @@
 <template>
 	<div class="filters">
-		<span class="label">Filtrar por:</span>
+		<span class="label">{{ $t('filter') }}:</span>
 		<ul class="filters__list">
 			<li
 				@click="setFilter('alphabet')"
@@ -8,10 +8,16 @@
 			>
 				<span class="icon-sort-alphabetically"></span>
 			</li>
-			<li @click="setFilter('rating')" :class="{ '--active': filterCriterion === 'rating' }">
+			<li
+				@click="setFilter('rating')"
+				:class="{ '--active': filterCriterion === 'rating' }"
+			>
 				<span class="icon-star-full"></span>
 			</li>
-			<li @click="setFilter('date')" :class="{ '--active': filterCriterion === 'date' }">
+			<li
+				@click="setFilter('date')"
+				:class="{ '--active': filterCriterion === 'date' }"
+			>
 				<span class="icon-clock"></span>
 			</li>
 		</ul>

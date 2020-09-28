@@ -48,7 +48,7 @@
 				v-mobile-hover:#4992a9
 				@click.stop.prevent="launchRating"
 			>
-				<span class="label">{{ $t('painting.rating') }}</span>
+				<span class="label">{{ $t('painting.rating.cta') }}</span>
 				<span class="icon-star-full"></span>
 			</div>
 		</transition>

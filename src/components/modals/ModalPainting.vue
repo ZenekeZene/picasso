@@ -4,10 +4,10 @@
 	<swiper :options="swiperOptionMini" ref="swiper">
 		<swiper-slide>
 			<div padding>
-				<h1>{{ $t('painting.save.name') }}h1>
-				<input type="text" placeholder="{{ $t('painting.save.placeholder') }}" v-model="name">
-				<p class="note">{{ $('painting.save.optional') }}</p>
-				<button margin-top class="btn" @click="save">{{ $t('painting.') }}</button>
+				<h1>{{ $t('painting.save.name') }}</h1>
+				<input type="text" :placeholder="$t('painting.save.placeholder')" v-model="name">
+				<p class="note">{{ $t('painting.save.optional') }}</p>
+				<button margin-top class="btn" @click="save">{{ $t('painting.save.cta') }}</button>
 			</div>
 		</swiper-slide>
 	</swiper>
