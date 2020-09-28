@@ -53,6 +53,13 @@
 				</transition>
 			</div>
 		</transition>
+		<transition name="fade">
+			<span
+				v-if="$route.meta.withBackArrow"
+				class="back-arrow icon-forward --left"
+				@click="$router.go(-1)"
+			></span>
+		</transition>
 		<ModalDelete
 			:user="userSelected"
 			@delete-user="deleteUser"
@@ -220,5 +227,11 @@ export default {
 .list-users {
 	max-height: 93%;
 	overflow-y: auto;
+}
+
+.back-arrow {
+	position: absolute;
+	bottom: 1rem;
+	left: 1rem;
 }
 </style>

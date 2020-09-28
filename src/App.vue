@@ -12,13 +12,6 @@
 			key="gallery"
 		>{{ $t('gallery.title') }}</h1>
 	</transition>
-	<transition name="fade">
-		<span
-			v-if="$route.meta.withBackArrow"
-			class="back-arrow icon-forward --left"
-			@click="$router.go(-1)"
-		></span>
-	</transition>
 	<div class="options">
 		<span class="settings icon-cog"
 			v-if="$route.name == 'gallery'"
@@ -63,17 +56,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.options,
-.back-arrow {
+.options {
 	position: absolute;
 	top: 1.5rem;
 	right: 1rem;
 	z-index: 101;
 	display: inline-flex;
-}
-
-.back-arrow {
-	bottom: 1rem;
-	left: 1rem;
 }
 </style>
