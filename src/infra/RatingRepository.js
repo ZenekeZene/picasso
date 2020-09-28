@@ -4,7 +4,6 @@ import { collectionPainting } from './PaintingRepository';
 function calculateAverage(newRating, { numRatings, avgRating: oldAvgRating }) {
   const avgRating = isNaN(oldAvgRating) ? 1 : oldAvgRating;
   const newAverage = (numRatings * avgRating + newRating) / (numRatings + 1);
-  console.log(newAverage);
   return newAverage;
 }
 
@@ -20,7 +19,6 @@ async function sendRating(currentPainting, rating) {
     const doc = await transaction.get(documentPainting);
     if (!doc.exists) return Promise.reject(`Rating wasn't sent.`);
     const data = doc.data();
-    console.log(data);
   
     const newAverage = calculateAverage(rating, data);
   

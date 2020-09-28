@@ -63,7 +63,9 @@ export default {
 		},
 	},
 	async mounted() {
-		this.rating = await getRating(this.paintingSelected);
+		if (this.paintingSelected) {
+			this.rating = await getRating(this.paintingSelected);
+		}
 	},
 	methods: {
 		async sendRating() {

@@ -21,6 +21,7 @@ const store = new Vuex.Store({
 				'canvas',
 				'ctx',
 				'gallery.paintingSelected',
+				'status.mode',
 			]
 		}),
 	],
